@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 222.2 47.4% 11.2%;
+        --primary: #1677ff;
+        --danger: #ff4d4f;
+    }
+}
+
+@layer base {
+    body {
+        @apply bg-background text-foreground;
+    }
+    a {
+        @apply text-primary;
+    }
+}
+
+/* Fix Ant Design styles */
+.ant-tree-switcher,
+.ant-select-tree-switcher {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
