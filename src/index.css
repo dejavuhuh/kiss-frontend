@@ -1,0 +1,20 @@
+@layer theme, base, antd, components, utilities;
+
+@import 'tailwindcss';
+
+@theme inline {
+  --color-border: var(--ant-color-border);
+  --color-border-secondary: var(--ant-color-border-secondary);
+  --color-container: var(--ant-color-bg-container);
+  --color-layout: var(--ant-color-bg-layout);
+}
+
+@layer base {
+  * {
+    @apply border-border-secondary;
+  }
+}
+
+:root {
+  interpolate-size: allow-keywords;
+}
