@@ -7,11 +7,20 @@
   --color-border-secondary: var(--ant-color-border-secondary);
   --color-container: var(--ant-color-bg-container);
   --color-layout: var(--ant-color-bg-layout);
+  --color-error: var(--ant-color-error);
+  --color-error-filled: var(--ant-color-error-bg-filled-hover);
+  --color-secondary: var(--ant-color-text-secondary);
 }
 
 @layer base {
   * {
     @apply border-border-secondary;
+  }
+}
+
+@layer components {
+  .card {
+    @apply p-4 rounded-md bg-container shadow-sm;
   }
 }
 

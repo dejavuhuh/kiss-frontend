@@ -1,7 +1,7 @@
 import type { MenuProps } from 'antd'
 import { cn } from '@/utils'
-import { AppstoreOutlined, ContainerOutlined, DesktopOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined } from '@ant-design/icons'
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { MenuFoldOutlined, SettingOutlined, UsergroupAddOutlined } from '@ant-design/icons'
+import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
 import { Button, Menu } from 'antd'
 import { useState } from 'react'
 
@@ -12,40 +12,36 @@ export const Route = createFileRoute('/_dashboard')({
 type MenuItem = Required<MenuProps>['items'][number]
 
 const items: MenuItem[] = [
-  { key: '1', icon: <PieChartOutlined />, label: 'Option 1' },
-  { key: '2', icon: <DesktopOutlined />, label: 'Option 2' },
-  { key: '3', icon: <ContainerOutlined />, label: 'Option 3' },
   {
-    key: 'sub1',
-    label: 'Navigation One',
-    icon: <MailOutlined />,
+    key: '/system',
+    label: '系统管理',
+    icon: <SettingOutlined />,
     children: [
-      { key: '5', label: 'Option 5' },
-      { key: '6', label: 'Option 6' },
-      { key: '7', label: 'Option 7' },
-      { key: '8', label: 'Option 8' },
-    ],
-  },
-  {
-    key: 'sub2',
-    label: 'Navigation Two',
-    icon: <AppstoreOutlined />,
-    children: [
-      { key: '9', label: 'Option 9' },
-      { key: '10', label: 'Option 10' },
       {
-        key: 'sub3',
-        label: 'Submenu',
-        children: [
-          { key: '11', label: 'Option 11' },
-          { key: '12', label: 'Option 12' },
-        ],
+        key: '/system/roles',
+        label: <Link to="/system/roles">角色管理</Link>,
+        icon: <UsergroupAddOutlined />,
       },
     ],
   },
 ]
+
+function collectParentKeys(pathname: string) {
+  const parentKeys: string[] = []
+  let current = pathname
+  for (let i = pathname.length - 1; i > 0; i--) {
+    if (pathname[i] === '/') {
+      current = pathname.slice(0, i)
+      parentKeys.push(current)
+    }
+  }
+  return parentKeys
+}
+
 function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false)
+  const { pathname } = useLocation()
+  const parentKeys = collectParentKeys(pathname)
 
   return (
     <div className="h-screen flex">
@@ -53,6 +49,8 @@ function DashboardLayout() {
         <Menu
           className="border-r-0 transition-none"
           mode="inline"
+          defaultSelectedKeys={[pathname]}
+          defaultOpenKeys={parentKeys}
           inlineCollapsed={collapsed}
           items={items}
         />

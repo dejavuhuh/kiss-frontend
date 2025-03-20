@@ -1,8 +1,10 @@
 import { StyleProvider } from '@ant-design/cssinjs'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { App, ConfigProvider } from 'antd'
-import { StrictMode } from 'react'
+import zhCN from 'antd/locale/zh_CN'
 
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
@@ -17,6 +19,7 @@ declare module '@tanstack/react-router' {
     router: typeof router
   }
 }
+const queryClient = new QueryClient()
 
 // Render the app
 const rootElement = document.getElementById('root')!
@@ -24,22 +27,26 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <StyleProvider layer>
-        <ConfigProvider theme={{
-          cssVar: true,
-          hashed: false,
-          token: {
-            colorBgLayout: '#f7fafc',
-          },
-          components: {
-            Menu: {
-              collapsedWidth: 48,
+      <StyleProvider layer container={document.body}>
+        <ConfigProvider
+          locale={zhCN}
+          theme={{
+            cssVar: true,
+            hashed: false,
+            token: {
+              colorBgLayout: '#f7fafc',
             },
-          },
-        }}
+            components: {
+              Menu: {
+                collapsedWidth: 48,
+              },
+            },
+          }}
         >
           <App>
-            <RouterProvider router={router} />
+            <QueryClientProvider client={queryClient}>
+              <RouterProvider router={router} />
+            </QueryClientProvider>
           </App>
         </ConfigProvider>
       </StyleProvider>
