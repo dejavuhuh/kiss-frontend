@@ -2,11 +2,11 @@ import type { RequestOf, ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import type { Key } from 'react'
 import { api } from '@/api'
-import { DownloadOutlined } from '@ant-design/icons'
+import { CheckCircleFilled, CheckCircleOutlined, CheckCircleTwoTone, CloseCircleFilled, DeleteOutlined, DownloadOutlined, Loading3QuartersOutlined, LoadingOutlined } from '@ant-design/icons'
 import { ModalForm, ProFormDateTimeRangePicker, ProFormText, ProFormTextArea, QueryFilter } from '@ant-design/pro-components'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { App, Button, Form, Space, Table, Typography } from 'antd'
+import { App, Badge, Button, Drawer, Form, Progress, Space, Table, Typography } from 'antd'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/_dashboard/system/roles/')({
@@ -97,7 +97,7 @@ function RolesManagement() {
   const [form] = Form.useForm()
   const [pageIndex, setPageIndex] = useState(0)
 
-  const { refetch, data } = useQuery({
+  const { refetch, data, isFetching } = useQuery({
     queryKey: ['roles', pageIndex],
     queryFn: () => api.roleService.list({
       pageIndex,
@@ -151,10 +151,8 @@ function RolesManagement() {
                   okButtonProps: {
                     danger: true,
                   },
-                  onOk() {
-                    return api.roleService.delete({ id })
-                  },
-                  afterClose() {
+                  async onOk() {
+                    await api.roleService.delete({ id })
                     message.success('删除成功')
                     query()
                   },
@@ -172,6 +170,8 @@ function RolesManagement() {
   const createRole = useMutation({
     mutationFn: api.roleService.create,
   })
+
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
     <div className="flex flex-col gap-4">
@@ -197,16 +197,14 @@ function RolesManagement() {
                         <span>个角色吗？</span>
                       </>
                     ),
-                    onOk() {
-                      return api.roleService.deleteBatch({ ids: selectedRowKeys as number[] })
-                    },
-                    okButtonProps: {
-                      danger: true,
-                    },
-                    afterClose() {
+                    async onOk() {
+                      await api.roleService.deleteBatch({ ids: selectedRowKeys as number[] })
                       setSelectedRowKeys([])
                       message.success('删除成功')
                       query()
+                    },
+                    okButtonProps: {
+                      danger: true,
                     },
                   })
                 }}
@@ -216,7 +214,29 @@ function RolesManagement() {
               </Button>
             )}
             <Button>操作日志</Button>
-            <Button iconPosition="end" icon={<DownloadOutlined />}>导出数据</Button>
+            <Button iconPosition="end" icon={<DownloadOutlined />} onClick={() => setDrawerOpen(true)}>数据导出</Button>
+            <Drawer title="数据导出" open={drawerOpen}>
+              <Space direction="vertical" size="middle" className="w-full">
+                <div className="card py-1.5 bg-layout flex items-center">
+                  <Typography.Text className="shrink-0">角色列表.xlsx</Typography.Text>
+                  <Progress className="m-2.5" percent={50} size="small" status="active" />
+                  <Button size="small" className="ml-auto" icon={<DownloadOutlined />} color="primary" variant="text" />
+                  <Button size="small" icon={<DeleteOutlined />} color="primary" variant="text" />
+                </div>
+                <div className="card py-1.5 bg-layout flex items-center">
+                  <Typography.Text className="shrink-0">角色列表.xlsx</Typography.Text>
+                  <Progress className="m-2.5" percent={70} size="small" status="exception" />
+                  <Button size="small" className="ml-auto" icon={<DownloadOutlined />} color="primary" variant="text" />
+                  <Button size="small" icon={<DeleteOutlined />} color="primary" variant="text" />
+                </div>
+                <div className="card py-1.5 bg-layout flex items-center">
+                  <Typography.Text className="shrink-0">角色列表.xlsx</Typography.Text>
+                  <Progress className="m-2.5" percent={100} size="small" />
+                  <Button size="small" className="ml-auto" icon={<DownloadOutlined />} color="primary" variant="text" />
+                  <Button size="small" icon={<DeleteOutlined />} color="primary" variant="text" />
+                </div>
+              </Space>
+            </Drawer>
             <ModalForm<RoleInput>
               title="创建角色"
               width={500}
@@ -236,6 +256,7 @@ function RolesManagement() {
           </div>
           <Table<RoleView>
             size="small"
+            loading={isFetching}
             dataSource={data?.rows}
             rowKey={row => row.id}
             columns={columns}

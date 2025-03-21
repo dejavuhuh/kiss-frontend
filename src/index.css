@@ -10,6 +10,8 @@
   --color-error: var(--ant-color-error);
   --color-error-filled: var(--ant-color-error-bg-filled-hover);
   --color-secondary: var(--ant-color-text-secondary);
+  --color-success: var(--ant-color-success);
+  --color-primary: var(--ant-color-primary);
 }
 
 @layer base {
