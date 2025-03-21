@@ -1,5 +1,5 @@
 export interface Page<T> {
-    readonly rows: ReadonlyArray<T>;
-    readonly totalPageCount: number;
-    readonly totalRowCount: number;
+    rows: Array<T>;
+    totalPageCount: number;
+    totalRowCount: number;
 }

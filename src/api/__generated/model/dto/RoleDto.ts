@@ -3,18 +3,18 @@ export type RoleDto = {
         /**
          * ID
          */
-        readonly id: number;
+        id: number;
         /**
          * 创建时间
          */
-        readonly createdAt: string;
+        createdAt: string;
         /**
          * 角色名称
          */
-        readonly name: string;
+        name: string;
         /**
          * 角色描述
          */
-        readonly description?: string | undefined;
+        description?: string | undefined;
     }
 }

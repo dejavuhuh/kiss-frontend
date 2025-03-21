@@ -5,9 +5,9 @@ export interface RoleInput {
     /**
      * 角色名称
      */
-    readonly name: string;
+    name: string;
     /**
      * 角色描述
      */
-    readonly description?: string | undefined;
+    description?: string | undefined;
 }

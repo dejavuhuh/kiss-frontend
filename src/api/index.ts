@@ -12,6 +12,10 @@ export const api = new Api(async ({ uri, method, headers, body }) => {
       ...(tenant !== undefined && tenant !== '' ? { tenant } : {}),
     },
   })
+  if (response.status === 400) {
+    throw await response.json()
+  }
+
   if (response.status !== 200) {
     throw await response.json()
   }
@@ -21,5 +25,9 @@ export const api = new Api(async ({ uri, method, headers, body }) => {
   }
   return JSON.parse(text)
 })
+
+export interface ApiError {
+  detail: string
+}
 
 export * from './__generated'

@@ -34,6 +34,28 @@ export class RoleService {
     }
     
     /**
+     * 批量删除角色
+     * 
+     * @parameter {RoleServiceOptions['deleteBatch']} options
+     * - ids 角色ID列表
+     */
+    readonly deleteBatch: (options: RoleServiceOptions['deleteBatch']) => Promise<
+        void
+    > = async(options) => {
+        let _uri = '/roles';
+        let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
+        let _value: any = undefined;
+        _value = options.ids;
+        for (const _item of _value) {
+            _uri += _separator
+            _uri += 'ids='
+            _uri += encodeURIComponent(_item);
+            _separator = '&';
+        }
+        return (await this.executor({uri: _uri, method: 'DELETE'})) as Promise<void>;
+    }
+    
+    /**
      * 分页查询
      * 
      * @parameter {RoleServiceOptions['list']} options
@@ -105,30 +127,36 @@ export type RoleServiceOptions = {
         /**
          * 页码
          */
-        readonly pageIndex?: number | undefined, 
+        pageIndex?: number | undefined, 
         /**
          * 每页大小
          */
-        readonly pageSize?: number | undefined, 
+        pageSize?: number | undefined, 
         /**
          * 查询条件
          */
-        readonly specification: RoleSpecification
+        specification: RoleSpecification
     }, 
     'create': {
-        readonly body: RoleInput
+        body: RoleInput
     }, 
     'update': {
         /**
          * 角色ID
          */
-        readonly id: number, 
-        readonly body: RoleInput
+        id: number, 
+        body: RoleInput
     }, 
     'delete': {
         /**
          * 角色ID
          */
-        readonly id: number
+        id: number
+    }, 
+    'deleteBatch': {
+        /**
+         * 角色ID列表
+         */
+        ids: Array<number>
     }
 }

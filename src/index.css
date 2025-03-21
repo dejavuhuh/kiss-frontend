@@ -16,6 +16,9 @@
   * {
     @apply border-border-secondary;
   }
+  td {
+    @apply tabular-nums;
+  }
 }
 
 @layer components {
