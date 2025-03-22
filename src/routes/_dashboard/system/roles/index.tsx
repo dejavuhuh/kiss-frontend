@@ -2,6 +2,7 @@ import type { RequestOf, ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import type { Key } from 'react'
 import { api } from '@/api'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { DownloadOutlined } from '@ant-design/icons'
 import { ModalForm, ProFormDateTimeRangePicker, ProFormText, ProFormTextArea, QueryFilter } from '@ant-design/pro-components'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -62,6 +63,8 @@ function RolesManagement() {
     },
   })
 
+  const currentUser = useCurrentUser()
+
   const columns: TableProps<RoleView>['columns'] = [
     {
       title: '角色ID',
@@ -81,56 +84,65 @@ function RolesManagement() {
       render: value => new Date(value).toLocaleString(),
     },
     {
+      title: '创建人',
+      dataIndex: ['creator', 'username'],
+    },
+    {
       title: '操作',
       render(_, { id, ...record }) {
+        const canEdit = record.creator.id === currentUser?.id
         return (
           <>
-            <ModalForm<RoleInput>
-              title="编辑角色"
-              trigger={(
-                <Button
-                  color="primary"
-                  size="small"
-                  variant="link"
-                >
-                  编辑
-                </Button>
-              )}
-              initialValues={record}
-              width={500}
-              onFinish={async (body) => {
-                await updateRole.mutateAsync({ id, body })
-                return true
-              }}
-              isKeyPressSubmit
-              modalProps={{ destroyOnClose: true }}
-            >
-              <ProFormText name="name" label="角色名称" rules={[{ required: true }]} />
-              <ProFormTextArea name="description" label="角色描述" />
-            </ModalForm>
+            {canEdit && (
+              <ModalForm<RoleInput>
+                title="编辑角色"
+                trigger={(
+                  <Button
+                    color="primary"
+                    size="small"
+                    variant="link"
+                  >
+                    编辑
+                  </Button>
+                )}
+                initialValues={record}
+                width={500}
+                onFinish={async (body) => {
+                  await updateRole.mutateAsync({ id, body })
+                  return true
+                }}
+                isKeyPressSubmit
+                modalProps={{ destroyOnClose: true }}
+              >
+                <ProFormText name="name" label="角色名称" rules={[{ required: true }]} />
+                <ProFormTextArea name="description" label="角色描述" />
+              </ModalForm>
+            )}
             <Button color="primary" size="small" variant="link">详情</Button>
-            <Button
-              color="danger"
-              size="small"
-              variant="link"
-              danger
-              onClick={() => {
-                modal.confirm({
-                  title: '删除角色',
-                  content: '确定删除该角色吗？',
-                  okButtonProps: {
-                    danger: true,
-                  },
-                  async onOk() {
-                    await api.roleService.delete({ id })
-                    message.success('删除成功')
-                    query()
-                  },
-                })
-              }}
-            >
-              删除
-            </Button>
+            {canEdit && (
+              <Button
+                color="danger"
+                size="small"
+                variant="link"
+                danger
+                onClick={() => {
+                  modal.confirm({
+                    title: '删除角色',
+                    content: '确定删除该角色吗？',
+                    okButtonProps: {
+                      danger: true,
+                    },
+                    async onOk() {
+                      await api.roleService.delete({ id })
+                      message.success('删除成功')
+                      query()
+                    },
+                  })
+                }}
+              >
+                删除
+              </Button>
+            )}
           </>
         )
       },

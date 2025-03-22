@@ -64,7 +64,7 @@ export class RoleService {
      * - specification 查询条件
      */
     readonly list: (options: RoleServiceOptions['list']) => Promise<
-        Page<RoleDto['RoleService/LIST_FETCHER']>
+        Page<RoleDto['RoleService/LIST']>
     > = async(options) => {
         let _uri = '/roles';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
@@ -104,7 +104,7 @@ export class RoleService {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Page<RoleDto['RoleService/LIST_FETCHER']>>;
+        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Page<RoleDto['RoleService/LIST']>>;
     }
     
     /**

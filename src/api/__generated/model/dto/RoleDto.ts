@@ -1,5 +1,5 @@
 export type RoleDto = {
-    'RoleService/LIST_FETCHER': {
+    'RoleService/LIST': {
         /**
          * ID
          */
@@ -16,5 +16,12 @@ export type RoleDto = {
          * 角色描述
          */
         description?: string | undefined;
+        creator: {
+            /**
+             * ID
+             */
+            id: number;
+            username: string;
+        };
     }
 }
