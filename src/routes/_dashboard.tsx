@@ -1,6 +1,6 @@
 import type { MenuProps } from 'antd'
 import { cn } from '@/utils'
-import { MenuFoldOutlined, SettingOutlined, UsergroupAddOutlined } from '@ant-design/icons'
+import { ClockCircleOutlined, MenuFoldOutlined, SettingOutlined, UsergroupAddOutlined } from '@ant-design/icons'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
 import { Button, Menu } from 'antd'
 import { useState } from 'react'
@@ -21,6 +21,11 @@ const items: MenuItem[] = [
         key: '/system/roles',
         label: <Link to="/system/roles">角色管理</Link>,
         icon: <UsergroupAddOutlined />,
+      },
+      {
+        key: '/system/jobs',
+        label: <Link to="/system/jobs">定时任务</Link>,
+        icon: <ClockCircleOutlined />,
       },
     ],
   },

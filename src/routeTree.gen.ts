@@ -18,6 +18,7 @@ import { Route as DashboardDashboardImport } from './routes/_dashboard/dashboard
 import { Route as AuthenticationSignUpIndexImport } from './routes/_authentication/sign-up/index'
 import { Route as AuthenticationSignInIndexImport } from './routes/_authentication/sign-in/index'
 import { Route as DashboardSystemRolesIndexImport } from './routes/_dashboard/system/roles/index'
+import { Route as DashboardSystemJobsIndexImport } from './routes/_dashboard/system/jobs/index'
 
 // Create/Update Routes
 
@@ -58,6 +59,12 @@ const AuthenticationSignInIndexRoute = AuthenticationSignInIndexImport.update({
 const DashboardSystemRolesIndexRoute = DashboardSystemRolesIndexImport.update({
   id: '/system/roles/',
   path: '/system/roles/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardSystemJobsIndexRoute = DashboardSystemJobsIndexImport.update({
+  id: '/system/jobs/',
+  path: '/system/jobs/',
   getParentRoute: () => DashboardRoute,
 } as any)
 
@@ -107,6 +114,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticationSignUpIndexImport
       parentRoute: typeof AuthenticationImport
     }
+    '/_dashboard/system/jobs/': {
+      id: '/_dashboard/system/jobs/'
+      path: '/system/jobs'
+      fullPath: '/system/jobs'
+      preLoaderRoute: typeof DashboardSystemJobsIndexImport
+      parentRoute: typeof DashboardImport
+    }
     '/_dashboard/system/roles/': {
       id: '/_dashboard/system/roles/'
       path: '/system/roles'
@@ -135,11 +149,13 @@ const AuthenticationRouteWithChildren = AuthenticationRoute._addFileChildren(
 
 interface DashboardRouteChildren {
   DashboardDashboardRoute: typeof DashboardDashboardRoute
+  DashboardSystemJobsIndexRoute: typeof DashboardSystemJobsIndexRoute
   DashboardSystemRolesIndexRoute: typeof DashboardSystemRolesIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardDashboardRoute: DashboardDashboardRoute,
+  DashboardSystemJobsIndexRoute: DashboardSystemJobsIndexRoute,
   DashboardSystemRolesIndexRoute: DashboardSystemRolesIndexRoute,
 }
 
@@ -153,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardDashboardRoute
   '/sign-in': typeof AuthenticationSignInIndexRoute
   '/sign-up': typeof AuthenticationSignUpIndexRoute
+  '/system/jobs': typeof DashboardSystemJobsIndexRoute
   '/system/roles': typeof DashboardSystemRolesIndexRoute
 }
 
@@ -162,6 +179,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardDashboardRoute
   '/sign-in': typeof AuthenticationSignInIndexRoute
   '/sign-up': typeof AuthenticationSignUpIndexRoute
+  '/system/jobs': typeof DashboardSystemJobsIndexRoute
   '/system/roles': typeof DashboardSystemRolesIndexRoute
 }
 
@@ -173,14 +191,29 @@ export interface FileRoutesById {
   '/_dashboard/dashboard': typeof DashboardDashboardRoute
   '/_authentication/sign-in/': typeof AuthenticationSignInIndexRoute
   '/_authentication/sign-up/': typeof AuthenticationSignUpIndexRoute
+  '/_dashboard/system/jobs/': typeof DashboardSystemJobsIndexRoute
   '/_dashboard/system/roles/': typeof DashboardSystemRolesIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/dashboard' | '/sign-in' | '/sign-up' | '/system/roles'
+  fullPaths:
+    | '/'
+    | ''
+    | '/dashboard'
+    | '/sign-in'
+    | '/sign-up'
+    | '/system/jobs'
+    | '/system/roles'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/dashboard' | '/sign-in' | '/sign-up' | '/system/roles'
+  to:
+    | '/'
+    | ''
+    | '/dashboard'
+    | '/sign-in'
+    | '/sign-up'
+    | '/system/jobs'
+    | '/system/roles'
   id:
     | '__root__'
     | '/'
@@ -189,6 +222,7 @@ export interface FileRouteTypes {
     | '/_dashboard/dashboard'
     | '/_authentication/sign-in/'
     | '/_authentication/sign-up/'
+    | '/_dashboard/system/jobs/'
     | '/_dashboard/system/roles/'
   fileRoutesById: FileRoutesById
 }
@@ -234,6 +268,7 @@ export const routeTree = rootRoute
       "filePath": "_dashboard.tsx",
       "children": [
         "/_dashboard/dashboard",
+        "/_dashboard/system/jobs/",
         "/_dashboard/system/roles/"
       ]
     },
@@ -248,6 +283,10 @@ export const routeTree = rootRoute
     "/_authentication/sign-up/": {
       "filePath": "_authentication/sign-up/index.tsx",
       "parent": "/_authentication"
+    },
+    "/_dashboard/system/jobs/": {
+      "filePath": "_dashboard/system/jobs/index.tsx",
+      "parent": "/_dashboard"
     },
     "/_dashboard/system/roles/": {
       "filePath": "_dashboard/system/roles/index.tsx",
