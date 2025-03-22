@@ -1,1 +1,1 @@
-export { RoleService } from './RoleService'
+export {RoleService} from './RoleService';

@@ -1,2 +1,2 @@
-export interface AllErrors {}
-export interface ApiErrors {}
+export type AllErrors = {};
+export type ApiErrors = {};

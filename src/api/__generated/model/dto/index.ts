@@ -1,1 +1,1 @@
-export type { RoleDto } from './RoleDto'
+export type {RoleDto} from './RoleDto';

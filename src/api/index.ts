@@ -12,10 +12,6 @@ export const api = new Api(async ({ uri, method, headers, body }) => {
       ...(tenant !== undefined && tenant !== '' ? { tenant } : {}),
     },
   })
-  if (response.status === 400) {
-    throw await response.json()
-  }
-
   if (response.status !== 200) {
     throw await response.json()
   }
@@ -28,6 +24,7 @@ export const api = new Api(async ({ uri, method, headers, body }) => {
 
 export interface ApiError {
   detail: string
+  title: 'Unauthorized'
 }
 
 export * from './__generated'

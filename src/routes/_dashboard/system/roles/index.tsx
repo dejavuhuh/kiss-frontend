@@ -19,15 +19,22 @@ type RoleInput = RequestOf<typeof api.roleService.create>['body']
 function RolesManagement() {
   const { modal, message } = App.useApp()
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
-  const [form] = Form.useForm()
+  const [form] = Form.useForm<{ name?: string, createdTime?: string[] }>()
   const [pageIndex, setPageIndex] = useState(0)
 
   const { refetch, data, isFetching } = useQuery({
     queryKey: ['roles', pageIndex],
-    queryFn: () => api.roleService.list({
-      pageIndex,
-      specification: form.getFieldsValue(),
-    }),
+    queryFn: () => {
+      const { name, createdTime } = form.getFieldsValue()
+      return api.roleService.list({
+        pageIndex,
+        specification: {
+          name,
+          minCreatedTime: createdTime?.[0],
+          maxCreatedTime: createdTime?.[1],
+        },
+      })
+    },
   })
 
   const query = () => {
@@ -70,7 +77,7 @@ function RolesManagement() {
     },
     {
       title: '创建时间',
-      dataIndex: 'createdAt',
+      dataIndex: 'createdTime',
       render: value => new Date(value).toLocaleString(),
     },
     {
@@ -134,7 +141,7 @@ function RolesManagement() {
     <div className="flex flex-col gap-4">
       <QueryFilter onFinish={query} form={form} span={8} defaultCollapsed className="card">
         <ProFormText name="name" label="角色名称" />
-        <ProFormDateTimeRangePicker name="createdAt" label="创建时间" />
+        <ProFormDateTimeRangePicker name="createdTime" label="创建时间" />
       </QueryFilter>
       <div className="card">
         <Space direction="vertical" size="middle" className="w-full">

@@ -1,6 +1,6 @@
 import type { ApiError } from './api'
 import { StyleProvider } from '@ant-design/cssinjs'
-import { MutationCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { App as AppWrapper, ConfigProvider } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
@@ -53,12 +53,28 @@ function App() {
 function InnerApp() {
   const { message } = AppWrapper.useApp()
 
+  const onError = ({ title, detail }: ApiError) => {
+    if (title === 'Unauthorized') {
+      message.error('未登录或登录已过期')
+      router.navigate({ to: '/sign-in' })
+    }
+    else {
+      message.error(detail)
+    }
+  }
+
   const queryClient = new QueryClient({
     mutationCache: new MutationCache({
-      onError({ detail }) {
-        message.error(detail)
-      },
+      onError,
     }),
+    queryCache: new QueryCache({
+      onError,
+    }),
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
   })
   return (
     <QueryClientProvider client={queryClient}>
