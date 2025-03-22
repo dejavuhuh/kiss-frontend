@@ -2,11 +2,11 @@ import type { RequestOf, ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import type { Key } from 'react'
 import { api } from '@/api'
-import { CheckCircleFilled, CheckCircleOutlined, CheckCircleTwoTone, CloseCircleFilled, DeleteOutlined, DownloadOutlined, Loading3QuartersOutlined, LoadingOutlined } from '@ant-design/icons'
+import { DownloadOutlined } from '@ant-design/icons'
 import { ModalForm, ProFormDateTimeRangePicker, ProFormText, ProFormTextArea, QueryFilter } from '@ant-design/pro-components'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { App, Badge, Button, Drawer, Form, Progress, Space, Table, Typography } from 'antd'
+import { App, Button, Form, Space, Table, Typography } from 'antd'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/_dashboard/system/roles/')({
@@ -15,81 +15,6 @@ export const Route = createFileRoute('/_dashboard/system/roles/')({
 
 type RoleView = ResponseOf<typeof api.roleService.list>['rows'][number]
 type RoleInput = RequestOf<typeof api.roleService.create>['body']
-
-const dataSource = [
-  {
-    key: '1',
-    name: '胡彦斌',
-    age: 32,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '2',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '3',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '4',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '5',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '6',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '7',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '8',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '9',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '10',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '11',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '12',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号',
-  },
-]
 
 function RolesManagement() {
   const { modal, message } = App.useApp()
@@ -114,6 +39,22 @@ function RolesManagement() {
     }
   }
 
+  const createRole = useMutation({
+    mutationFn: api.roleService.create,
+    onSuccess() {
+      message.success('创建成功')
+      query()
+    },
+  })
+
+  const updateRole = useMutation({
+    mutationFn: api.roleService.update,
+    onSuccess() {
+      message.success('编辑成功')
+      query()
+    },
+  })
+
   const columns: TableProps<RoleView>['columns'] = [
     {
       title: '角色ID',
@@ -134,10 +75,32 @@ function RolesManagement() {
     },
     {
       title: '操作',
-      render(_, { id }) {
+      render(_, { id, ...record }) {
         return (
           <>
-            <Button color="primary" size="small" variant="link">编辑</Button>
+            <ModalForm<RoleInput>
+              title="编辑角色"
+              trigger={(
+                <Button
+                  color="primary"
+                  size="small"
+                  variant="link"
+                >
+                  编辑
+                </Button>
+              )}
+              initialValues={record}
+              width={500}
+              onFinish={async (body) => {
+                await updateRole.mutateAsync({ id, body })
+                return true
+              }}
+              isKeyPressSubmit
+              modalProps={{ destroyOnClose: true }}
+            >
+              <ProFormText name="name" label="角色名称" rules={[{ required: true }]} />
+              <ProFormTextArea name="description" label="角色描述" />
+            </ModalForm>
             <Button color="primary" size="small" variant="link">详情</Button>
             <Button
               color="danger"
@@ -166,12 +129,6 @@ function RolesManagement() {
       },
     },
   ]
-
-  const createRole = useMutation({
-    mutationFn: api.roleService.create,
-  })
-
-  const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
     <div className="flex flex-col gap-4">
@@ -214,35 +171,12 @@ function RolesManagement() {
               </Button>
             )}
             <Button>操作日志</Button>
-            <Button iconPosition="end" icon={<DownloadOutlined />} onClick={() => setDrawerOpen(true)}>数据导出</Button>
-            <Drawer title="数据导出" open={drawerOpen}>
-              <Space direction="vertical" size="middle" className="w-full">
-                <div className="card py-1.5 bg-layout flex items-center">
-                  <Typography.Text className="shrink-0">角色列表.xlsx</Typography.Text>
-                  <Progress className="m-2.5" percent={50} size="small" status="active" />
-                  <Button size="small" className="ml-auto" icon={<DownloadOutlined />} color="primary" variant="text" />
-                  <Button size="small" icon={<DeleteOutlined />} color="primary" variant="text" />
-                </div>
-                <div className="card py-1.5 bg-layout flex items-center">
-                  <Typography.Text className="shrink-0">角色列表.xlsx</Typography.Text>
-                  <Progress className="m-2.5" percent={70} size="small" status="exception" />
-                  <Button size="small" className="ml-auto" icon={<DownloadOutlined />} color="primary" variant="text" />
-                  <Button size="small" icon={<DeleteOutlined />} color="primary" variant="text" />
-                </div>
-                <div className="card py-1.5 bg-layout flex items-center">
-                  <Typography.Text className="shrink-0">角色列表.xlsx</Typography.Text>
-                  <Progress className="m-2.5" percent={100} size="small" />
-                  <Button size="small" className="ml-auto" icon={<DownloadOutlined />} color="primary" variant="text" />
-                  <Button size="small" icon={<DeleteOutlined />} color="primary" variant="text" />
-                </div>
-              </Space>
-            </Drawer>
+            <Button iconPosition="end" icon={<DownloadOutlined />}>数据导出</Button>
             <ModalForm<RoleInput>
               title="创建角色"
               width={500}
               onFinish={async (body) => {
                 await createRole.mutateAsync({ body })
-                query()
                 return true
               }}
               isKeyPressSubmit
