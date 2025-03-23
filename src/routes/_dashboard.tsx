@@ -1,9 +1,13 @@
 import type { MenuProps } from 'antd'
+import { api } from '@/api'
 import { cn } from '@/utils'
+import { setCurrentUser } from '@/utils/user'
 import { ClockCircleOutlined, MenuFoldOutlined, SettingOutlined, UsergroupAddOutlined } from '@ant-design/icons'
+import { PageLoading } from '@ant-design/pro-components'
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
-import { Button, Menu } from 'antd'
-import { useState } from 'react'
+import { Button, Menu, Spin } from 'antd'
+import { Suspense, useState } from 'react'
 
 export const Route = createFileRoute('/_dashboard')({
   component: DashboardLayout,
@@ -46,6 +50,17 @@ function collectParentKeys(pathname: string) {
 function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false)
   const { pathname } = useLocation()
+
+  const { data, isPending, error } = useQuery({
+    queryKey: ['current-user'],
+    queryFn: api.authenticationService.getCurrentUser,
+  })
+
+  if (isPending || error) {
+    return 'Loading...'
+  }
+  setCurrentUser(data)
+
   const parentKeys = collectParentKeys(pathname)
 
   return (
@@ -72,7 +87,15 @@ function DashboardLayout() {
           />
         </header>
         <main className="flex-1 p-4 overflow-y-auto bg-layout">
-          <Outlet />
+          <Suspense fallback={(
+            <div className="h-full flex flex-col gap-4 items-center justify-center">
+              <Spin size="large" />
+              <span className="text-primary">数据加载中</span>
+            </div>
+          )}
+          >
+            <Outlet />
+          </Suspense>
         </main>
       </div>
     </div>

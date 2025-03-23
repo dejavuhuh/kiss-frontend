@@ -2,7 +2,7 @@ import type { RequestOf, ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import type { Key } from 'react'
 import { api } from '@/api'
-import { useCurrentUser } from '@/hooks/useCurrentUser'
+import { getCurrentUser } from '@/utils/user'
 import { DownloadOutlined } from '@ant-design/icons'
 import { ModalForm, ProFormDateTimeRangePicker, ProFormText, ProFormTextArea, QueryFilter } from '@ant-design/pro-components'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -18,6 +18,8 @@ type RoleView = ResponseOf<typeof api.roleService.list>['rows'][number]
 type RoleInput = RequestOf<typeof api.roleService.create>['body']
 
 function RolesManagement() {
+  const currentUser = getCurrentUser()
+
   const { modal, message } = App.useApp()
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
   const [form] = Form.useForm<{ name?: string, createdTime?: string[] }>()
@@ -63,8 +65,6 @@ function RolesManagement() {
     },
   })
 
-  const currentUser = useCurrentUser()
-
   const columns: TableProps<RoleView>['columns'] = [
     {
       title: '角色ID',
@@ -90,7 +90,7 @@ function RolesManagement() {
     {
       title: '操作',
       render(_, { id, ...record }) {
-        const canEdit = record.creator.id === currentUser?.id
+        const canEdit = record.creator.id === currentUser.id
         return (
           <>
             {canEdit && (

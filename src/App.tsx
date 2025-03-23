@@ -74,6 +74,7 @@ function InnerApp() {
     defaultOptions: {
       queries: {
         retry: false,
+        refetchOnWindowFocus: false,
       },
     },
   })
