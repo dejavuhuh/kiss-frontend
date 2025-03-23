@@ -1,14 +1,13 @@
 import type { RequestOf, ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
-import type { Key } from 'react'
 import { api } from '@/api'
+import { useTable } from '@/hooks/useTable'
 import { getCurrentUser } from '@/utils/user'
 import { DownloadOutlined } from '@ant-design/icons'
 import { ModalForm, ProFormDateTimeRangePicker, ProFormText, ProFormTextArea, QueryFilter } from '@ant-design/pro-components'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { App, Button, Form, Space, Table, Typography } from 'antd'
-import { useState } from 'react'
 
 export const Route = createFileRoute('/_dashboard/system/roles/')({
   component: RolesManagement,
@@ -21,16 +20,20 @@ function RolesManagement() {
   const currentUser = getCurrentUser()
 
   const { modal, message } = App.useApp()
-  const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
   const [form] = Form.useForm<{ name?: string, createdTime?: string[] }>()
-  const [pageIndex, setPageIndex] = useState(0)
 
-  const { refetch, data, isFetching } = useQuery({
-    queryKey: ['roles', pageIndex],
-    queryFn: () => {
+  const {
+    reload,
+    selectedRowKeys,
+    setSelectedRowKeys,
+    tableProps,
+  } = useTable({
+    queryKey: 'roles',
+    queryFn: ({ pageIndex, pageSize }) => {
       const { name, createdTime } = form.getFieldsValue()
       return api.roleService.list({
         pageIndex,
+        pageSize,
         specification: {
           name,
           minCreatedTime: createdTime?.[0],
@@ -40,20 +43,11 @@ function RolesManagement() {
     },
   })
 
-  const query = () => {
-    if (pageIndex !== 0) {
-      setPageIndex(0)
-    }
-    else {
-      refetch()
-    }
-  }
-
   const createRole = useMutation({
     mutationFn: api.roleService.create,
     onSuccess() {
       message.success('创建成功')
-      query()
+      reload()
     },
   })
 
@@ -61,7 +55,7 @@ function RolesManagement() {
     mutationFn: api.roleService.update,
     onSuccess() {
       message.success('编辑成功')
-      query()
+      reload()
     },
   })
 
@@ -135,7 +129,7 @@ function RolesManagement() {
                     async onOk() {
                       await api.roleService.delete({ id })
                       message.success('删除成功')
-                      query()
+                      reload()
                     },
                   })
                 }}
@@ -151,7 +145,7 @@ function RolesManagement() {
 
   return (
     <div className="flex flex-col gap-4">
-      <QueryFilter onFinish={query} form={form} span={8} defaultCollapsed className="card">
+      <QueryFilter onFinish={reload} form={form} span={8} defaultCollapsed className="card">
         <ProFormText name="name" label="角色名称" />
         <ProFormDateTimeRangePicker name="createdTime" label="创建时间" />
       </QueryFilter>
@@ -177,7 +171,7 @@ function RolesManagement() {
                       await api.roleService.deleteBatch({ ids: selectedRowKeys as number[] })
                       setSelectedRowKeys([])
                       message.success('删除成功')
-                      query()
+                      reload()
                     },
                     okButtonProps: {
                       danger: true,
@@ -207,24 +201,7 @@ function RolesManagement() {
             </ModalForm>
 
           </div>
-          <Table<RoleView>
-            size="small"
-            loading={isFetching}
-            dataSource={data?.rows}
-            rowKey={row => row.id}
-            columns={columns}
-            rowSelection={{
-              selectedRowKeys,
-              onChange: setSelectedRowKeys,
-              columnWidth: 50,
-            }}
-            pagination={{
-              total: data?.totalRowCount,
-              onChange: page => setPageIndex(page - 1),
-              current: pageIndex + 1,
-              showTotal: total => `共 ${total} 条`,
-            }}
-          />
+          <Table size="small" columns={columns} {...tableProps} />
         </Space>
       </div>
     </div>

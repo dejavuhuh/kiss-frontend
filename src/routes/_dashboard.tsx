@@ -2,8 +2,7 @@ import type { MenuProps } from 'antd'
 import { api } from '@/api'
 import { cn } from '@/utils'
 import { setCurrentUser } from '@/utils/user'
-import { ClockCircleOutlined, MenuFoldOutlined, SettingOutlined, UsergroupAddOutlined } from '@ant-design/icons'
-import { PageLoading } from '@ant-design/pro-components'
+import { ClockCircleOutlined, MenuFoldOutlined, SettingOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
 import { Button, Menu, Spin } from 'antd'
@@ -21,6 +20,11 @@ const items: MenuItem[] = [
     label: '系统管理',
     icon: <SettingOutlined />,
     children: [
+      {
+        key: '/system/users',
+        label: <Link to="/system/users">用户管理</Link>,
+        icon: <UserOutlined />,
+      },
       {
         key: '/system/roles',
         label: <Link to="/system/roles">角色管理</Link>,

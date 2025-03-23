@@ -91,19 +91,15 @@ export class RoleService {
             _separator = '&';
         }
         _value = options.pageIndex;
-        if (_value !== undefined && _value !== null) {
-            _uri += _separator
-            _uri += 'pageIndex='
-            _uri += encodeURIComponent(_value);
-            _separator = '&';
-        }
+        _uri += _separator
+        _uri += 'pageIndex='
+        _uri += encodeURIComponent(_value);
+        _separator = '&';
         _value = options.pageSize;
-        if (_value !== undefined && _value !== null) {
-            _uri += _separator
-            _uri += 'pageSize='
-            _uri += encodeURIComponent(_value);
-            _separator = '&';
-        }
+        _uri += _separator
+        _uri += 'pageSize='
+        _uri += encodeURIComponent(_value);
+        _separator = '&';
         return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Page<RoleDto['RoleService/LIST']>>;
     }
     
@@ -127,11 +123,11 @@ export type RoleServiceOptions = {
         /**
          * 页码
          */
-        pageIndex?: number | undefined, 
+        pageIndex: number, 
         /**
          * 每页大小
          */
-        pageSize?: number | undefined, 
+        pageSize: number, 
         /**
          * 查询条件
          */
