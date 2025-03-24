@@ -5,7 +5,7 @@ import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { App, Switch, Tooltip, Typography } from 'antd'
 
-export const Route = createFileRoute('/_dashboard/system/jobs/')({
+export const Route = createFileRoute('/_dashboard/system/job/')({
   component: JobsManagement,
 })
 

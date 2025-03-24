@@ -2,7 +2,7 @@ import type { MenuProps } from 'antd'
 import { api } from '@/api'
 import { cn } from '@/utils'
 import { setCurrentUser } from '@/utils/user'
-import { ClockCircleOutlined, MenuFoldOutlined, SettingOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
+import { ClockCircleOutlined, MenuFoldOutlined, SecurityScanOutlined, SettingOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
 import { Button, Menu, Spin } from 'antd'
@@ -22,17 +22,22 @@ const items: MenuItem[] = [
     children: [
       {
         key: '/system/users',
-        label: <Link to="/system/users">用户管理</Link>,
+        label: <Link to="/system/user">用户管理</Link>,
         icon: <UserOutlined />,
       },
       {
         key: '/system/roles',
-        label: <Link to="/system/roles">角色管理</Link>,
+        label: <Link to="/system/role">角色管理</Link>,
         icon: <UsergroupAddOutlined />,
       },
       {
+        key: '/system/permissions',
+        label: <Link to="/system/permission">权限管理</Link>,
+        icon: <SecurityScanOutlined />,
+      },
+      {
         key: '/system/jobs',
-        label: <Link to="/system/jobs">定时任务</Link>,
+        label: <Link to="/system/job">定时任务</Link>,
         icon: <ClockCircleOutlined />,
       },
     ],

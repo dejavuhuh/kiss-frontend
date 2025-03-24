@@ -1,5 +1,15 @@
 export type RoleDto = {
-    'RoleService/LIST': {
+    'PermissionService/BINDABLE_ROLE': {
+        /**
+         * ID
+         */
+        id: number;
+        /**
+         * 角色名称
+         */
+        name: string;
+    }, 
+    'RoleService/PAGE': {
         /**
          * ID
          */

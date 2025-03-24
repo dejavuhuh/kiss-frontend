@@ -21,6 +21,11 @@
   td {
     @apply tabular-nums;
   }
+  .ant-select-tree-switcher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 @layer components {

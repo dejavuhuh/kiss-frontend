@@ -6,7 +6,7 @@ import { ProFormDateTimeRangePicker, ProFormText, QueryFilter } from '@ant-desig
 import { createFileRoute } from '@tanstack/react-router'
 import { Button, Form, Table } from 'antd'
 
-export const Route = createFileRoute('/_dashboard/system/users/')({
+export const Route = createFileRoute('/_dashboard/system/user/')({
   component: UserManagement,
 })
 

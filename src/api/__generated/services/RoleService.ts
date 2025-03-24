@@ -58,15 +58,15 @@ export class RoleService {
     /**
      * 分页查询
      * 
-     * @parameter {RoleServiceOptions['list']} options
+     * @parameter {RoleServiceOptions['page']} options
      * - pageIndex 页码
      * - pageSize 每页大小
      * - specification 查询条件
      */
-    readonly list: (options: RoleServiceOptions['list']) => Promise<
-        Page<RoleDto['RoleService/LIST']>
+    readonly page: (options: RoleServiceOptions['page']) => Promise<
+        Page<RoleDto['RoleService/PAGE']>
     > = async(options) => {
-        let _uri = '/roles';
+        let _uri = '/roles/page';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
         _value = options.specification.name;
@@ -100,7 +100,7 @@ export class RoleService {
         _uri += 'pageSize='
         _uri += encodeURIComponent(_value);
         _separator = '&';
-        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Page<RoleDto['RoleService/LIST']>>;
+        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Page<RoleDto['RoleService/PAGE']>>;
     }
     
     /**
@@ -119,7 +119,7 @@ export class RoleService {
 }
 
 export type RoleServiceOptions = {
-    'list': {
+    'page': {
         /**
          * 页码
          */

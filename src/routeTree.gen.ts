@@ -17,9 +17,10 @@ import { Route as IndexImport } from './routes/index'
 import { Route as DashboardDashboardImport } from './routes/_dashboard/dashboard'
 import { Route as AuthenticationSignUpIndexImport } from './routes/_authentication/sign-up/index'
 import { Route as AuthenticationSignInIndexImport } from './routes/_authentication/sign-in/index'
-import { Route as DashboardSystemUsersIndexImport } from './routes/_dashboard/system/users/index'
-import { Route as DashboardSystemRolesIndexImport } from './routes/_dashboard/system/roles/index'
-import { Route as DashboardSystemJobsIndexImport } from './routes/_dashboard/system/jobs/index'
+import { Route as DashboardSystemUserIndexImport } from './routes/_dashboard/system/user/index'
+import { Route as DashboardSystemRoleIndexImport } from './routes/_dashboard/system/role/index'
+import { Route as DashboardSystemPermissionIndexImport } from './routes/_dashboard/system/permission/index'
+import { Route as DashboardSystemJobIndexImport } from './routes/_dashboard/system/job/index'
 
 // Create/Update Routes
 
@@ -57,21 +58,28 @@ const AuthenticationSignInIndexRoute = AuthenticationSignInIndexImport.update({
   getParentRoute: () => AuthenticationRoute,
 } as any)
 
-const DashboardSystemUsersIndexRoute = DashboardSystemUsersIndexImport.update({
-  id: '/system/users/',
-  path: '/system/users/',
+const DashboardSystemUserIndexRoute = DashboardSystemUserIndexImport.update({
+  id: '/system/user/',
+  path: '/system/user/',
   getParentRoute: () => DashboardRoute,
 } as any)
 
-const DashboardSystemRolesIndexRoute = DashboardSystemRolesIndexImport.update({
-  id: '/system/roles/',
-  path: '/system/roles/',
+const DashboardSystemRoleIndexRoute = DashboardSystemRoleIndexImport.update({
+  id: '/system/role/',
+  path: '/system/role/',
   getParentRoute: () => DashboardRoute,
 } as any)
 
-const DashboardSystemJobsIndexRoute = DashboardSystemJobsIndexImport.update({
-  id: '/system/jobs/',
-  path: '/system/jobs/',
+const DashboardSystemPermissionIndexRoute =
+  DashboardSystemPermissionIndexImport.update({
+    id: '/system/permission/',
+    path: '/system/permission/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+
+const DashboardSystemJobIndexRoute = DashboardSystemJobIndexImport.update({
+  id: '/system/job/',
+  path: '/system/job/',
   getParentRoute: () => DashboardRoute,
 } as any)
 
@@ -121,25 +129,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticationSignUpIndexImport
       parentRoute: typeof AuthenticationImport
     }
-    '/_dashboard/system/jobs/': {
-      id: '/_dashboard/system/jobs/'
-      path: '/system/jobs'
-      fullPath: '/system/jobs'
-      preLoaderRoute: typeof DashboardSystemJobsIndexImport
+    '/_dashboard/system/job/': {
+      id: '/_dashboard/system/job/'
+      path: '/system/job'
+      fullPath: '/system/job'
+      preLoaderRoute: typeof DashboardSystemJobIndexImport
       parentRoute: typeof DashboardImport
     }
-    '/_dashboard/system/roles/': {
-      id: '/_dashboard/system/roles/'
-      path: '/system/roles'
-      fullPath: '/system/roles'
-      preLoaderRoute: typeof DashboardSystemRolesIndexImport
+    '/_dashboard/system/permission/': {
+      id: '/_dashboard/system/permission/'
+      path: '/system/permission'
+      fullPath: '/system/permission'
+      preLoaderRoute: typeof DashboardSystemPermissionIndexImport
       parentRoute: typeof DashboardImport
     }
-    '/_dashboard/system/users/': {
-      id: '/_dashboard/system/users/'
-      path: '/system/users'
-      fullPath: '/system/users'
-      preLoaderRoute: typeof DashboardSystemUsersIndexImport
+    '/_dashboard/system/role/': {
+      id: '/_dashboard/system/role/'
+      path: '/system/role'
+      fullPath: '/system/role'
+      preLoaderRoute: typeof DashboardSystemRoleIndexImport
+      parentRoute: typeof DashboardImport
+    }
+    '/_dashboard/system/user/': {
+      id: '/_dashboard/system/user/'
+      path: '/system/user'
+      fullPath: '/system/user'
+      preLoaderRoute: typeof DashboardSystemUserIndexImport
       parentRoute: typeof DashboardImport
     }
   }
@@ -163,16 +178,18 @@ const AuthenticationRouteWithChildren = AuthenticationRoute._addFileChildren(
 
 interface DashboardRouteChildren {
   DashboardDashboardRoute: typeof DashboardDashboardRoute
-  DashboardSystemJobsIndexRoute: typeof DashboardSystemJobsIndexRoute
-  DashboardSystemRolesIndexRoute: typeof DashboardSystemRolesIndexRoute
-  DashboardSystemUsersIndexRoute: typeof DashboardSystemUsersIndexRoute
+  DashboardSystemJobIndexRoute: typeof DashboardSystemJobIndexRoute
+  DashboardSystemPermissionIndexRoute: typeof DashboardSystemPermissionIndexRoute
+  DashboardSystemRoleIndexRoute: typeof DashboardSystemRoleIndexRoute
+  DashboardSystemUserIndexRoute: typeof DashboardSystemUserIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardDashboardRoute: DashboardDashboardRoute,
-  DashboardSystemJobsIndexRoute: DashboardSystemJobsIndexRoute,
-  DashboardSystemRolesIndexRoute: DashboardSystemRolesIndexRoute,
-  DashboardSystemUsersIndexRoute: DashboardSystemUsersIndexRoute,
+  DashboardSystemJobIndexRoute: DashboardSystemJobIndexRoute,
+  DashboardSystemPermissionIndexRoute: DashboardSystemPermissionIndexRoute,
+  DashboardSystemRoleIndexRoute: DashboardSystemRoleIndexRoute,
+  DashboardSystemUserIndexRoute: DashboardSystemUserIndexRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
@@ -185,9 +202,10 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardDashboardRoute
   '/sign-in': typeof AuthenticationSignInIndexRoute
   '/sign-up': typeof AuthenticationSignUpIndexRoute
-  '/system/jobs': typeof DashboardSystemJobsIndexRoute
-  '/system/roles': typeof DashboardSystemRolesIndexRoute
-  '/system/users': typeof DashboardSystemUsersIndexRoute
+  '/system/job': typeof DashboardSystemJobIndexRoute
+  '/system/permission': typeof DashboardSystemPermissionIndexRoute
+  '/system/role': typeof DashboardSystemRoleIndexRoute
+  '/system/user': typeof DashboardSystemUserIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -196,9 +214,10 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardDashboardRoute
   '/sign-in': typeof AuthenticationSignInIndexRoute
   '/sign-up': typeof AuthenticationSignUpIndexRoute
-  '/system/jobs': typeof DashboardSystemJobsIndexRoute
-  '/system/roles': typeof DashboardSystemRolesIndexRoute
-  '/system/users': typeof DashboardSystemUsersIndexRoute
+  '/system/job': typeof DashboardSystemJobIndexRoute
+  '/system/permission': typeof DashboardSystemPermissionIndexRoute
+  '/system/role': typeof DashboardSystemRoleIndexRoute
+  '/system/user': typeof DashboardSystemUserIndexRoute
 }
 
 export interface FileRoutesById {
@@ -209,9 +228,10 @@ export interface FileRoutesById {
   '/_dashboard/dashboard': typeof DashboardDashboardRoute
   '/_authentication/sign-in/': typeof AuthenticationSignInIndexRoute
   '/_authentication/sign-up/': typeof AuthenticationSignUpIndexRoute
-  '/_dashboard/system/jobs/': typeof DashboardSystemJobsIndexRoute
-  '/_dashboard/system/roles/': typeof DashboardSystemRolesIndexRoute
-  '/_dashboard/system/users/': typeof DashboardSystemUsersIndexRoute
+  '/_dashboard/system/job/': typeof DashboardSystemJobIndexRoute
+  '/_dashboard/system/permission/': typeof DashboardSystemPermissionIndexRoute
+  '/_dashboard/system/role/': typeof DashboardSystemRoleIndexRoute
+  '/_dashboard/system/user/': typeof DashboardSystemUserIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -222,9 +242,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/sign-in'
     | '/sign-up'
-    | '/system/jobs'
-    | '/system/roles'
-    | '/system/users'
+    | '/system/job'
+    | '/system/permission'
+    | '/system/role'
+    | '/system/user'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -232,9 +253,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/sign-in'
     | '/sign-up'
-    | '/system/jobs'
-    | '/system/roles'
-    | '/system/users'
+    | '/system/job'
+    | '/system/permission'
+    | '/system/role'
+    | '/system/user'
   id:
     | '__root__'
     | '/'
@@ -243,9 +265,10 @@ export interface FileRouteTypes {
     | '/_dashboard/dashboard'
     | '/_authentication/sign-in/'
     | '/_authentication/sign-up/'
-    | '/_dashboard/system/jobs/'
-    | '/_dashboard/system/roles/'
-    | '/_dashboard/system/users/'
+    | '/_dashboard/system/job/'
+    | '/_dashboard/system/permission/'
+    | '/_dashboard/system/role/'
+    | '/_dashboard/system/user/'
   fileRoutesById: FileRoutesById
 }
 
@@ -290,9 +313,10 @@ export const routeTree = rootRoute
       "filePath": "_dashboard.tsx",
       "children": [
         "/_dashboard/dashboard",
-        "/_dashboard/system/jobs/",
-        "/_dashboard/system/roles/",
-        "/_dashboard/system/users/"
+        "/_dashboard/system/job/",
+        "/_dashboard/system/permission/",
+        "/_dashboard/system/role/",
+        "/_dashboard/system/user/"
       ]
     },
     "/_dashboard/dashboard": {
@@ -307,16 +331,20 @@ export const routeTree = rootRoute
       "filePath": "_authentication/sign-up/index.tsx",
       "parent": "/_authentication"
     },
-    "/_dashboard/system/jobs/": {
-      "filePath": "_dashboard/system/jobs/index.tsx",
+    "/_dashboard/system/job/": {
+      "filePath": "_dashboard/system/job/index.tsx",
       "parent": "/_dashboard"
     },
-    "/_dashboard/system/roles/": {
-      "filePath": "_dashboard/system/roles/index.tsx",
+    "/_dashboard/system/permission/": {
+      "filePath": "_dashboard/system/permission/index.tsx",
       "parent": "/_dashboard"
     },
-    "/_dashboard/system/users/": {
-      "filePath": "_dashboard/system/users/index.tsx",
+    "/_dashboard/system/role/": {
+      "filePath": "_dashboard/system/role/index.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/system/user/": {
+      "filePath": "_dashboard/system/user/index.tsx",
       "parent": "/_dashboard"
     }
   }

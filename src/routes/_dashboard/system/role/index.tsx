@@ -9,11 +9,11 @@ import { useMutation } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { App, Button, Form, Space, Table, Typography } from 'antd'
 
-export const Route = createFileRoute('/_dashboard/system/roles/')({
+export const Route = createFileRoute('/_dashboard/system/role/')({
   component: RolesManagement,
 })
 
-type RoleView = ResponseOf<typeof api.roleService.list>['rows'][number]
+type RoleView = ResponseOf<typeof api.roleService.page>['rows'][number]
 type RoleInput = RequestOf<typeof api.roleService.create>['body']
 
 function RolesManagement() {
@@ -31,7 +31,7 @@ function RolesManagement() {
     queryKey: 'roles',
     queryFn: ({ pageIndex, pageSize }) => {
       const { name, createdTime } = form.getFieldsValue()
-      return api.roleService.list({
+      return api.roleService.page({
         pageIndex,
         pageSize,
         specification: {
