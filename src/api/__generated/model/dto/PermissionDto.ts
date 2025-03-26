@@ -13,6 +13,17 @@ export type PermissionDto = {
         type: PermissionType;
         code: string;
         name: string;
+        parentId?: number | undefined;
+        roles: Array<{
+            /**
+             * ID
+             */
+            id: number;
+            /**
+             * 角色名称
+             */
+            name: string;
+        }>;
         children?: Array<PermissionDto['PermissionService/LIST']> | undefined;
     }
 }

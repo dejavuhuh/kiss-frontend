@@ -56,12 +56,57 @@ export class RoleService {
     }
     
     /**
+     * 列表查询
+     * 
+     * @parameter {RoleServiceOptions['list']} options
+     * - specification 查询条件
+     * @return 角色列表
+     */
+    readonly list: (options: RoleServiceOptions['list']) => Promise<
+        Array<RoleDto['RoleService/LIST']>
+    > = async(options) => {
+        let _uri = '/roles';
+        let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
+        let _value: any = undefined;
+        _value = options.specification.name;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'name='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.specification.minCreatedTime;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'minCreatedTime='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.specification.maxCreatedTime;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'maxCreatedTime='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.specification.permissionId;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'permissionId='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<RoleDto['RoleService/LIST']>>;
+    }
+    
+    /**
      * 分页查询
      * 
      * @parameter {RoleServiceOptions['page']} options
      * - pageIndex 页码
      * - pageSize 每页大小
      * - specification 查询条件
+     * @return 角色分页
      */
     readonly page: (options: RoleServiceOptions['page']) => Promise<
         Page<RoleDto['RoleService/PAGE']>
@@ -87,6 +132,13 @@ export class RoleService {
         if (_value !== undefined && _value !== null) {
             _uri += _separator
             _uri += 'maxCreatedTime='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.specification.permissionId;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'permissionId='
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
@@ -128,6 +180,12 @@ export type RoleServiceOptions = {
          * 每页大小
          */
         pageSize: number, 
+        /**
+         * 查询条件
+         */
+        specification: RoleSpecification
+    }, 
+    'list': {
         /**
          * 查询条件
          */

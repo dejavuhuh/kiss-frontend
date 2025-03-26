@@ -5,5 +5,4 @@ export interface PermissionInput {
     code: string;
     name: string;
     parentId?: number | undefined;
-    roleIds: Array<number>;
 }

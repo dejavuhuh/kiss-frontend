@@ -14,4 +14,8 @@ export interface RoleSpecification {
      * 创建时间
      */
     maxCreatedTime?: string | undefined;
+    /**
+     * ID
+     */
+    permissionId?: number | undefined;
 }

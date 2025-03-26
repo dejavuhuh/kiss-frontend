@@ -23,7 +23,7 @@ export function useTable<T extends Row>({ queryKey, queryFn }: UseTableOptions<T
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
 
   const { refetch, data, isFetching } = useQuery({
-    queryKey: [queryKey, pageIndex],
+    queryKey: [queryKey, 'page', pageIndex],
     queryFn: () => queryFn({ pageIndex, pageSize: 10 }),
   })
 

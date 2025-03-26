@@ -2,18 +2,21 @@ import type { RequestOf, ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import { api } from '@/api'
 import { mapTree, traverseTree } from '@/utils/tree'
-import { ModalForm, ProFormDependency, ProFormSelect, ProFormText, ProFormTreeSelect, QueryFilter } from '@ant-design/pro-components'
-import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
+import { ModalForm, ProFormCheckbox, ProFormDependency, ProFormSelect, ProFormText, ProFormTreeSelect, QueryFilter } from '@ant-design/pro-components'
+import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { App, Button, Table, Tag, Typography } from 'antd'
+import { App, Button, Space, Table, Tag, Typography } from 'antd'
 import { useMemo } from 'react'
+import { BindRolesForm } from './components/BindRolesForm'
+
+const { Link } = Typography
 
 export const Route = createFileRoute('/_dashboard/system/permission/')({
   component: PermissionManagement,
 })
 
 type PermissionInput = RequestOf<typeof api.permissionService.create>['body']
-type PermissionView = ResponseOf<typeof api.permissionService.list>[number]
+export type PermissionView = ResponseOf<typeof api.permissionService.list>[number]
 
 const PermissionTypeNames: Record<PermissionView['type'], string> = {
   DIRECTORY: '目录',
@@ -22,13 +25,13 @@ const PermissionTypeNames: Record<PermissionView['type'], string> = {
 }
 
 const PermissionTypeColors: Record<PermissionView['type'], string> = {
-  DIRECTORY: 'processing',
-  PAGE: 'cyan',
-  BUTTON: 'magenta',
+  DIRECTORY: 'blue',
+  PAGE: 'geekblue',
+  BUTTON: 'purple',
 }
 
 function PermissionManagement() {
-  const { message } = App.useApp()
+  const { message, modal } = App.useApp()
 
   const { data, refetch } = useSuspenseQuery({
     queryKey: ['permissions'],
@@ -57,11 +60,19 @@ function PermissionManagement() {
     },
   })
 
+  const bindRoles = useMutation({
+    mutationFn: api.permissionService.bindRoles,
+    onSuccess() {
+      message.success('绑定成功')
+      refetch()
+    },
+  })
+
   const columns: TableProps<PermissionView>['columns'] = [
     {
       title: '权限名称',
       dataIndex: 'name',
-      width: 300,
+      width: 250,
       render: (text, { type }) => (
         <div className="flex items-center">
           <Tag
@@ -78,34 +89,74 @@ function PermissionManagement() {
       title: '可访问角色',
       dataIndex: 'roles',
       width: 400,
-      render: () => (
-        <>
-          <Tag>Admin</Tag>
-        </>
+      render: (_, { roles }) => (
+        <div className="flex flex-wrap gap-2">
+          {roles.map(role => <Tag className="mr-0" key={role.id} bordered={false} color="cyan">{role.name}</Tag>)}
+        </div>
       ),
     },
     {
       title: '权限编码',
       dataIndex: 'code',
-      width: 400,
+      width: 300,
       render: text => <Typography.Text copyable className="font-mono">{text}</Typography.Text>,
     },
     {
       title: '操作',
-      render: (_, { id }) => (
-        <>
-          <Button
-            type="link"
-            size="small"
-            onClick={async (e) => {
-              e.stopPropagation()
-              // await api.permissionService.bindableRoles({ id })
-            }}
-          >
-            编辑
-          </Button>
-        </>
-      ),
+      width: 200,
+      render: (_, record) => {
+        const { id } = record
+        return (
+          <Space onClick={e => e.stopPropagation()}>
+            <Link
+              onClick={async (e) => {
+                // await api.permissionService.bindableRoles({ id })
+              }}
+            >
+              编辑
+            </Link>
+            <ModalForm<{ roleIds: number[] }>
+              width={600}
+              title="绑定角色"
+              initialValues={{
+                roleIds: record.roles.map(role => role.id),
+              }}
+              onFinish={async ({ roleIds }) => {
+                await bindRoles.mutateAsync({ id, body: roleIds })
+                return true
+              }}
+              isKeyPressSubmit
+              modalProps={{ destroyOnClose: true }}
+              trigger={<Typography.Link>绑定角色</Typography.Link>}
+            >
+              <BindRolesForm row={record} permissionTree={data} />
+            </ModalForm>
+            <Link
+              type="danger"
+              onClick={() => {
+                modal.confirm({
+                  title: '删除权限',
+                  content: <>
+                    确定删除
+                    <span className="font-bold text-primary mx-0.5">{record.name}</span>
+                    权限吗？
+                  </>,
+                  okButtonProps: {
+                    danger: true,
+                  },
+                  async onOk() {
+                    await api.permissionService.delete({ id })
+                    message.success('删除成功')
+                    refetch()
+                  },
+                })
+              }}
+            >
+              删除
+            </Link>
+          </Space>
+        )
+      },
     },
   ]
 
@@ -114,7 +165,7 @@ function PermissionManagement() {
       <QueryFilter span={8} defaultCollapsed className="card">
         <ProFormText name="keywords" label="关键词" placeholder="权限名称/权限编码" />
       </QueryFilter>
-      <div className="card space-y-2">
+      <div className="card space-y-4">
         <div className="flex items-center gap-2">
           <Typography.Title level={5} className="mb-0 mr-auto">权限树</Typography.Title>
           <ModalForm<PermissionInput>
@@ -170,21 +221,23 @@ function PermissionManagement() {
                   prefix = path as string
                 }
                 return (
-                  <ProFormText
-                    fieldProps={{
-                      addonBefore: prefix
-                        ? (
-                            <span className="font-mono">
-                              {prefix}
-                              :
-                            </span>
-                          )
-                        : null,
-                    }}
-                    name="code"
-                    label="权限编码"
-                    rules={[{ required: true }]}
-                  />
+                  <>
+                    <ProFormText
+                      fieldProps={{
+                        addonBefore: prefix
+                          ? (
+                              <span className="font-mono">
+                                {prefix}
+                                :
+                              </span>
+                            )
+                          : null,
+                      }}
+                      name="code"
+                      label="权限编码"
+                      rules={[{ required: true }]}
+                    />
+                  </>
                 )
               }}
             </ProFormDependency>

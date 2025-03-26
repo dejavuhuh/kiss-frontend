@@ -2,10 +2,11 @@ import type { ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import { api } from '@/api'
 import { useTable } from '@/hooks/useTable'
-import { ProFormDateTimeRangePicker, ProFormText, QueryFilter } from '@ant-design/pro-components'
+import { ModalForm, ProFormCheckbox, ProFormDateTimeRangePicker, ProFormText, QueryFilter } from '@ant-design/pro-components'
 import { createFileRoute } from '@tanstack/react-router'
-import { Button, Form, Table } from 'antd'
+import { Button, Form, Space, Table, Typography } from 'antd'
 
+const { Link } = Typography
 export const Route = createFileRoute('/_dashboard/system/user/')({
   component: UserManagement,
 })
@@ -52,15 +53,26 @@ function UserManagement() {
       title: '操作',
       render() {
         return (
-          <>
-            <Button
-              color="primary"
-              size="small"
-              variant="link"
+          <Space>
+            <ModalForm<{ roleIds: number[] }>
+              width={600}
+              title="绑定角色"
+              // initialValues={{
+              //   roleIds: record.roles.map(role => role.id),
+              // }}
+              onFinish={async ({ roleIds }) => {
+                // await bindRoles.mutateAsync({ id, body: roleIds })
+                return true
+              }}
+              isKeyPressSubmit
+              modalProps={{ destroyOnClose: true }}
+              trigger={<Link>绑定角色</Link>}
             >
-              编辑
-            </Button>
-          </>
+              <ProFormCheckbox>
+
+              </ProFormCheckbox>
+            </ModalForm>
+          </Space>
         )
       },
     },

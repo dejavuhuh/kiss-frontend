@@ -2,7 +2,7 @@ import type { MenuProps } from 'antd'
 import { api } from '@/api'
 import { cn } from '@/utils'
 import { setCurrentUser } from '@/utils/user'
-import { ClockCircleOutlined, MenuFoldOutlined, SecurityScanOutlined, SettingOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
+import { ClockCircleOutlined, LogoutOutlined, MenuFoldOutlined, SecurityScanOutlined, SettingOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
 import { Button, Menu, Spin } from 'antd'
@@ -65,6 +65,8 @@ function DashboardLayout() {
     queryFn: api.authenticationService.getCurrentUser,
   })
 
+  const navigate = Route.useNavigate()
+
   if (isPending || error) {
     return 'Loading...'
   }
@@ -94,6 +96,19 @@ function DashboardLayout() {
             variant="text"
             color="default"
           />
+          <Button
+            onClick={async () => {
+              await api.authenticationService.signOut()
+              localStorage.removeItem('token')
+              navigate({ to: '/sign-in' })
+            }}
+            className="ml-auto"
+            icon={<LogoutOutlined />}
+            variant="text"
+            color="default"
+          >
+            登出
+          </Button>
         </header>
         <main className="flex-1 p-4 overflow-y-auto bg-layout">
           <Suspense fallback={(

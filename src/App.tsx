@@ -39,6 +39,9 @@ function App() {
             Menu: {
               collapsedWidth: 48,
             },
+            Table: {
+              cellPaddingInlineMD: 12,
+            },
           },
         }}
       >

@@ -20,12 +20,11 @@ export class AuthenticationService {
         return (await this.executor({uri: _uri, method: 'POST', body: options.body})) as Promise<string>;
     }
     
-    readonly signOut: (options: AuthenticationServiceOptions['signOut']) => Promise<
+    readonly signOut: () => Promise<
         void
-    > = async(options) => {
+    > = async() => {
         let _uri = '/sign-out';
-        const _headers: {[key:string]: string} = {Authorization: options.token};
-        return (await this.executor({uri: _uri, method: 'POST', headers: _headers})) as Promise<void>;
+        return (await this.executor({uri: _uri, method: 'POST'})) as Promise<void>;
     }
     
     readonly signUp: (options: AuthenticationServiceOptions['signUp']) => Promise<
@@ -43,8 +42,6 @@ export type AuthenticationServiceOptions = {
     'signUp': {
         body: AuthenticationService_SignInRequest
     }, 
-    'signOut': {
-        token: string
-    }, 
+    'signOut': {}, 
     'getCurrentUser': {}
 }
