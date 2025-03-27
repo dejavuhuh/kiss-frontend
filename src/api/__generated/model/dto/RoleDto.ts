@@ -1,5 +1,5 @@
 export type RoleDto = {
-    'RoleService/LIST': {
+    'AuthenticationService/CURRENT_USER_ROLE': {
         /**
          * ID
          */
@@ -9,7 +9,7 @@ export type RoleDto = {
          */
         name: string;
     }, 
-    'RoleService/PAGE': {
+    'RoleService/LIST': {
         /**
          * ID
          */

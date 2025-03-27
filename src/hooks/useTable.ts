@@ -1,48 +1,33 @@
-import type { Page } from '@/api/__generated/model/static'
+import type { QueryKey } from '@tanstack/react-query'
 import type { TableProps } from 'antd'
 import type { Key } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-
-interface QueryOptions {
-  pageIndex: number
-  pageSize: number
-}
 
 interface Row {
   id: number
 }
 
 interface UseTableOptions<T extends Row> {
-  queryKey: string
-  queryFn: (options: QueryOptions) => Promise<Page<T>>
+  queryKey: QueryKey
+  queryFn: () => Promise<T[]>
 }
 
 export function useTable<T extends Row>({ queryKey, queryFn }: UseTableOptions<T>) {
-  const [pageIndex, setPageIndex] = useState(0)
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
 
   const { refetch, data, isFetching } = useQuery({
-    queryKey: [queryKey, 'page', pageIndex],
-    queryFn: () => queryFn({ pageIndex, pageSize: 10 }),
+    queryKey,
+    queryFn: () => queryFn(),
   })
 
-  const reload = () => {
-    if (pageIndex !== 0) {
-      setPageIndex(0)
-    }
-    else {
-      refetch()
-    }
-  }
-
   return {
-    reload,
+    refetch,
     selectedRowKeys,
     setSelectedRowKeys,
     tableProps: {
       loading: isFetching,
-      dataSource: data?.rows,
+      dataSource: data,
       rowKey: row => row.id,
       rowSelection: {
         selectedRowKeys,
@@ -50,9 +35,6 @@ export function useTable<T extends Row>({ queryKey, queryFn }: UseTableOptions<T
         columnWidth: 50,
       },
       pagination: {
-        total: data?.totalRowCount,
-        onChange: page => setPageIndex(page - 1),
-        current: pageIndex + 1,
         showTotal: total => `共 ${total} 条`,
       },
     } as TableProps<T>,

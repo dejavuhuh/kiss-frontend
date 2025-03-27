@@ -1,6 +1,11 @@
 import type {Executor} from '../';
-import type {RoleDto} from '../model/dto/';
-import type {Page, RoleInput, RoleSpecification} from '../model/static/';
+import type {RoleDto, UserDto} from '../model/dto/';
+import type {
+    Page, 
+    RoleInput, 
+    RoleSpecification, 
+    UserSpecification
+} from '../model/static/';
 
 /**
  * 角色服务
@@ -100,24 +105,31 @@ export class RoleService {
     }
     
     /**
-     * 分页查询
+     * 更新角色
      * 
-     * @parameter {RoleServiceOptions['page']} options
-     * - pageIndex 页码
-     * - pageSize 每页大小
-     * - specification 查询条件
-     * @return 角色分页
+     * @parameter {RoleServiceOptions['update']} options
+     * - id 角色ID
      */
-    readonly page: (options: RoleServiceOptions['page']) => Promise<
-        Page<RoleDto['RoleService/PAGE']>
+    readonly update: (options: RoleServiceOptions['update']) => Promise<
+        void
     > = async(options) => {
-        let _uri = '/roles/page';
+        let _uri = '/roles/';
+        _uri += encodeURIComponent(options.id);
+        return (await this.executor({uri: _uri, method: 'PUT', body: options.body})) as Promise<void>;
+    }
+    
+    readonly users: (options: RoleServiceOptions['users']) => Promise<
+        Page<UserDto['UserService/LIST']>
+    > = async(options) => {
+        let _uri = '/roles/';
+        _uri += encodeURIComponent(options.id);
+        _uri += '/users';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
-        _value = options.specification.name;
+        _value = options.specification.username;
         if (_value !== undefined && _value !== null) {
             _uri += _separator
-            _uri += 'name='
+            _uri += 'username='
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
@@ -135,13 +147,6 @@ export class RoleService {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        _value = options.specification.permissionId;
-        if (_value !== undefined && _value !== null) {
-            _uri += _separator
-            _uri += 'permissionId='
-            _uri += encodeURIComponent(_value);
-            _separator = '&';
-        }
         _value = options.pageIndex;
         _uri += _separator
         _uri += 'pageIndex='
@@ -152,44 +157,22 @@ export class RoleService {
         _uri += 'pageSize='
         _uri += encodeURIComponent(_value);
         _separator = '&';
-        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Page<RoleDto['RoleService/PAGE']>>;
-    }
-    
-    /**
-     * 更新角色
-     * 
-     * @parameter {RoleServiceOptions['update']} options
-     * - id 角色ID
-     */
-    readonly update: (options: RoleServiceOptions['update']) => Promise<
-        void
-    > = async(options) => {
-        let _uri = '/roles/';
-        _uri += encodeURIComponent(options.id);
-        return (await this.executor({uri: _uri, method: 'PUT', body: options.body})) as Promise<void>;
+        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Page<UserDto['UserService/LIST']>>;
     }
 }
 
 export type RoleServiceOptions = {
-    'page': {
-        /**
-         * 页码
-         */
-        pageIndex: number, 
-        /**
-         * 每页大小
-         */
-        pageSize: number, 
-        /**
-         * 查询条件
-         */
-        specification: RoleSpecification
-    }, 
     'list': {
         /**
          * 查询条件
          */
         specification: RoleSpecification
+    }, 
+    'users': {
+        id: number, 
+        pageIndex: number, 
+        pageSize: number, 
+        specification: UserSpecification
     }, 
     'create': {
         body: RoleInput

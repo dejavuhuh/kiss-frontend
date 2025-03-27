@@ -11,7 +11,7 @@ export const Route = createFileRoute('/_dashboard/system/user/')({
   component: UserManagement,
 })
 
-type UserView = ResponseOf<typeof api.userService.list>['rows'][number]
+export type UserView = ResponseOf<typeof api.userService.list>['rows'][number]
 
 function UserManagement() {
   const [form] = Form.useForm<{ username?: string, createdTime?: string[] }>()

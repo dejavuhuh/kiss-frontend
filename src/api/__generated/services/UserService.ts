@@ -9,7 +9,7 @@ export class UserService {
     readonly list: (options: UserServiceOptions['list']) => Promise<
         Page<UserDto['UserService/LIST']>
     > = async(options) => {
-        let _uri = '/user';
+        let _uri = '/users';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
         _value = options.specification.username;

@@ -6,14 +6,16 @@ import { getCurrentUser } from '@/utils/user'
 import { DownloadOutlined } from '@ant-design/icons'
 import { ModalForm, ProFormDateTimeRangePicker, ProFormText, ProFormTextArea, QueryFilter } from '@ant-design/pro-components'
 import { useMutation } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link as RouterLink } from '@tanstack/react-router'
 import { App, Button, Form, Space, Table, Typography } from 'antd'
+
+const { Link } = Typography
 
 export const Route = createFileRoute('/_dashboard/system/role/')({
   component: RolesManagement,
 })
 
-type RoleView = ResponseOf<typeof api.roleService.page>['rows'][number]
+type RoleView = ResponseOf<typeof api.roleService.list>[number]
 type RoleInput = RequestOf<typeof api.roleService.create>['body']
 
 function RolesManagement() {
@@ -23,17 +25,15 @@ function RolesManagement() {
   const [form] = Form.useForm<{ name?: string, createdTime?: string[] }>()
 
   const {
-    reload,
+    refetch,
     selectedRowKeys,
     setSelectedRowKeys,
     tableProps,
   } = useTable({
-    queryKey: 'roles',
-    queryFn: ({ pageIndex, pageSize }) => {
+    queryKey: ['roles'],
+    queryFn: () => {
       const { name, createdTime } = form.getFieldsValue()
-      return api.roleService.page({
-        pageIndex,
-        pageSize,
+      return api.roleService.list({
         specification: {
           name,
           minCreatedTime: createdTime?.[0],
@@ -47,7 +47,7 @@ function RolesManagement() {
     mutationFn: api.roleService.create,
     onSuccess() {
       message.success('创建成功')
-      reload()
+      refetch()
     },
   })
 
@@ -55,7 +55,7 @@ function RolesManagement() {
     mutationFn: api.roleService.update,
     onSuccess() {
       message.success('编辑成功')
-      reload()
+      refetch()
     },
   })
 
@@ -67,6 +67,13 @@ function RolesManagement() {
     {
       title: '角色名称',
       dataIndex: 'name',
+      render(text, { id }) {
+        return (
+          <RouterLink to="/system/role/$id" params={{ id }}>
+            <Link color="primary">{text}</Link>
+          </RouterLink>
+        )
+      },
     },
     {
       title: '角色描述',
@@ -86,19 +93,11 @@ function RolesManagement() {
       render(_, { id, ...record }) {
         const canEdit = record.creator.id === currentUser.id
         return (
-          <>
+          <Space>
             {canEdit && (
               <ModalForm<RoleInput>
                 title="编辑角色"
-                trigger={(
-                  <Button
-                    color="primary"
-                    size="small"
-                    variant="link"
-                  >
-                    编辑
-                  </Button>
-                )}
+                trigger={<Link color="primary">编辑</Link>}
                 initialValues={record}
                 width={500}
                 onFinish={async (body) => {
@@ -112,13 +111,9 @@ function RolesManagement() {
                 <ProFormTextArea name="description" label="角色描述" />
               </ModalForm>
             )}
-            <Button color="primary" size="small" variant="link">详情</Button>
             {canEdit && (
-              <Button
-                color="danger"
-                size="small"
-                variant="link"
-                danger
+              <Link
+                type="danger"
                 onClick={() => {
                   modal.confirm({
                     title: '删除角色',
@@ -133,15 +128,15 @@ function RolesManagement() {
                     async onOk() {
                       await api.roleService.delete({ id })
                       message.success('删除成功')
-                      reload()
+                      refetch()
                     },
                   })
                 }}
               >
                 删除
-              </Button>
+              </Link>
             )}
-          </>
+          </Space>
         )
       },
     },
@@ -149,7 +144,7 @@ function RolesManagement() {
 
   return (
     <div className="flex flex-col gap-4">
-      <QueryFilter onFinish={reload} form={form} span={8} defaultCollapsed className="card">
+      <QueryFilter onFinish={refetch} form={form} span={8} defaultCollapsed className="card">
         <ProFormText name="name" label="角色名称" />
         <ProFormDateTimeRangePicker name="createdTime" label="创建时间" />
       </QueryFilter>
@@ -175,7 +170,7 @@ function RolesManagement() {
                       await api.roleService.deleteBatch({ ids: selectedRowKeys as number[] })
                       setSelectedRowKeys([])
                       message.success('删除成功')
-                      reload()
+                      refetch()
                     },
                     okButtonProps: {
                       danger: true,

@@ -1,5 +1,5 @@
 import type {Executor} from '../';
-import type {UserDto} from '../model/dto/';
+import type {RoleDto, UserDto} from '../model/dto/';
 import type {AuthenticationService_SignInRequest} from '../model/static/';
 
 export class AuthenticationService {
@@ -11,6 +11,13 @@ export class AuthenticationService {
     > = async() => {
         let _uri = '/current-user';
         return (await this.executor({uri: _uri, method: 'GET'})) as Promise<UserDto['AuthenticationService/CURRENT_USER']>;
+    }
+    
+    readonly getCurrentUserRoles: () => Promise<
+        Array<RoleDto['AuthenticationService/CURRENT_USER_ROLE']>
+    > = async() => {
+        let _uri = '/current-user/roles';
+        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<RoleDto['AuthenticationService/CURRENT_USER_ROLE']>>;
     }
     
     readonly signIn: (options: AuthenticationServiceOptions['signIn']) => Promise<
@@ -43,5 +50,6 @@ export type AuthenticationServiceOptions = {
         body: AuthenticationService_SignInRequest
     }, 
     'signOut': {}, 
-    'getCurrentUser': {}
+    'getCurrentUser': {}, 
+    'getCurrentUserRoles': {}
 }
