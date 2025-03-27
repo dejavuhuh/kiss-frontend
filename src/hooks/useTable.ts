@@ -19,9 +19,11 @@ export function useTable<T extends Row>({ queryKey, queryFn }: UseTableOptions<T
   const { refetch, data, isFetching } = useQuery({
     queryKey,
     queryFn: () => queryFn(),
+    initialData: [],
   })
 
   return {
+    data,
     refetch,
     selectedRowKeys,
     setSelectedRowKeys,

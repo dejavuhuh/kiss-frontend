@@ -8,6 +8,8 @@ import { ModalForm, ProFormDateTimeRangePicker, ProFormText, ProFormTextArea, Qu
 import { useMutation } from '@tanstack/react-query'
 import { createFileRoute, Link as RouterLink } from '@tanstack/react-router'
 import { App, Button, Form, Space, Table, Typography } from 'antd'
+import { useRef } from 'react'
+import { utils, writeFile } from 'xlsx'
 
 const { Link } = Typography
 
@@ -23,6 +25,8 @@ function RolesManagement() {
 
   const { modal, message } = App.useApp()
   const [form] = Form.useForm<{ name?: string, createdTime?: string[] }>()
+
+  const tableRef = useRef<HTMLTableElement | null>(null)
 
   const {
     refetch,
@@ -142,6 +146,13 @@ function RolesManagement() {
     },
   ]
 
+  const exportTableDataToExcel = () => {
+    const ws = utils.table_to_sheet(tableRef.current)
+    const wb = utils.book_new()
+    utils.book_append_sheet(wb, ws, '角色列表')
+    writeFile(wb, '角色列表.xlsx')
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <QueryFilter onFinish={refetch} form={form} span={8} defaultCollapsed className="card">
@@ -183,7 +194,7 @@ function RolesManagement() {
               </Button>
             )}
             <Button>操作日志</Button>
-            <Button iconPosition="end" icon={<DownloadOutlined />}>数据导出</Button>
+            <Button iconPosition="end" onClick={exportTableDataToExcel} icon={<DownloadOutlined />}>数据导出</Button>
             <ModalForm<RoleInput>
               title="创建角色"
               width={500}
