@@ -26,10 +26,8 @@ function RolesManagement() {
   const { modal, message } = App.useApp()
   const [form] = Form.useForm<{ name?: string, createdTime?: string[] }>()
 
-  const tableRef = useRef<HTMLTableElement | null>(null)
-
   const {
-    refetch,
+    reload,
     selectedRowKeys,
     setSelectedRowKeys,
     tableProps,
@@ -51,7 +49,7 @@ function RolesManagement() {
     mutationFn: api.roleService.create,
     onSuccess() {
       message.success('创建成功')
-      refetch()
+      reload()
     },
   })
 
@@ -59,7 +57,7 @@ function RolesManagement() {
     mutationFn: api.roleService.update,
     onSuccess() {
       message.success('编辑成功')
-      refetch()
+      reload()
     },
   })
 
@@ -74,7 +72,7 @@ function RolesManagement() {
       render(text, { id }) {
         return (
           <RouterLink to="/system/role/$id" params={{ id }}>
-            <Link color="primary">{text}</Link>
+            {text}
           </RouterLink>
         )
       },
@@ -132,7 +130,7 @@ function RolesManagement() {
                     async onOk() {
                       await api.roleService.delete({ id })
                       message.success('删除成功')
-                      refetch()
+                      reload()
                     },
                   })
                 }}
@@ -147,7 +145,8 @@ function RolesManagement() {
   ]
 
   const exportTableDataToExcel = () => {
-    const ws = utils.table_to_sheet(tableRef.current)
+    const table = document.querySelector('#table table') as HTMLTableElement
+    const ws = utils.table_to_sheet(table)
     const wb = utils.book_new()
     utils.book_append_sheet(wb, ws, '角色列表')
     writeFile(wb, '角色列表.xlsx')
@@ -155,10 +154,12 @@ function RolesManagement() {
 
   return (
     <div className="flex flex-col gap-4">
-      <QueryFilter onFinish={refetch} form={form} span={8} defaultCollapsed className="card">
-        <ProFormText name="name" label="角色名称" />
-        <ProFormDateTimeRangePicker name="createdTime" label="创建时间" />
-      </QueryFilter>
+      <>
+        <QueryFilter onFinish={reload} form={form} span={8} defaultCollapsed className="card">
+          <ProFormText name="name" label="角色名称" />
+          <ProFormDateTimeRangePicker name="createdTime" label="创建时间" />
+        </QueryFilter>
+      </>
       <div className="card">
         <Space direction="vertical" size="middle" className="w-full">
           <div className="flex items-center gap-2">
@@ -181,7 +182,7 @@ function RolesManagement() {
                       await api.roleService.deleteBatch({ ids: selectedRowKeys as number[] })
                       setSelectedRowKeys([])
                       message.success('删除成功')
-                      refetch()
+                      reload()
                     },
                     okButtonProps: {
                       danger: true,
@@ -211,7 +212,7 @@ function RolesManagement() {
             </ModalForm>
 
           </div>
-          <Table size="small" columns={columns} {...tableProps} />
+          <Table id="table" size="small" columns={columns} {...tableProps} />
         </Space>
       </div>
     </div>

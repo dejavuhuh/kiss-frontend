@@ -8,6 +8,7 @@ export const api = new Api(async ({ uri, method, headers, body }) => {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'X-TraceId': crypto.randomUUID().replace(/-/g, ''),
       ...headers,
     },
   })

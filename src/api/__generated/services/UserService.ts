@@ -1,13 +1,13 @@
 import type {Executor} from '../';
 import type {UserDto} from '../model/dto/';
-import type {Page, UserSpecification} from '../model/static/';
+import type {UserSpecification} from '../model/static/';
 
 export class UserService {
     
     constructor(private executor: Executor) {}
     
     readonly list: (options: UserServiceOptions['list']) => Promise<
-        Page<UserDto['UserService/LIST']>
+        Array<UserDto['UserFetchers/LIST_ITEM']>
     > = async(options) => {
         let _uri = '/users';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
@@ -33,24 +33,12 @@ export class UserService {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        _value = options.pageIndex;
-        _uri += _separator
-        _uri += 'pageIndex='
-        _uri += encodeURIComponent(_value);
-        _separator = '&';
-        _value = options.pageSize;
-        _uri += _separator
-        _uri += 'pageSize='
-        _uri += encodeURIComponent(_value);
-        _separator = '&';
-        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Page<UserDto['UserService/LIST']>>;
+        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<UserDto['UserFetchers/LIST_ITEM']>>;
     }
 }
 
 export type UserServiceOptions = {
     'list': {
-        pageIndex: number, 
-        pageSize: number, 
         specification: UserSpecification
     }
 }

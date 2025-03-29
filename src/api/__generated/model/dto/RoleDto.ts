@@ -9,7 +9,7 @@ export type RoleDto = {
          */
         name: string;
     }, 
-    'RoleService/LIST': {
+    'RoleFetchers/LIST_ITEM': {
         /**
          * ID
          */
@@ -33,5 +33,15 @@ export type RoleDto = {
             id: number;
             username: string;
         };
+    }, 
+    'RoleFetchers/SIMPLE': {
+        /**
+         * ID
+         */
+        id: number;
+        /**
+         * 角色名称
+         */
+        name: string;
     }
 }

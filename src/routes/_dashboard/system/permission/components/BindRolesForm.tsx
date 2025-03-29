@@ -1,7 +1,6 @@
 import type { PermissionView } from '..'
 import { api } from '@/api'
 import { findTreeNode } from '@/utils/tree'
-import { LockOutlined, QuestionCircleOutlined, SafetyOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { Checkbox, Empty, Form, Tooltip } from 'antd'
 
@@ -13,10 +12,10 @@ interface BindRolesFormProps {
 export function BindRolesForm({ row, permissionTree }: BindRolesFormProps) {
   const { id, parentId } = row
   const { data } = useQuery({
-    queryKey: ['roles'],
-    queryFn: () => api.roleService.list({
-      specification: { permissionId: parentId },
-    }),
+    queryKey: ['permissions', parentId, 'roles'],
+    queryFn: () => parentId
+      ? api.permissionService.roles({ id: parentId })
+      : api.roleService.options(),
   })
 
   const shouldDisable = (roleId: number): boolean => {

@@ -1,7 +1,7 @@
 import type {PermissionType} from '../enums/';
 
 export type PermissionDto = {
-    'PermissionService/LIST': {
+    'PermissionFetchers/LIST_ITEM': {
         /**
          * ID
          */
@@ -24,6 +24,6 @@ export type PermissionDto = {
              */
             name: string;
         }>;
-        children?: Array<PermissionDto['PermissionService/LIST']> | undefined;
+        children?: Array<PermissionDto['PermissionFetchers/LIST_ITEM']> | undefined;
     }
 }

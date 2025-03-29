@@ -1,11 +1,6 @@
 import type {Executor} from '../';
 import type {RoleDto, UserDto} from '../model/dto/';
-import type {
-    Page, 
-    RoleInput, 
-    RoleSpecification, 
-    UserSpecification
-} from '../model/static/';
+import type {RoleInput, RoleSpecification, UserSpecification} from '../model/static/';
 
 /**
  * 角色服务
@@ -68,7 +63,7 @@ export class RoleService {
      * @return 角色列表
      */
     readonly list: (options: RoleServiceOptions['list']) => Promise<
-        Array<RoleDto['RoleService/LIST']>
+        Array<RoleDto['RoleFetchers/LIST_ITEM']>
     > = async(options) => {
         let _uri = '/roles';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
@@ -94,14 +89,14 @@ export class RoleService {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        _value = options.specification.permissionId;
-        if (_value !== undefined && _value !== null) {
-            _uri += _separator
-            _uri += 'permissionId='
-            _uri += encodeURIComponent(_value);
-            _separator = '&';
-        }
-        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<RoleDto['RoleService/LIST']>>;
+        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<RoleDto['RoleFetchers/LIST_ITEM']>>;
+    }
+    
+    readonly options: () => Promise<
+        Array<RoleDto['RoleFetchers/SIMPLE']>
+    > = async() => {
+        let _uri = '/roles/options';
+        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<RoleDto['RoleFetchers/SIMPLE']>>;
     }
     
     /**
@@ -119,7 +114,7 @@ export class RoleService {
     }
     
     readonly users: (options: RoleServiceOptions['users']) => Promise<
-        Page<UserDto['UserService/LIST']>
+        Array<UserDto['UserFetchers/LIST_ITEM']>
     > = async(options) => {
         let _uri = '/roles/';
         _uri += encodeURIComponent(options.id);
@@ -147,17 +142,7 @@ export class RoleService {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        _value = options.pageIndex;
-        _uri += _separator
-        _uri += 'pageIndex='
-        _uri += encodeURIComponent(_value);
-        _separator = '&';
-        _value = options.pageSize;
-        _uri += _separator
-        _uri += 'pageSize='
-        _uri += encodeURIComponent(_value);
-        _separator = '&';
-        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Page<UserDto['UserService/LIST']>>;
+        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<UserDto['UserFetchers/LIST_ITEM']>>;
     }
 }
 
@@ -168,10 +153,9 @@ export type RoleServiceOptions = {
          */
         specification: RoleSpecification
     }, 
+    'options': {}, 
     'users': {
         id: number, 
-        pageIndex: number, 
-        pageSize: number, 
         specification: UserSpecification
     }, 
     'create': {

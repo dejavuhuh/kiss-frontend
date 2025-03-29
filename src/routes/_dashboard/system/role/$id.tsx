@@ -1,10 +1,12 @@
+import type { TableProps } from 'antd'
+import type { UserView } from '../user'
+import { api } from '@/api'
 import { useTable } from '@/hooks/useTable'
 import { SecurityScanOutlined, UserOutlined } from '@ant-design/icons'
 import { ProCard } from '@ant-design/pro-components'
 import { createFileRoute } from '@tanstack/react-router'
-import { Segmented, TableProps } from 'antd'
+import { Divider, Segmented, Table } from 'antd'
 import { useState } from 'react'
-import { UserView } from '../user'
 
 export const Route = createFileRoute('/_dashboard/system/role/$id')({
   component: RoleDetails,
@@ -42,11 +44,29 @@ function RoleDetails() {
 }
 
 function RoleUsers({ id }: { id: number }) {
+  const { tableProps } = useTable({
+    queryKey: ['roles', id, 'users'],
+    queryFn: () => api.roleService.users({ id, specification: {} }),
+  })
+
+  const columns: TableProps<UserView>['columns'] = [
+    {
+      title: '用户ID',
+      dataIndex: 'id',
+    },
+    {
+      title: '用户名',
+      dataIndex: 'username',
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createdTime',
+      render: value => new Date(value).toLocaleString(),
+    },
+  ]
+
   return (
-    <h1>
-      RoleUsers with ID:
-      {id}
-    </h1>
+    <Table columns={columns} {...tableProps} />
   )
 }
 

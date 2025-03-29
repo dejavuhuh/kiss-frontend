@@ -6,7 +6,7 @@ export type UserDto = {
         id: number;
         username: string;
     }, 
-    'UserService/LIST': {
+    'UserFetchers/LIST_ITEM': {
         /**
          * ID
          */

@@ -17,15 +17,13 @@ function UserManagement() {
   const [form] = Form.useForm<{ username?: string, createdTime?: string[] }>()
 
   const {
-    reload,
     tableProps,
+    reload,
   } = useTable({
-    queryKey: 'users',
-    queryFn: ({ pageIndex, pageSize }) => {
+    queryKey: ['users'],
+    queryFn: () => {
       const { username, createdTime } = form.getFieldsValue()
       return api.userService.list({
-        pageIndex,
-        pageSize,
         specification: {
           username,
           minCreatedTime: createdTime?.[0],
