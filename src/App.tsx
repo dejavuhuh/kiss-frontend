@@ -56,8 +56,8 @@ function App() {
 function InnerApp() {
   const { message } = AppWrapper.useApp()
 
-  const onError = ({ title, detail }: ApiError) => {
-    if (title === 'Unauthorized') {
+  const onError = ({ type, detail }: ApiError) => {
+    if (type === 'Unauthorized') {
       localStorage.removeItem('token')
       message.error('未登录或登录已过期')
       router.navigate({ to: '/sign-in' })

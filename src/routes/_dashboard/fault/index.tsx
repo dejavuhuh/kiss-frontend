@@ -1,7 +1,7 @@
 import { api } from '@/api'
 import { useMutation } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { App, Button } from 'antd'
+import { App, Button, Divider } from 'antd'
 
 export const Route = createFileRoute('/_dashboard/fault/')({
   component: FaultDrill,
@@ -40,6 +40,9 @@ function FaultDrill() {
       >
         CPU 密集型请求
       </Button>
+      <Divider />
+      <Button type="primary">内存泄露</Button>
+      <Button type="primary">内存溢出</Button>
     </div>
   )
 }
