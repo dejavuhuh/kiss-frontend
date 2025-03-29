@@ -2,7 +2,7 @@ import type { MenuProps } from 'antd'
 import { api } from '@/api'
 import { cn } from '@/utils'
 import { setCurrentUser } from '@/utils/user'
-import { BellOutlined, ClockCircleOutlined, LogoutOutlined, MenuFoldOutlined, SecurityScanOutlined, SettingOutlined, UsergroupAddOutlined, UserOutlined, WarningOutlined } from '@ant-design/icons'
+import { BellOutlined, ClockCircleOutlined, FileTextOutlined, LoginOutlined, LogoutOutlined, MenuFoldOutlined, SecurityScanOutlined, SettingOutlined, UsergroupAddOutlined, UserOutlined, WarningOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
 import { Button, Menu, Spin } from 'antd'
@@ -39,6 +39,17 @@ const items: MenuItem[] = [
         key: '/system/job',
         label: <Link to="/system/job">定时任务</Link>,
         icon: <ClockCircleOutlined />,
+      },
+    ],
+  },
+  {
+    key: '/trace',
+    label: '链路追踪',
+    icon: <FileTextOutlined />,
+    children: [
+      {
+        key: '/trace/session',
+        label: <Link to="/trace/session">会话管理</Link>,
       },
     ],
   },

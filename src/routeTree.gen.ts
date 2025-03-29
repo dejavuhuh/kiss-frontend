@@ -18,6 +18,7 @@ import { Route as DashboardDashboardImport } from './routes/_dashboard/dashboard
 import { Route as DashboardFaultIndexImport } from './routes/_dashboard/fault/index'
 import { Route as AuthenticationSignUpIndexImport } from './routes/_authentication/sign-up/index'
 import { Route as AuthenticationSignInIndexImport } from './routes/_authentication/sign-in/index'
+import { Route as DashboardTraceSessionIndexImport } from './routes/_dashboard/trace/session/index'
 import { Route as DashboardSystemUserIndexImport } from './routes/_dashboard/system/user/index'
 import { Route as DashboardSystemRoleIndexImport } from './routes/_dashboard/system/role/index'
 import { Route as DashboardSystemPermissionIndexImport } from './routes/_dashboard/system/permission/index'
@@ -65,6 +66,14 @@ const AuthenticationSignInIndexRoute = AuthenticationSignInIndexImport.update({
   path: '/sign-in/',
   getParentRoute: () => AuthenticationRoute,
 } as any)
+
+const DashboardTraceSessionIndexRoute = DashboardTraceSessionIndexImport.update(
+  {
+    id: '/trace/session/',
+    path: '/trace/session/',
+    getParentRoute: () => DashboardRoute,
+  } as any,
+)
 
 const DashboardSystemUserIndexRoute = DashboardSystemUserIndexImport.update({
   id: '/system/user/',
@@ -185,6 +194,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSystemUserIndexImport
       parentRoute: typeof DashboardImport
     }
+    '/_dashboard/trace/session/': {
+      id: '/_dashboard/trace/session/'
+      path: '/trace/session'
+      fullPath: '/trace/session'
+      preLoaderRoute: typeof DashboardTraceSessionIndexImport
+      parentRoute: typeof DashboardImport
+    }
   }
 }
 
@@ -212,6 +228,7 @@ interface DashboardRouteChildren {
   DashboardSystemPermissionIndexRoute: typeof DashboardSystemPermissionIndexRoute
   DashboardSystemRoleIndexRoute: typeof DashboardSystemRoleIndexRoute
   DashboardSystemUserIndexRoute: typeof DashboardSystemUserIndexRoute
+  DashboardTraceSessionIndexRoute: typeof DashboardTraceSessionIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
@@ -222,6 +239,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardSystemPermissionIndexRoute: DashboardSystemPermissionIndexRoute,
   DashboardSystemRoleIndexRoute: DashboardSystemRoleIndexRoute,
   DashboardSystemUserIndexRoute: DashboardSystemUserIndexRoute,
+  DashboardTraceSessionIndexRoute: DashboardTraceSessionIndexRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
@@ -240,6 +258,7 @@ export interface FileRoutesByFullPath {
   '/system/permission': typeof DashboardSystemPermissionIndexRoute
   '/system/role': typeof DashboardSystemRoleIndexRoute
   '/system/user': typeof DashboardSystemUserIndexRoute
+  '/trace/session': typeof DashboardTraceSessionIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -254,6 +273,7 @@ export interface FileRoutesByTo {
   '/system/permission': typeof DashboardSystemPermissionIndexRoute
   '/system/role': typeof DashboardSystemRoleIndexRoute
   '/system/user': typeof DashboardSystemUserIndexRoute
+  '/trace/session': typeof DashboardTraceSessionIndexRoute
 }
 
 export interface FileRoutesById {
@@ -270,6 +290,7 @@ export interface FileRoutesById {
   '/_dashboard/system/permission/': typeof DashboardSystemPermissionIndexRoute
   '/_dashboard/system/role/': typeof DashboardSystemRoleIndexRoute
   '/_dashboard/system/user/': typeof DashboardSystemUserIndexRoute
+  '/_dashboard/trace/session/': typeof DashboardTraceSessionIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -286,6 +307,7 @@ export interface FileRouteTypes {
     | '/system/permission'
     | '/system/role'
     | '/system/user'
+    | '/trace/session'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -299,6 +321,7 @@ export interface FileRouteTypes {
     | '/system/permission'
     | '/system/role'
     | '/system/user'
+    | '/trace/session'
   id:
     | '__root__'
     | '/'
@@ -313,6 +336,7 @@ export interface FileRouteTypes {
     | '/_dashboard/system/permission/'
     | '/_dashboard/system/role/'
     | '/_dashboard/system/user/'
+    | '/_dashboard/trace/session/'
   fileRoutesById: FileRoutesById
 }
 
@@ -362,7 +386,8 @@ export const routeTree = rootRoute
         "/_dashboard/system/job/",
         "/_dashboard/system/permission/",
         "/_dashboard/system/role/",
-        "/_dashboard/system/user/"
+        "/_dashboard/system/user/",
+        "/_dashboard/trace/session/"
       ]
     },
     "/_dashboard/dashboard": {
@@ -399,6 +424,10 @@ export const routeTree = rootRoute
     },
     "/_dashboard/system/user/": {
       "filePath": "_dashboard/system/user/index.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/trace/session/": {
+      "filePath": "_dashboard/trace/session/index.tsx",
       "parent": "/_dashboard"
     }
   }
