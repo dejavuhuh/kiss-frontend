@@ -3,4 +3,5 @@ export type {JobService_JobView} from './JobService_JobView';
 export type {PermissionInput} from './PermissionInput';
 export type {RoleInput} from './RoleInput';
 export type {RoleSpecification} from './RoleSpecification';
+export type {SessionSpecification} from './SessionSpecification';
 export type {UserSpecification} from './UserSpecification';

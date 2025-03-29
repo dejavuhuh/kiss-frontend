@@ -5,12 +5,15 @@ import {
     JobService, 
     PermissionService, 
     RoleService, 
+    SessionService, 
     UserService
 } from './services/';
 
 export class Api {
     
     readonly authenticationService: AuthenticationService
+    
+    readonly sessionService: SessionService
     
     readonly faultService: FaultService
     
@@ -24,6 +27,7 @@ export class Api {
     
     constructor(executor: Executor) {
         this.authenticationService = new AuthenticationService(executor);
+        this.sessionService = new SessionService(executor);
         this.faultService = new FaultService(executor);
         this.jobService = new JobService(executor);
         this.permissionService = new PermissionService(executor);

@@ -2,7 +2,7 @@ import type { MenuProps } from 'antd'
 import { api } from '@/api'
 import { cn } from '@/utils'
 import { setCurrentUser } from '@/utils/user'
-import { BellOutlined, ClockCircleOutlined, FileTextOutlined, LoginOutlined, LogoutOutlined, MenuFoldOutlined, SecurityScanOutlined, SettingOutlined, UsergroupAddOutlined, UserOutlined, WarningOutlined } from '@ant-design/icons'
+import { BellOutlined, ClockCircleOutlined, FileTextOutlined, IdcardOutlined, LoginOutlined, LogoutOutlined, MenuFoldOutlined, SecurityScanOutlined, SettingOutlined, UsergroupAddOutlined, UserOutlined, WarningOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
 import { Button, Menu, Spin } from 'antd'
@@ -50,6 +50,7 @@ const items: MenuItem[] = [
       {
         key: '/trace/session',
         label: <Link to="/trace/session">会话管理</Link>,
+        icon: <IdcardOutlined />,
       },
     ],
   },
