@@ -24,25 +24,37 @@ function FaultDrill() {
     },
   })
 
+  const serverError = useMutation({
+    mutationFn: api.faultService.serverError,
+    onSuccess() {
+      message.success('请求成功')
+    },
+  })
+
   return (
     <div className="card space-x-4">
       <Button
-        type="primary"
         onClick={() => highCpu.mutate()}
         loading={highCpu.isPending}
       >
         CPU 使用率飙升
       </Button>
       <Button
-        type="primary"
         onClick={() => cpuIntensive.mutate()}
         loading={cpuIntensive.isPending}
       >
         CPU 密集型请求
       </Button>
       <Divider />
-      <Button type="primary">内存泄露</Button>
-      <Button type="primary">内存溢出</Button>
+      <Button>内存泄露</Button>
+      <Button>内存溢出</Button>
+      <Divider />
+      <Button
+        onClick={() => serverError.mutate()}
+        loading={serverError.isPending}
+      >
+        服务端异常
+      </Button>
     </div>
   )
 }

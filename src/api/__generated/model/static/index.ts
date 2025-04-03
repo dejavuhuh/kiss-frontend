@@ -1,7 +1,10 @@
 export type {AuthenticationService_SignInRequest} from './AuthenticationService_SignInRequest';
 export type {JobService_JobView} from './JobService_JobView';
+export type {LoggingService_ConfigureLevelEvent} from './LoggingService_ConfigureLevelEvent';
+export type {Page} from './Page';
 export type {PermissionInput} from './PermissionInput';
 export type {RoleInput} from './RoleInput';
 export type {RoleSpecification} from './RoleSpecification';
+export type {SessionHistorySpecification} from './SessionHistorySpecification';
 export type {SessionSpecification} from './SessionSpecification';
 export type {UserSpecification} from './UserSpecification';

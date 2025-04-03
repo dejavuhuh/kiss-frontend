@@ -12,6 +12,8 @@
   --color-secondary: var(--ant-color-text-secondary);
   --color-success: var(--ant-color-success);
   --color-primary: var(--ant-color-primary);
+  --color-bg-text-hover: var(--ant-color-bg-text-hover);
+  --color-icon-hover: var(--ant-color-icon-hover);
 }
 
 @layer base {

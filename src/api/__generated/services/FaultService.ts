@@ -23,9 +23,20 @@ export class FaultService {
         let _uri = '/fault/high-cpu';
         return (await this.executor({uri: _uri, method: 'POST'})) as Promise<void>;
     }
+    
+    /**
+     * 服务端异常
+     */
+    readonly serverError: () => Promise<
+        void
+    > = async() => {
+        let _uri = '/fault/server-error';
+        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<void>;
+    }
 }
 
 export type FaultServiceOptions = {
     'highCpu': {}, 
-    'cpuIntensive': {}
+    'cpuIntensive': {}, 
+    'serverError': {}
 }
