@@ -24,6 +24,7 @@ import { Route as DashboardSystemRoleIndexImport } from './routes/_dashboard/sys
 import { Route as DashboardSystemPermissionIndexImport } from './routes/_dashboard/system/permission/index'
 import { Route as DashboardSystemJobIndexImport } from './routes/_dashboard/system/job/index'
 import { Route as DashboardComponentS3UploadIndexImport } from './routes/_dashboard/component/s3-upload/index'
+import { Route as DashboardComponentRichTextEditorIndexImport } from './routes/_dashboard/component/rich-text-editor/index'
 import { Route as DashboardSystemRoleIdImport } from './routes/_dashboard/system/role/$id'
 
 // Create/Update Routes
@@ -108,6 +109,13 @@ const DashboardComponentS3UploadIndexRoute =
     getParentRoute: () => DashboardRoute,
   } as any)
 
+const DashboardComponentRichTextEditorIndexRoute =
+  DashboardComponentRichTextEditorIndexImport.update({
+    id: '/component/rich-text-editor/',
+    path: '/component/rich-text-editor/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+
 const DashboardSystemRoleIdRoute = DashboardSystemRoleIdImport.update({
   id: '/system/role/$id',
   path: '/system/role/$id',
@@ -172,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/system/role/$id'
       fullPath: '/system/role/$id'
       preLoaderRoute: typeof DashboardSystemRoleIdImport
+      parentRoute: typeof DashboardImport
+    }
+    '/_dashboard/component/rich-text-editor/': {
+      id: '/_dashboard/component/rich-text-editor/'
+      path: '/component/rich-text-editor'
+      fullPath: '/component/rich-text-editor'
+      preLoaderRoute: typeof DashboardComponentRichTextEditorIndexImport
       parentRoute: typeof DashboardImport
     }
     '/_dashboard/component/s3-upload/': {
@@ -239,6 +254,7 @@ interface DashboardRouteChildren {
   DashboardDashboardRoute: typeof DashboardDashboardRoute
   DashboardFaultIndexRoute: typeof DashboardFaultIndexRoute
   DashboardSystemRoleIdRoute: typeof DashboardSystemRoleIdRoute
+  DashboardComponentRichTextEditorIndexRoute: typeof DashboardComponentRichTextEditorIndexRoute
   DashboardComponentS3UploadIndexRoute: typeof DashboardComponentS3UploadIndexRoute
   DashboardSystemJobIndexRoute: typeof DashboardSystemJobIndexRoute
   DashboardSystemPermissionIndexRoute: typeof DashboardSystemPermissionIndexRoute
@@ -251,6 +267,8 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardDashboardRoute: DashboardDashboardRoute,
   DashboardFaultIndexRoute: DashboardFaultIndexRoute,
   DashboardSystemRoleIdRoute: DashboardSystemRoleIdRoute,
+  DashboardComponentRichTextEditorIndexRoute:
+    DashboardComponentRichTextEditorIndexRoute,
   DashboardComponentS3UploadIndexRoute: DashboardComponentS3UploadIndexRoute,
   DashboardSystemJobIndexRoute: DashboardSystemJobIndexRoute,
   DashboardSystemPermissionIndexRoute: DashboardSystemPermissionIndexRoute,
@@ -271,6 +289,7 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof AuthenticationSignUpIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
   '/system/role/$id': typeof DashboardSystemRoleIdRoute
+  '/component/rich-text-editor': typeof DashboardComponentRichTextEditorIndexRoute
   '/component/s3-upload': typeof DashboardComponentS3UploadIndexRoute
   '/system/job': typeof DashboardSystemJobIndexRoute
   '/system/permission': typeof DashboardSystemPermissionIndexRoute
@@ -287,6 +306,7 @@ export interface FileRoutesByTo {
   '/sign-up': typeof AuthenticationSignUpIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
   '/system/role/$id': typeof DashboardSystemRoleIdRoute
+  '/component/rich-text-editor': typeof DashboardComponentRichTextEditorIndexRoute
   '/component/s3-upload': typeof DashboardComponentS3UploadIndexRoute
   '/system/job': typeof DashboardSystemJobIndexRoute
   '/system/permission': typeof DashboardSystemPermissionIndexRoute
@@ -305,6 +325,7 @@ export interface FileRoutesById {
   '/_authentication/sign-up/': typeof AuthenticationSignUpIndexRoute
   '/_dashboard/fault/': typeof DashboardFaultIndexRoute
   '/_dashboard/system/role/$id': typeof DashboardSystemRoleIdRoute
+  '/_dashboard/component/rich-text-editor/': typeof DashboardComponentRichTextEditorIndexRoute
   '/_dashboard/component/s3-upload/': typeof DashboardComponentS3UploadIndexRoute
   '/_dashboard/system/job/': typeof DashboardSystemJobIndexRoute
   '/_dashboard/system/permission/': typeof DashboardSystemPermissionIndexRoute
@@ -323,6 +344,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/fault'
     | '/system/role/$id'
+    | '/component/rich-text-editor'
     | '/component/s3-upload'
     | '/system/job'
     | '/system/permission'
@@ -338,6 +360,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/fault'
     | '/system/role/$id'
+    | '/component/rich-text-editor'
     | '/component/s3-upload'
     | '/system/job'
     | '/system/permission'
@@ -354,6 +377,7 @@ export interface FileRouteTypes {
     | '/_authentication/sign-up/'
     | '/_dashboard/fault/'
     | '/_dashboard/system/role/$id'
+    | '/_dashboard/component/rich-text-editor/'
     | '/_dashboard/component/s3-upload/'
     | '/_dashboard/system/job/'
     | '/_dashboard/system/permission/'
@@ -406,6 +430,7 @@ export const routeTree = rootRoute
         "/_dashboard/dashboard",
         "/_dashboard/fault/",
         "/_dashboard/system/role/$id",
+        "/_dashboard/component/rich-text-editor/",
         "/_dashboard/component/s3-upload/",
         "/_dashboard/system/job/",
         "/_dashboard/system/permission/",
@@ -432,6 +457,10 @@ export const routeTree = rootRoute
     },
     "/_dashboard/system/role/$id": {
       "filePath": "_dashboard/system/role/$id.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/component/rich-text-editor/": {
+      "filePath": "_dashboard/component/rich-text-editor/index.tsx",
       "parent": "/_dashboard"
     },
     "/_dashboard/component/s3-upload/": {

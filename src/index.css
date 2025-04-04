@@ -1,6 +1,7 @@
 @layer theme, base, antd, components, utilities;
 
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
 @theme inline {
   --color-border: var(--ant-color-border);
@@ -34,8 +35,21 @@
   .card {
     @apply p-4 rounded-md bg-container shadow-sm;
   }
+  .ant-image {
+    display: block;
+  }
 }
 
 :root {
   interpolate-size: allow-keywords;
+}
+
+/* Tiptap */
+.tiptap {
+  .node-s3-image {
+    @apply rounded;
+    &.ProseMirror-selectednode {
+      @apply outline-2 outline-primary;
+    }
+  }
 }

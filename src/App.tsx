@@ -77,8 +77,8 @@ function InnerApp() {
           <div className="flex items-center">
             服务器内部错误
             <ModalForm
-              title="反馈问题"
-              trigger={<Button size="small" type="link">反馈问题</Button>}
+              title="问题反馈"
+              trigger={<Button size="small" type="link">问题反馈</Button>}
               onFinish={v => console.log(v)}
             >
               <ProFormText label="问题描述" name="description" rules={[{ required: true }]} />
