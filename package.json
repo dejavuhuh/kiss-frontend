@@ -19,7 +19,6 @@
     "@tanstack/react-router": "^1.114.25",
     "antd": "^5.24.4",
     "clsx": "^2.1.1",
-    "html2canvas": "^1.4.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "tailwind-merge": "^3.0.2",

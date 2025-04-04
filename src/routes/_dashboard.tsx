@@ -2,7 +2,7 @@ import type { MenuProps } from 'antd'
 import { api } from '@/api'
 import { cn } from '@/utils'
 import { setCurrentUser } from '@/utils/user'
-import { BellOutlined, ClockCircleOutlined, FileTextOutlined, IdcardOutlined, LoginOutlined, LogoutOutlined, MenuFoldOutlined, SecurityScanOutlined, SettingOutlined, UsergroupAddOutlined, UserOutlined, WarningOutlined } from '@ant-design/icons'
+import { BellOutlined, ClockCircleOutlined, CodeOutlined, FileTextOutlined, IdcardOutlined, LoginOutlined, LogoutOutlined, MenuFoldOutlined, SecurityScanOutlined, SettingOutlined, UploadOutlined, UsergroupAddOutlined, UserOutlined, WarningOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
 import { Button, Menu, Spin } from 'antd'
@@ -58,6 +58,18 @@ const items: MenuItem[] = [
     key: '/fault',
     label: <Link to="/fault">故障演练</Link>,
     icon: <BellOutlined />,
+  },
+  {
+    key: '/component',
+    label: '自定义组件',
+    icon: <CodeOutlined />,
+    children: [
+      {
+        key: '/component/s3-upload',
+        label: <Link to="/component/s3-upload">S3上传组件</Link>,
+        icon: <UploadOutlined />,
+      },
+    ],
   },
 ]
 

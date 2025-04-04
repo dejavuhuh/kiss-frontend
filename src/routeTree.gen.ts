@@ -23,6 +23,7 @@ import { Route as DashboardSystemUserIndexImport } from './routes/_dashboard/sys
 import { Route as DashboardSystemRoleIndexImport } from './routes/_dashboard/system/role/index'
 import { Route as DashboardSystemPermissionIndexImport } from './routes/_dashboard/system/permission/index'
 import { Route as DashboardSystemJobIndexImport } from './routes/_dashboard/system/job/index'
+import { Route as DashboardComponentS3UploadIndexImport } from './routes/_dashboard/component/s3-upload/index'
 import { Route as DashboardSystemRoleIdImport } from './routes/_dashboard/system/role/$id'
 
 // Create/Update Routes
@@ -100,6 +101,13 @@ const DashboardSystemJobIndexRoute = DashboardSystemJobIndexImport.update({
   getParentRoute: () => DashboardRoute,
 } as any)
 
+const DashboardComponentS3UploadIndexRoute =
+  DashboardComponentS3UploadIndexImport.update({
+    id: '/component/s3-upload/',
+    path: '/component/s3-upload/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+
 const DashboardSystemRoleIdRoute = DashboardSystemRoleIdImport.update({
   id: '/system/role/$id',
   path: '/system/role/$id',
@@ -166,6 +174,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSystemRoleIdImport
       parentRoute: typeof DashboardImport
     }
+    '/_dashboard/component/s3-upload/': {
+      id: '/_dashboard/component/s3-upload/'
+      path: '/component/s3-upload'
+      fullPath: '/component/s3-upload'
+      preLoaderRoute: typeof DashboardComponentS3UploadIndexImport
+      parentRoute: typeof DashboardImport
+    }
     '/_dashboard/system/job/': {
       id: '/_dashboard/system/job/'
       path: '/system/job'
@@ -224,6 +239,7 @@ interface DashboardRouteChildren {
   DashboardDashboardRoute: typeof DashboardDashboardRoute
   DashboardFaultIndexRoute: typeof DashboardFaultIndexRoute
   DashboardSystemRoleIdRoute: typeof DashboardSystemRoleIdRoute
+  DashboardComponentS3UploadIndexRoute: typeof DashboardComponentS3UploadIndexRoute
   DashboardSystemJobIndexRoute: typeof DashboardSystemJobIndexRoute
   DashboardSystemPermissionIndexRoute: typeof DashboardSystemPermissionIndexRoute
   DashboardSystemRoleIndexRoute: typeof DashboardSystemRoleIndexRoute
@@ -235,6 +251,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardDashboardRoute: DashboardDashboardRoute,
   DashboardFaultIndexRoute: DashboardFaultIndexRoute,
   DashboardSystemRoleIdRoute: DashboardSystemRoleIdRoute,
+  DashboardComponentS3UploadIndexRoute: DashboardComponentS3UploadIndexRoute,
   DashboardSystemJobIndexRoute: DashboardSystemJobIndexRoute,
   DashboardSystemPermissionIndexRoute: DashboardSystemPermissionIndexRoute,
   DashboardSystemRoleIndexRoute: DashboardSystemRoleIndexRoute,
@@ -254,6 +271,7 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof AuthenticationSignUpIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
   '/system/role/$id': typeof DashboardSystemRoleIdRoute
+  '/component/s3-upload': typeof DashboardComponentS3UploadIndexRoute
   '/system/job': typeof DashboardSystemJobIndexRoute
   '/system/permission': typeof DashboardSystemPermissionIndexRoute
   '/system/role': typeof DashboardSystemRoleIndexRoute
@@ -269,6 +287,7 @@ export interface FileRoutesByTo {
   '/sign-up': typeof AuthenticationSignUpIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
   '/system/role/$id': typeof DashboardSystemRoleIdRoute
+  '/component/s3-upload': typeof DashboardComponentS3UploadIndexRoute
   '/system/job': typeof DashboardSystemJobIndexRoute
   '/system/permission': typeof DashboardSystemPermissionIndexRoute
   '/system/role': typeof DashboardSystemRoleIndexRoute
@@ -286,6 +305,7 @@ export interface FileRoutesById {
   '/_authentication/sign-up/': typeof AuthenticationSignUpIndexRoute
   '/_dashboard/fault/': typeof DashboardFaultIndexRoute
   '/_dashboard/system/role/$id': typeof DashboardSystemRoleIdRoute
+  '/_dashboard/component/s3-upload/': typeof DashboardComponentS3UploadIndexRoute
   '/_dashboard/system/job/': typeof DashboardSystemJobIndexRoute
   '/_dashboard/system/permission/': typeof DashboardSystemPermissionIndexRoute
   '/_dashboard/system/role/': typeof DashboardSystemRoleIndexRoute
@@ -303,6 +323,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/fault'
     | '/system/role/$id'
+    | '/component/s3-upload'
     | '/system/job'
     | '/system/permission'
     | '/system/role'
@@ -317,6 +338,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/fault'
     | '/system/role/$id'
+    | '/component/s3-upload'
     | '/system/job'
     | '/system/permission'
     | '/system/role'
@@ -332,6 +354,7 @@ export interface FileRouteTypes {
     | '/_authentication/sign-up/'
     | '/_dashboard/fault/'
     | '/_dashboard/system/role/$id'
+    | '/_dashboard/component/s3-upload/'
     | '/_dashboard/system/job/'
     | '/_dashboard/system/permission/'
     | '/_dashboard/system/role/'
@@ -383,6 +406,7 @@ export const routeTree = rootRoute
         "/_dashboard/dashboard",
         "/_dashboard/fault/",
         "/_dashboard/system/role/$id",
+        "/_dashboard/component/s3-upload/",
         "/_dashboard/system/job/",
         "/_dashboard/system/permission/",
         "/_dashboard/system/role/",
@@ -408,6 +432,10 @@ export const routeTree = rootRoute
     },
     "/_dashboard/system/role/$id": {
       "filePath": "_dashboard/system/role/$id.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/component/s3-upload/": {
+      "filePath": "_dashboard/component/s3-upload/index.tsx",
       "parent": "/_dashboard"
     },
     "/_dashboard/system/job/": {

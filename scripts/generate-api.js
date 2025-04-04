@@ -5,7 +5,7 @@ import fs from 'fs-extra'
 import tempDir from 'temp-dir'
 import { v4 } from 'uuid'
 
-const sourceUrl = 'http://localhost:9000/ts.zip'
+const sourceUrl = 'http://localhost:8000/ts.zip'
 const tmpFilePath = `${tempDir}/${v4()}.zip`
 const generatePath = 'src/api/__generated'
 

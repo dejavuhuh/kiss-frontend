@@ -1,10 +1,12 @@
-import type { ApiError } from './api'
+import type { ApiError } from '@/api'
+import { api } from '@/api'
 import { StyleProvider } from '@ant-design/cssinjs'
 import { CloseOutlined } from '@ant-design/icons'
+import { ModalForm, ProFormText, ProFormUploadButton } from '@ant-design/pro-components'
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { createRouter, RouterProvider } from '@tanstack/react-router'
-import { App as AppWrapper, Button, ConfigProvider, Space } from 'antd'
 
+import { createRouter, RouterProvider } from '@tanstack/react-router'
+import { App as AppWrapper, Button, ConfigProvider } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
@@ -74,23 +76,75 @@ function InnerApp() {
         content: (
           <div className="flex items-center">
             服务器内部错误
-            <Button
-              size="small"
-              type="link"
-              onClick={() => message.open({
-                key,
-                type: 'loading',
-                content: '正在上传截图...',
-              })}
+            <ModalForm
+              title="反馈问题"
+              trigger={<Button size="small" type="link">反馈问题</Button>}
+              onFinish={v => console.log(v)}
             >
-              上报错误
-            </Button>
+              <ProFormText label="问题描述" name="description" rules={[{ required: true }]} />
+              <ProFormUploadButton
+                listType="picture-card"
+                label="问题截图"
+                name="screenshot"
+                rules={[{ required: true }]}
+                accept="image/*"
+                fieldProps={{
+                  async customRequest({ file, onProgress, onSuccess }) {
+                    const bucket = 'system-error-screenshot'
+                    const method = 'PUT'
+                    const objectName = crypto.randomUUID().replace(/-/g, '')
+
+                    const uploadUrl = await api.s3service.preSignedUrl({
+                      bucket,
+                      method,
+                      objectName,
+                    })
+
+                    const xhr = new XMLHttpRequest()
+                    xhr.open(method, uploadUrl)
+                    xhr.upload.addEventListener('progress', (event) => {
+                      const percent = Math.round((event.loaded / event.total) * 100)
+                      onProgress?.({ percent })
+                    })
+
+                    xhr.addEventListener('load', () => {
+                      if (xhr.status === 200) {
+                        onSuccess?.(objectName)
+                      }
+                    })
+
+                    xhr.send(file)
+                  },
+                  async onRemove(file) {
+                    const objectName = file.response as string
+                    const deleteUrl = await api.s3service.preSignedUrl({
+                      bucket: 'system-error-screenshot',
+                      method: 'DELETE',
+                      objectName,
+                    })
+                    await fetch(deleteUrl, {
+                      method: 'DELETE',
+                    })
+                    return true
+                  },
+                  async onPreview(file) {
+                    const objectName = file.response as string
+                    const downloadUrl = await api.s3service.preSignedUrl({
+                      bucket: 'system-error-screenshot',
+                      method: 'GET',
+                      objectName,
+                    })
+                    window.open(downloadUrl)
+                  },
+                }}
+              />
+            </ModalForm>
             <div onClick={() => message.destroy(key)} className="group flex items-center justify-center p-1 rounded hover:bg-bg-text-hover cursor-pointer transition-colors">
               <CloseOutlined className="size-3 text-secondary group-hover:text-icon-hover transition-colors" />
             </div>
           </div>
         ),
-        duration: 10,
+        duration: 0,
       })
     }
     else {
