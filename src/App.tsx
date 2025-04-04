@@ -77,14 +77,25 @@ function InnerApp() {
         content: (
           <div className="flex items-center">
             服务器内部错误
-            <ModalForm
+            <ModalForm<{ title: string, description: string }>
               title="问题反馈"
+              initialValues={{
+                description: `
+                <h3>复现步骤</h3>
+                <ol>
+                  <li>
+                    ss
+                  </li>
+                </ol>
+                <h3>截图</h3>
+                `
+              }}
               trigger={<Button size="small" type="link">问题反馈</Button>}
               onFinish={v => console.log(v)}
             >
               <ProFormText label="标题" name="title" rules={[{ required: true }]} />
               <ProFormItem label="详细描述" name="description" rules={[{ required: true }]}>
-                <RichTextEditor bucket="system-error-screenshot" />
+                <RichTextEditor bucket="system-error-screenshot" className="h-96" />
               </ProFormItem>
             </ModalForm>
             <div onClick={() => message.destroy(key)} className="group flex items-center justify-center p-1 rounded hover:bg-bg-text-hover cursor-pointer transition-colors">
@@ -92,7 +103,6 @@ function InnerApp() {
             </div>
           </div>
         ),
-        duration: 0,
       })
     }
     else {

@@ -12,6 +12,7 @@ interface RichTextEditorProps {
   bucket: string
   value?: string
   onChange?: (value: string) => void
+  className?: string
 }
 
 // Helper component for toolbar buttons
@@ -69,11 +70,11 @@ function BlockButton({ title, icon, onClick, active }: BlockButtonProps) {
   )
 }
 
-export function RichTextEditor({ bucket, value, onChange }: RichTextEditorProps) {
+export function RichTextEditor({ bucket, value, onChange, className }: RichTextEditorProps) {
   const editor = useEditor({
     editorProps: {
       attributes: {
-        class: 'prose prose-p:mb-2 prose-p:mt-0 prose-ol:mb-0 prose-h2:mb-4 prose-h3:mb-3 prose-img:mt-0 max-w-none rounded-md px-4 py-3 outline-1 outline-border focus:outline-primary',
+        class: cn('prose prose-p:mb-2 prose-p:mt-0 prose-ol:mb-0 prose-h2:mb-4 prose-h3:mb-3 prose-img:mt-0 min-h-full max-w-none rounded-md px-4 py-3 outline-1 outline-border focus:outline-primary', className),
       },
     },
     content: value,
