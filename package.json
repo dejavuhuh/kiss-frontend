@@ -19,6 +19,7 @@
     "@tanstack/react-router": "^1.114.25",
     "@tiptap-pro/extension-file-handler": "^2.18.0-beta.6",
     "@tiptap-pro/extension-unique-id": "^2.18.0-beta.6",
+    "@tiptap/extension-floating-menu": "^2.11.7",
     "@tiptap/extension-image": "^2.11.7",
     "@tiptap/pm": "^2.11.7",
     "@tiptap/react": "^2.11.7",

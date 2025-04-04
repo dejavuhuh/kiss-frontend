@@ -4,6 +4,7 @@
 @plugin "@tailwindcss/typography";
 
 @theme inline {
+  --color-text: var(--ant-color-text);
   --color-border: var(--ant-color-border);
   --color-border-secondary: var(--ant-color-border-secondary);
   --color-container: var(--ant-color-bg-container);
@@ -47,9 +48,9 @@
 /* Tiptap */
 .tiptap {
   .node-s3-image {
-    @apply rounded;
+    /* @apply rounded-md; */
     &.ProseMirror-selectednode {
-      @apply outline-2 outline-primary;
+      @apply outline-3 outline-primary;
     }
   }
 }

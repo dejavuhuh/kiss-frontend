@@ -2,7 +2,6 @@ import { api } from '@/api'
 import { useQuery } from '@tanstack/react-query'
 import { NodeViewWrapper } from '@tiptap/react'
 import { Image } from 'antd'
-import { useEffect, useState } from 'react'
 
 interface Node {
   attrs: {
