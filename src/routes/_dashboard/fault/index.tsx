@@ -50,7 +50,14 @@ function FaultDrill() {
       <Button>内存溢出</Button>
       <Divider />
       <Button
-        onClick={() => serverError.mutate()}
+        onClick={() => serverError.mutate({
+          foo: 'abc',
+          bar: 123,
+          body: {
+            foo: 'def',
+            bar: 456,
+          },
+        })}
         loading={serverError.isPending}
       >
         服务端异常

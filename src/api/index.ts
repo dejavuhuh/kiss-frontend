@@ -16,13 +16,13 @@ function getSecChUa() {
 
 // 导出全局变量`api`
 export const api = new Api(async ({ uri, method, body }) => {
-  const url = `/api${uri}`
+  const requestUrl = `/api${uri}`
   const bodyString = body !== undefined ? JSON.stringify(body) : undefined
   const contentType = 'application/json'
   const authorization = `Bearer ${localStorage.getItem('token')}`
   const traceId = crypto.randomUUID().replace(/-/g, '')
 
-  const response = await fetch(url, {
+  const response = await fetch(requestUrl, {
     method,
     body: bodyString,
     headers: {
@@ -37,8 +37,11 @@ export const api = new Api(async ({ uri, method, body }) => {
   }
 
   if (response.status === 500) {
+    const url = `${location.origin}${requestUrl}`
+    const searchParams = new URL(url).searchParams
+    const query = Object.fromEntries(searchParams.entries())
     const request: HttpRequest = {
-      url: `${location.origin}${url}`,
+      url,
       method,
       headers: {
         'Accept': '*/*',
@@ -57,6 +60,7 @@ export const api = new Api(async ({ uri, method, body }) => {
         'sec-ch-ua-mobile': `?${navigator.userAgentData?.mobile ? 1 : 0}`,
         'sec-ch-ua-platform': `"${navigator.userAgentData?.platform}"`,
       },
+      query,
       body: bodyString,
     }
 
@@ -84,6 +88,7 @@ interface HttpRequest {
   url: string
   method: string
   headers: Record<string, string>
+  query: Record<string, string>
   body?: string
 }
 

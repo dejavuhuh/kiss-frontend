@@ -4,6 +4,7 @@ import { cn } from '@/utils'
 import { CodeOutlined, OrderedListOutlined, TableOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import FileHandler from '@tiptap-pro/extension-file-handler'
 import Image from '@tiptap/extension-image'
+import Placeholder from '@tiptap/extension-placeholder'
 import { EditorContent, FloatingMenu, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Button, Divider, Tooltip, Typography } from 'antd'
@@ -11,8 +12,9 @@ import { Button, Divider, Tooltip, Typography } from 'antd'
 interface RichTextEditorProps {
   bucket: string
   value?: string
-  onChange?: (value: string) => void
+  onChange?: (value: string | undefined) => void
   className?: string
+  placeholder?: string
 }
 
 // Helper component for toolbar buttons
@@ -70,21 +72,30 @@ function BlockButton({ title, icon, onClick, active }: BlockButtonProps) {
   )
 }
 
-export function RichTextEditor({ bucket, value, onChange, className }: RichTextEditorProps) {
+export function RichTextEditor({ bucket, value, onChange, className, placeholder = '支持粘贴图片' }: RichTextEditorProps) {
   const editor = useEditor({
     editorProps: {
       attributes: {
-        class: cn('prose prose-p:mb-2 prose-p:mt-0 prose-ol:mb-0 prose-h2:mb-4 prose-h3:mb-3 prose-img:mt-0 min-h-full max-w-none rounded-md px-4 py-3 outline-1 outline-border focus:outline-primary', className),
+        class: cn('prose prose-p:mb-2 prose-p:mt-0 prose-ol:mb-0 prose-h2:mb-4 prose-h3:mb-3 prose-img:mt-0 min-h-full max-w-none rounded-md px-4 py-2 outline-1 outline-border focus:outline-primary', className),
       },
     },
     content: value,
     onUpdate({ editor }) {
-      onChange?.(editor.getHTML())
+      const html = editor.getHTML()
+      if (html === '<p></p>') {
+        onChange?.(undefined)
+      }
+      else {
+        onChange?.(html)
+      }
     },
     extensions: [
       StarterKit,
       S3Image,
       Image,
+      Placeholder.configure({
+        placeholder,
+      }),
       FileHandler.configure({
         allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
         onDrop: (currentEditor, files, pos) => {
@@ -137,7 +148,7 @@ export function RichTextEditor({ bucket, value, onChange, className }: RichTextE
   return (
     <>
       {editor && (
-        <FloatingMenu editor={editor} tippyOptions={{ duration: 100, placement: 'right-start' }}>
+        <FloatingMenu editor={editor} tippyOptions={{ duration: 100, placement: 'right-start', offset: [30, 0] }}>
           <div className="card p-2 w-fit">
             <Typography.Title level={5} className="text-sm ml-1.5 mt-1.5">通用</Typography.Title>
             <div className="grid grid-cols-6 gap-x-0.5">

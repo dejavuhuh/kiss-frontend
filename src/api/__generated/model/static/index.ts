@@ -1,4 +1,7 @@
 export type {AuthenticationService_SignInRequest} from './AuthenticationService_SignInRequest';
+export type {FaultService_ServerErrorBody} from './FaultService_ServerErrorBody';
+export type {HttpRequest} from './HttpRequest';
+export type {IssueInput} from './IssueInput';
 export type {JobService_JobView} from './JobService_JobView';
 export type {LoggingService_ConfigureLevelEvent} from './LoggingService_ConfigureLevelEvent';
 export type {Page} from './Page';

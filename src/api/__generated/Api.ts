@@ -2,6 +2,7 @@ import type {Executor} from './';
 import {
     AuthenticationService, 
     FaultService, 
+    IssueService, 
     JobService, 
     LoggingService, 
     PermissionService, 
@@ -9,7 +10,6 @@ import {
     S3Service, 
     SessionHistoryService, 
     SessionService, 
-    SystemErrorService, 
     UserService
 } from './services/';
 
@@ -21,9 +21,9 @@ export class Api {
     
     readonly sessionService: SessionService
     
-    readonly systemErrorService: SystemErrorService
-    
     readonly faultService: FaultService
+    
+    readonly issueService: IssueService
     
     readonly jobService: JobService
     
@@ -41,8 +41,8 @@ export class Api {
         this.authenticationService = new AuthenticationService(executor);
         this.sessionHistoryService = new SessionHistoryService(executor);
         this.sessionService = new SessionService(executor);
-        this.systemErrorService = new SystemErrorService(executor);
         this.faultService = new FaultService(executor);
+        this.issueService = new IssueService(executor);
         this.jobService = new JobService(executor);
         this.loggingService = new LoggingService(executor);
         this.s3service = new S3Service(executor);

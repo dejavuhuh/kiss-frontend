@@ -1,13 +1,15 @@
-import type { ApiError } from '@/api'
+import type { ApiError, RequestOf } from '@/api'
 import { api } from '@/api'
 import { StyleProvider } from '@ant-design/cssinjs'
-import { CloseOutlined } from '@ant-design/icons'
-import { ModalForm, ProFormItem, ProFormText, ProFormUploadButton } from '@ant-design/pro-components'
-import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
+import { CloseOutlined, FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons'
+import { ProFormItem, ProFormText } from '@ant-design/pro-components'
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider, useMutation } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
-import { App as AppWrapper, Button, ConfigProvider } from 'antd'
+
+import { useFullscreen } from 'ahooks'
+import { App as AppWrapper, Button, ConfigProvider, Form, Modal, Space, Typography } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
+import { useRef, useState } from 'react'
 import { RichTextEditor } from './components/form'
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
@@ -59,6 +61,7 @@ function App() {
 
 function InnerApp() {
   const { message } = AppWrapper.useApp()
+  const [issueContext, setIssueContext] = useState<IssueContext>()
 
   const onError = ({ detail, status, traceId, request }: ApiError) => {
     if (status === 401) {
@@ -77,27 +80,13 @@ function InnerApp() {
         content: (
           <div className="flex items-center">
             服务器内部错误
-            <ModalForm<{ title: string, description: string }>
-              title="问题反馈"
-              initialValues={{
-                description: `
-                <h3>复现步骤</h3>
-                <ol>
-                  <li>
-                    ss
-                  </li>
-                </ol>
-                <h3>截图</h3>
-                `
-              }}
-              trigger={<Button size="small" type="link">问题反馈</Button>}
-              onFinish={v => console.log(v)}
+            <Button
+              size="small"
+              type="link"
+              onClick={() => setIssueContext({ request, traceId })}
             >
-              <ProFormText label="标题" name="title" rules={[{ required: true }]} />
-              <ProFormItem label="详细描述" name="description" rules={[{ required: true }]}>
-                <RichTextEditor bucket="system-error-screenshot" className="h-96" />
-              </ProFormItem>
-            </ModalForm>
+              问题反馈
+            </Button>
             <div onClick={() => message.destroy(key)} className="group flex items-center justify-center p-1 rounded hover:bg-bg-text-hover cursor-pointer transition-colors">
               <CloseOutlined className="size-3 text-secondary group-hover:text-icon-hover transition-colors" />
             </div>
@@ -124,10 +113,80 @@ function InnerApp() {
       },
     },
   })
+
   return (
     <QueryClientProvider client={queryClient}>
+      <IssueReportModal context={issueContext} open={!!issueContext} onCancel={() => setIssueContext(undefined)} />
       <RouterProvider router={router} />
     </QueryClientProvider>
+  )
+}
+
+type IssueInput = RequestOf<typeof api.issueService.report>['body']
+type IssueFormValues = Pick<IssueInput, 'title' | 'description'>
+type IssueContext = Pick<IssueInput, 'request' | 'traceId'>
+
+interface IssueReportModalProps {
+  context?: IssueContext
+  open: boolean
+  onCancel: () => void
+}
+
+function IssueReportModal({ context, open, onCancel }: IssueReportModalProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [isFullscreen, { toggleFullscreen }] = useFullscreen(containerRef)
+  const { message } = AppWrapper.useApp()
+
+  const reportIssue = useMutation({
+    mutationFn: api.issueService.report,
+  })
+
+  if (!context) {
+    return null
+  }
+
+  return (
+    <Modal
+      centered
+      title="问题反馈"
+      open={open}
+      width={800}
+      onCancel={onCancel}
+      maskClosable={false}
+      modalRender={() => (
+        <div ref={containerRef} className="card px-6 py-5 pointer-events-auto">
+          <div className="flex items-center mb-4">
+            <Typography.Title className="mb-0" level={5}>问题反馈</Typography.Title>
+            <Space className="ml-auto">
+              <Button onClick={toggleFullscreen} type="text" className="text-icon text-base" icon={isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />} size="small" />
+              <Button onClick={onCancel} type="text" className="text-icon text-base" icon={<CloseOutlined />} size="small" />
+            </Space>
+          </div>
+          <Form<IssueFormValues>
+            layout="vertical"
+            onFinish={async (values) => {
+              await reportIssue.mutateAsync({
+                body: {
+                  ...context,
+                  ...values,
+                },
+              })
+              message.success('反馈成功')
+              onCancel()
+            }}
+          >
+            <ProFormText label="标题" name="title" rules={[{ required: true }]} />
+            <ProFormItem label="详细描述" name="description" rules={[{ required: true }]}>
+              <RichTextEditor bucket="system-error-screenshot" className="min-h-96" />
+            </ProFormItem>
+            <div className="flex justify-end gap-2">
+              <Button onClick={onCancel}>取消</Button>
+              <Button type="primary" htmlType="submit" loading={reportIssue.isPending}>提交</Button>
+            </div>
+          </Form>
+        </div>
+      )}
+    />
   )
 }
 

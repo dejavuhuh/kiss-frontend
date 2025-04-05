@@ -5,6 +5,7 @@
 
 @theme inline {
   --color-text: var(--ant-color-text);
+  --color-icon: var(--ant-color-icon);
   --color-border: var(--ant-color-border);
   --color-border-secondary: var(--ant-color-border-secondary);
   --color-container: var(--ant-color-bg-container);
@@ -52,5 +53,12 @@
     &.ProseMirror-selectednode {
       @apply outline-3 outline-primary;
     }
+  }
+  p.is-empty::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
   }
 }

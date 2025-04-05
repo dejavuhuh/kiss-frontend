@@ -1,4 +1,5 @@
 import type {Executor} from '../';
+import type {FaultService_ServerErrorBody} from '../model/static/';
 
 export class FaultService {
     
@@ -27,16 +28,32 @@ export class FaultService {
     /**
      * 服务端异常
      */
-    readonly serverError: () => Promise<
+    readonly serverError: (options: FaultServiceOptions['serverError']) => Promise<
         void
-    > = async() => {
+    > = async(options) => {
         let _uri = '/fault/server-error';
-        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<void>;
+        let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
+        let _value: any = undefined;
+        _value = options.foo;
+        _uri += _separator
+        _uri += 'foo='
+        _uri += encodeURIComponent(_value);
+        _separator = '&';
+        _value = options.bar;
+        _uri += _separator
+        _uri += 'bar='
+        _uri += encodeURIComponent(_value);
+        _separator = '&';
+        return (await this.executor({uri: _uri, method: 'POST', body: options.body})) as Promise<void>;
     }
 }
 
 export type FaultServiceOptions = {
     'highCpu': {}, 
     'cpuIntensive': {}, 
-    'serverError': {}
+    'serverError': {
+        foo: string, 
+        bar: number, 
+        body: FaultService_ServerErrorBody
+    }
 }

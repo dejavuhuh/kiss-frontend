@@ -1,5 +1,6 @@
 export {AuthenticationService} from './AuthenticationService';
 export {FaultService} from './FaultService';
+export {IssueService} from './IssueService';
 export {JobService} from './JobService';
 export {LoggingService} from './LoggingService';
 export {PermissionService} from './PermissionService';
@@ -7,5 +8,4 @@ export {RoleService} from './RoleService';
 export {S3Service} from './S3Service';
 export {SessionHistoryService} from './SessionHistoryService';
 export {SessionService} from './SessionService';
-export {SystemErrorService} from './SystemErrorService';
 export {UserService} from './UserService';
