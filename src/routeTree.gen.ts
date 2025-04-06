@@ -26,6 +26,7 @@ import { Route as DashboardSystemPermissionIndexImport } from './routes/_dashboa
 import { Route as DashboardSystemJobIndexImport } from './routes/_dashboard/system/job/index'
 import { Route as DashboardComponentS3UploadIndexImport } from './routes/_dashboard/component/s3-upload/index'
 import { Route as DashboardComponentRichTextEditorIndexImport } from './routes/_dashboard/component/rich-text-editor/index'
+import { Route as DashboardTraceIssueIdImport } from './routes/_dashboard/trace/issue/$id'
 import { Route as DashboardSystemRoleIdImport } from './routes/_dashboard/system/role/$id'
 
 // Create/Update Routes
@@ -123,6 +124,12 @@ const DashboardComponentRichTextEditorIndexRoute =
     getParentRoute: () => DashboardRoute,
   } as any)
 
+const DashboardTraceIssueIdRoute = DashboardTraceIssueIdImport.update({
+  id: '/trace/issue/$id',
+  path: '/trace/issue/$id',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
 const DashboardSystemRoleIdRoute = DashboardSystemRoleIdImport.update({
   id: '/system/role/$id',
   path: '/system/role/$id',
@@ -187,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/system/role/$id'
       fullPath: '/system/role/$id'
       preLoaderRoute: typeof DashboardSystemRoleIdImport
+      parentRoute: typeof DashboardImport
+    }
+    '/_dashboard/trace/issue/$id': {
+      id: '/_dashboard/trace/issue/$id'
+      path: '/trace/issue/$id'
+      fullPath: '/trace/issue/$id'
+      preLoaderRoute: typeof DashboardTraceIssueIdImport
       parentRoute: typeof DashboardImport
     }
     '/_dashboard/component/rich-text-editor/': {
@@ -268,6 +282,7 @@ interface DashboardRouteChildren {
   DashboardDashboardRoute: typeof DashboardDashboardRoute
   DashboardFaultIndexRoute: typeof DashboardFaultIndexRoute
   DashboardSystemRoleIdRoute: typeof DashboardSystemRoleIdRoute
+  DashboardTraceIssueIdRoute: typeof DashboardTraceIssueIdRoute
   DashboardComponentRichTextEditorIndexRoute: typeof DashboardComponentRichTextEditorIndexRoute
   DashboardComponentS3UploadIndexRoute: typeof DashboardComponentS3UploadIndexRoute
   DashboardSystemJobIndexRoute: typeof DashboardSystemJobIndexRoute
@@ -282,6 +297,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardDashboardRoute: DashboardDashboardRoute,
   DashboardFaultIndexRoute: DashboardFaultIndexRoute,
   DashboardSystemRoleIdRoute: DashboardSystemRoleIdRoute,
+  DashboardTraceIssueIdRoute: DashboardTraceIssueIdRoute,
   DashboardComponentRichTextEditorIndexRoute:
     DashboardComponentRichTextEditorIndexRoute,
   DashboardComponentS3UploadIndexRoute: DashboardComponentS3UploadIndexRoute,
@@ -305,6 +321,7 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof AuthenticationSignUpIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
   '/system/role/$id': typeof DashboardSystemRoleIdRoute
+  '/trace/issue/$id': typeof DashboardTraceIssueIdRoute
   '/component/rich-text-editor': typeof DashboardComponentRichTextEditorIndexRoute
   '/component/s3-upload': typeof DashboardComponentS3UploadIndexRoute
   '/system/job': typeof DashboardSystemJobIndexRoute
@@ -323,6 +340,7 @@ export interface FileRoutesByTo {
   '/sign-up': typeof AuthenticationSignUpIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
   '/system/role/$id': typeof DashboardSystemRoleIdRoute
+  '/trace/issue/$id': typeof DashboardTraceIssueIdRoute
   '/component/rich-text-editor': typeof DashboardComponentRichTextEditorIndexRoute
   '/component/s3-upload': typeof DashboardComponentS3UploadIndexRoute
   '/system/job': typeof DashboardSystemJobIndexRoute
@@ -343,6 +361,7 @@ export interface FileRoutesById {
   '/_authentication/sign-up/': typeof AuthenticationSignUpIndexRoute
   '/_dashboard/fault/': typeof DashboardFaultIndexRoute
   '/_dashboard/system/role/$id': typeof DashboardSystemRoleIdRoute
+  '/_dashboard/trace/issue/$id': typeof DashboardTraceIssueIdRoute
   '/_dashboard/component/rich-text-editor/': typeof DashboardComponentRichTextEditorIndexRoute
   '/_dashboard/component/s3-upload/': typeof DashboardComponentS3UploadIndexRoute
   '/_dashboard/system/job/': typeof DashboardSystemJobIndexRoute
@@ -363,6 +382,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/fault'
     | '/system/role/$id'
+    | '/trace/issue/$id'
     | '/component/rich-text-editor'
     | '/component/s3-upload'
     | '/system/job'
@@ -380,6 +400,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/fault'
     | '/system/role/$id'
+    | '/trace/issue/$id'
     | '/component/rich-text-editor'
     | '/component/s3-upload'
     | '/system/job'
@@ -398,6 +419,7 @@ export interface FileRouteTypes {
     | '/_authentication/sign-up/'
     | '/_dashboard/fault/'
     | '/_dashboard/system/role/$id'
+    | '/_dashboard/trace/issue/$id'
     | '/_dashboard/component/rich-text-editor/'
     | '/_dashboard/component/s3-upload/'
     | '/_dashboard/system/job/'
@@ -452,6 +474,7 @@ export const routeTree = rootRoute
         "/_dashboard/dashboard",
         "/_dashboard/fault/",
         "/_dashboard/system/role/$id",
+        "/_dashboard/trace/issue/$id",
         "/_dashboard/component/rich-text-editor/",
         "/_dashboard/component/s3-upload/",
         "/_dashboard/system/job/",
@@ -480,6 +503,10 @@ export const routeTree = rootRoute
     },
     "/_dashboard/system/role/$id": {
       "filePath": "_dashboard/system/role/$id.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/trace/issue/$id": {
+      "filePath": "_dashboard/trace/issue/$id.tsx",
       "parent": "/_dashboard"
     },
     "/_dashboard/component/rich-text-editor/": {

@@ -15,6 +15,7 @@ interface RichTextEditorProps {
   onChange?: (value: string | undefined) => void
   className?: string
   placeholder?: string
+  readonly?: boolean
 }
 
 // Helper component for toolbar buttons
@@ -72,11 +73,18 @@ function BlockButton({ title, icon, onClick, active }: BlockButtonProps) {
   )
 }
 
-export function RichTextEditor({ bucket, value, onChange, className, placeholder = '支持粘贴图片' }: RichTextEditorProps) {
+export function RichTextEditor({ bucket, value, onChange, className, placeholder = '支持粘贴图片', readonly = false }: RichTextEditorProps) {
   const editor = useEditor({
+    editable: !readonly,
     editorProps: {
       attributes: {
-        class: cn('prose prose-p:mb-2 prose-p:mt-0 prose-ol:mb-0 prose-h2:mb-4 prose-h3:mb-3 prose-img:mt-0 min-h-full max-w-none rounded-md px-4 py-2 outline-1 outline-border focus:outline-primary', className),
+        class: cn(
+          'prose prose-p:mb-2 prose-p:mt-0 prose-ol:mb-0 prose-h2:mb-4 prose-h3:mb-3 prose-img:mt-0 min-h-full max-w-none rounded-md px-4 py-2 outline-1 outline-border focus:outline-primary',
+          className,
+          {
+            'outline-none': readonly,
+          },
+        ),
       },
     },
     content: value,
