@@ -33,13 +33,12 @@ function RouteComponent() {
   })
 
   const { method } = data.request
-  const [tab, setTab] = useState<'query' | 'body' | 'headers' | 'curl'>('curl')
-  const { message } = App.useApp()
+  const [tab, setTab] = useState<'query' | 'body' | 'headers' | 'curl'>('query')
 
   return (
     <ProCard
       tabs={{
-        defaultActiveKey: 'request',
+        defaultActiveKey: 'detail',
         items: [
           {
             label: '问题详情',

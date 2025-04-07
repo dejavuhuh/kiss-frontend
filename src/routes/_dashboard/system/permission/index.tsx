@@ -1,6 +1,7 @@
 import type { RequestOf, ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import { api } from '@/api'
+import { CopyableText } from '@/components'
 import { mapTree, traverseTree } from '@/utils/tree'
 import { ModalForm, ProFormCheckbox, ProFormDependency, ProFormSelect, ProFormText, ProFormTreeSelect, QueryFilter } from '@ant-design/pro-components'
 import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query'
@@ -99,7 +100,7 @@ function PermissionManagement() {
       title: '权限编码',
       dataIndex: 'code',
       width: 300,
-      render: text => <Typography.Text copyable className="font-mono">{text}</Typography.Text>,
+      render: text => <CopyableText>{text}</CopyableText>,
     },
     {
       title: '操作',
