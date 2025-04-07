@@ -3,12 +3,13 @@ import type { TagProps } from 'antd'
 import { api } from '@/api'
 import { CopyableText, MonacoEditor } from '@/components'
 import { RichTextEditor } from '@/components/form'
-import { ClockCircleOutlined, UserOutlined } from '@ant-design/icons'
+import { ClockCircleOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons'
 import { ProCard, ProDescriptions } from '@ant-design/pro-components'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
-import { App, Segmented, Table, Tag, Typography } from 'antd'
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { App, Button, Divider, Modal, Segmented, Table, Tag, Typography } from 'antd'
 import { useState } from 'react'
+import { RelatedToIssueButton } from './components'
 
 export const Route = createFileRoute('/_dashboard/trace/issue/$id')({
   component: RouteComponent,
@@ -27,13 +28,18 @@ const methodColors: Record<string, TagProps['color']> = {
 
 function RouteComponent() {
   const { id } = Route.useParams()
-  const { data } = useSuspenseQuery({
+  const [tab, setTab] = useState<'query' | 'body' | 'headers' | 'curl'>('query')
+
+  const { data } = useQuery({
     queryKey: ['issues', id],
     queryFn: () => api.issueService.get({ id }),
   })
 
+  if (!data) {
+    return null
+  }
+
   const { method } = data.request
-  const [tab, setTab] = useState<'query' | 'body' | 'headers' | 'curl'>('query')
 
   return (
     <ProCard
@@ -44,20 +50,41 @@ function RouteComponent() {
             label: '问题详情',
             key: 'detail',
             children: (
-              <>
-                <div className="flex items-end gap-4 mt-4 mb-6">
-                  <Typography.Title level={3} className="mb-0">{data.title}</Typography.Title>
-                  <div className="text-secondary text-base space-x-1">
-                    <UserOutlined />
-                    <span>{data.creator.username}</span>
+              <div className="flex mt-3 gap-4">
+                <div>
+                  <div className="flex items-end gap-4 mb-6">
+                    <Typography.Title level={3} className="mb-0">{data.title}</Typography.Title>
+                    <div className="text-secondary text-base space-x-1">
+                      <UserOutlined />
+                      <span>{data.creator.username}</span>
+                    </div>
+                    <div className="text-secondary text-base space-x-1">
+                      <ClockCircleOutlined />
+                      <span>{new Date(data.createdTime).toLocaleString()}</span>
+                    </div>
                   </div>
-                  <div className="text-secondary text-base space-x-1">
-                    <ClockCircleOutlined />
-                    <span>{new Date(data.createdTime).toLocaleString()}</span>
-                  </div>
+                  <RichTextEditor value={data.description} readonly bucket="system-error-screenshot" />
                 </div>
-                <RichTextEditor value={data.description} readonly bucket="system-error-screenshot" />
-              </>
+                <div className="border-r" />
+                <div className="w-[600px] space-y-1">
+                  <div className="flex items-center gap-2">
+                    <Typography.Title level={5} className="mb-0">关联问题</Typography.Title>
+                    {!data.relatedTo && data.relatedFrom.length === 0 && <RelatedToIssueButton id={id} />}
+                  </div>
+                  {data.relatedTo && (
+                    <Link to="/trace/issue/$id" params={{ id: data.relatedTo.id }}>
+                      #
+                      {data.relatedTo.id}
+                    </Link>
+                  )}
+                  {data.relatedFrom.map(({ id }) => (
+                    <Link key={id} to="/trace/issue/$id" params={{ id }}>
+                      #
+                      {id}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             ),
           },
           {

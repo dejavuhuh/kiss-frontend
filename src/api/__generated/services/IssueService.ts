@@ -41,6 +41,13 @@ export class IssueService {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
+        _value = options.specification.id;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'id='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
         _value = options.specification.minCreatedTime;
         if (_value !== undefined && _value !== null) {
             _uri += _separator
@@ -75,6 +82,34 @@ export class IssueService {
         return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Page<IssueDto['IssueService/LIST_ITEM']>>;
     }
     
+    /**
+     * 获取可关联的问题列表
+     */
+    readonly relatable: (options: IssueServiceOptions['relatable']) => Promise<
+        Array<IssueDto['IssueService/RELATABLE']>
+    > = async(options) => {
+        let _uri = '/issues/';
+        _uri += encodeURIComponent(options.id);
+        _uri += '/relatable';
+        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<IssueDto['IssueService/RELATABLE']>>;
+    }
+    
+    readonly relateTo: (options: IssueServiceOptions['relateTo']) => Promise<
+        void
+    > = async(options) => {
+        let _uri = '/issues/';
+        _uri += encodeURIComponent(options.id);
+        _uri += '/relateTo';
+        let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
+        let _value: any = undefined;
+        _value = options.relatedToId;
+        _uri += _separator
+        _uri += 'relatedToId='
+        _uri += encodeURIComponent(_value);
+        _separator = '&';
+        return (await this.executor({uri: _uri, method: 'PUT'})) as Promise<void>;
+    }
+    
     readonly report: (options: IssueServiceOptions['report']) => Promise<
         void
     > = async(options) => {
@@ -94,5 +129,12 @@ export type IssueServiceOptions = {
         pageIndex: number, 
         pageSize: number, 
         specification: IssueSpecification
+    }, 
+    'relatable': {
+        id: number
+    }, 
+    'relateTo': {
+        id: number, 
+        relatedToId: number
     }
 }

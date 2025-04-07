@@ -3,6 +3,10 @@ export interface IssueSpecification {
     description?: string | undefined;
     traceId?: string | undefined;
     /**
+     * ID
+     */
+    id?: number | undefined;
+    /**
      * 创建时间
      */
     minCreatedTime?: string | undefined;

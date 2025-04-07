@@ -1,5 +1,7 @@
 export type {HistoryReason} from './HistoryReason';
 export {HistoryReason_CONSTANTS} from './HistoryReason';
+export type {IssueState} from './IssueState';
+export {IssueState_CONSTANTS} from './IssueState';
 export type {LogLevel} from './LogLevel';
 export {LogLevel_CONSTANTS} from './LogLevel';
 export type {Method} from './Method';

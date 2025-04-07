@@ -1,3 +1,4 @@
+import type {IssueState} from '../enums/';
 import type {HttpRequest} from '../static/';
 
 export type IssueDto = {
@@ -14,6 +15,7 @@ export type IssueDto = {
         traceId: string;
         title: string;
         description: string;
+        state: IssueState;
         creator: {
             /**
              * ID
@@ -21,6 +23,18 @@ export type IssueDto = {
             id: number;
             username: string;
         };
+        relatedTo?: {
+            /**
+             * ID
+             */
+            id: number;
+        } | undefined;
+        relatedFrom: Array<{
+            /**
+             * ID
+             */
+            id: number;
+        }>;
     }, 
     'IssueService/LIST_ITEM': {
         /**
@@ -32,6 +46,20 @@ export type IssueDto = {
          * 创建时间
          */
         createdTime: string;
+        creator: {
+            /**
+             * ID
+             */
+            id: number;
+            username: string;
+        };
+    }, 
+    'IssueService/RELATABLE': {
+        /**
+         * ID
+         */
+        id: number;
+        title: string;
         creator: {
             /**
              * ID
