@@ -37,6 +37,7 @@ const IGNORED_WARNING_MESSAGES = [
   'Warning: StrictMode double-invocation',
   'Warning: Cannot update a component while rendering a different component',
   '[antd: Form.Item] `children` is array',
+  'Warning: [antd: Descriptions] `contentStyle` is deprecated. Please use `styles={{ content: {} }}` instead.',
 ] as const
 
 // 默认配置

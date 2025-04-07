@@ -1,13 +1,14 @@
+import type { HttpRequest } from '@/api/__generated/model/static'
 import type { TagProps } from 'antd'
 import { api } from '@/api'
-import { CopyableText } from '@/components'
+import { CopyableText, MonacoEditor } from '@/components'
 import { RichTextEditor } from '@/components/form'
-import { copyToClipboard } from '@/utils'
 import { ClockCircleOutlined, UserOutlined } from '@ant-design/icons'
 import { ProCard, ProDescriptions } from '@ant-design/pro-components'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { App, Table, Tag, Tooltip, Typography } from 'antd'
+import { App, Segmented, Table, Tag, Typography } from 'antd'
+import { useState } from 'react'
 
 export const Route = createFileRoute('/_dashboard/trace/issue/$id')({
   component: RouteComponent,
@@ -32,6 +33,7 @@ function RouteComponent() {
   })
 
   const { method } = data.request
+  const [tab, setTab] = useState<'query' | 'body' | 'headers' | 'curl'>('curl')
   const { message } = App.useApp()
 
   return (
@@ -63,52 +65,100 @@ function RouteComponent() {
             label: '请求信息',
             key: 'request',
             children: (
-              <div className="space-y-4 mt-1.5">
-                <Typography.Title level={5}>请求地址</Typography.Title>
+              <div className="flex flex-col gap-4 mt-1.5">
+                <Typography.Title level={5} className="mb-0">请求地址</Typography.Title>
                 <div className="flex items-center gap-2.5">
                   <Tag color={methodColors[method]} bordered={false} className="font-mono mr-0">{method}</Tag>
                   <CopyableText>{data.request.url}</CopyableText>
                 </div>
-                <ProDescriptions column={1}>
+                <ProDescriptions column={1} className="pl-0.5">
                   <ProDescriptions.Item label="Trace ID">
                     <CopyableText>{data.traceId}</CopyableText>
                   </ProDescriptions.Item>
                 </ProDescriptions>
-                <Typography.Title level={5}>查询参数</Typography.Title>
-                <Table
-                  size="small"
-                  bordered
-                  pagination={false}
-                  columns={[
+                <Segmented<typeof tab>
+                  value={tab}
+                  className="w-fit"
+                  onChange={setTab}
+                  options={[
                     {
-                      title: '参数名',
-                      dataIndex: 'key',
+                      label: '查询参数',
+                      value: 'query',
                     },
                     {
-                      title: '参数值',
-                      dataIndex: 'value',
-                    },
-                  ]}
-                  dataSource={Object.entries(data.request.query).map(([key, value]) => ({ key, value }))}
-                />
-                <Typography.Title level={5}>请求头</Typography.Title>
-                <Table
-                  size="small"
-                  bordered
-                  rowClassName={(_record, index) => (index % 2 === 1 ? 'bg-gray-50' : '')}
-                  pagination={false}
-                  columns={[
-                    {
-                      title: '参数名',
-                      dataIndex: 'key',
+                      label: '请求体',
+                      value: 'body',
                     },
                     {
-                      title: '参数值',
-                      dataIndex: 'value',
+                      label: (
+                        <div className="flex items-center gap-1">
+                          请求头
+                          <div className="text-xs bg-gray-200/50 px-1 py rounded-lg text-success">{Object.keys(data.request.headers).length}</div>
+                        </div>
+                      ),
+                      value: 'headers',
+                    },
+                    {
+                      label: 'cURL',
+                      value: 'curl',
                     },
                   ]}
-                  dataSource={Object.entries(data.request.headers).map(([key, value]) => ({ key, value }))}
                 />
+
+                {tab === 'query' && (
+                  <Table
+                    size="small"
+                    bordered
+                    pagination={false}
+                    columns={[
+                      {
+                        title: '参数名',
+                        dataIndex: 'key',
+                        render: key => <CopyableText>{key}</CopyableText>,
+                      },
+                      {
+                        title: '参数值',
+                        dataIndex: 'value',
+                        render: value => <CopyableText>{value}</CopyableText>,
+                      },
+                    ]}
+                    dataSource={Object.entries(data.request.query).map(([key, value]) => ({ key, value }))}
+                  />
+                )}
+
+                {tab === 'body' && data.request.body && (
+                  <MonacoEditor language="json" className="h-96" value={JSON.stringify(JSON.parse(data.request.body), null, '\t')} />
+                )}
+
+                {tab === 'headers' && (
+                  <Table
+                    size="small"
+                    bordered
+                    rowClassName={(_record, index) => (index % 2 === 1 ? 'bg-gray-50' : '')}
+                    pagination={false}
+                    columns={[
+                      {
+                        title: '参数名',
+                        dataIndex: 'key',
+                        render: key => <CopyableText>{key}</CopyableText>,
+                      },
+                      {
+                        title: '参数值',
+                        dataIndex: 'value',
+                        render: value => <CopyableText>{value}</CopyableText>,
+                      },
+                    ]}
+                    dataSource={Object.entries(data.request.headers).map(([key, value]) => ({ key, value }))}
+                  />
+                )}
+
+                {tab === 'curl' && (
+                  <MonacoEditor
+                    language="shell"
+                    className="h-96"
+                    value={toCURL(data.request)}
+                  />
+                )}
               </div>
             ),
           },
@@ -116,4 +166,29 @@ function RouteComponent() {
       }}
     />
   )
+}
+
+function toCURL(request: HttpRequest): string {
+  // Start with the basic curl command and URL
+  let curlCommand = `curl '${request.url}'`
+
+  // Add method if not GET
+  if (request.method !== 'GET') {
+    curlCommand += ` \\
+  -X ${request.method}`
+  }
+
+  // Add headers
+  for (const [key, value] of Object.entries(request.headers)) {
+    curlCommand += ` \\
+  -H '${key}: ${value}'`
+  }
+
+  // Add request body if it exists
+  if (request.body) {
+    curlCommand += ` \\
+  --data-raw '${request.body}'`
+  }
+
+  return curlCommand
 }
