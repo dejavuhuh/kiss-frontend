@@ -3,11 +3,11 @@ import type { TagProps } from 'antd'
 import { api } from '@/api'
 import { CopyableText, MonacoEditor } from '@/components'
 import { RichTextEditor } from '@/components/form'
-import { ClockCircleOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons'
+import { ClockCircleOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons'
 import { ProCard, ProDescriptions } from '@ant-design/pro-components'
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { App, Button, Divider, Modal, Segmented, Table, Tag, Typography } from 'antd'
+import { App, Button, Segmented, Table, Tag, Typography } from 'antd'
 import { useState } from 'react'
 import { RelatedToIssueButton } from './components'
 
@@ -28,9 +28,10 @@ const methodColors: Record<string, TagProps['color']> = {
 
 function RouteComponent() {
   const { id } = Route.useParams()
+  const { message } = App.useApp()
   const [tab, setTab] = useState<'query' | 'body' | 'headers' | 'curl'>('query')
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['issues', id],
     queryFn: () => api.issueService.get({ id }),
   })
@@ -72,16 +73,31 @@ function RouteComponent() {
                     {!data.relatedTo && data.relatedFrom.length === 0 && <RelatedToIssueButton id={id} />}
                   </div>
                   {data.relatedTo && (
-                    <Link to="/trace/issue/$id" params={{ id: data.relatedTo.id }}>
-                      #
-                      {data.relatedTo.id}
-                    </Link>
+                    <div className="flex items-center w-full justify-between">
+                      <Link to="/trace/issue/$id" params={{ id: data.relatedTo.id }}>
+                        #
+                        {data.relatedTo.id}
+                      </Link>
+                      <Button
+                        onClick={async () => {
+                          await api.issueService.unRelate({ id })
+                          message.success('取消关联成功')
+                          refetch()
+                        }}
+                        className="text-icon"
+                        size="small"
+                        type="text"
+                        icon={<DeleteOutlined />}
+                      />
+                    </div>
                   )}
                   {data.relatedFrom.map(({ id }) => (
-                    <Link key={id} to="/trace/issue/$id" params={{ id }}>
-                      #
-                      {id}
-                    </Link>
+                    <div key={id} className="flex items-center w-full justify-between">
+                      <Link to="/trace/issue/$id" params={{ id }}>
+                        #
+                        {id}
+                      </Link>
+                    </div>
                   ))}
                 </div>
               </div>

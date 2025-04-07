@@ -116,6 +116,15 @@ export class IssueService {
         let _uri = '/issues';
         return (await this.executor({uri: _uri, method: 'POST', body: options.body})) as Promise<void>;
     }
+    
+    readonly unRelate: (options: IssueServiceOptions['unRelate']) => Promise<
+        void
+    > = async(options) => {
+        let _uri = '/issues/';
+        _uri += encodeURIComponent(options.id);
+        _uri += '/unRelate';
+        return (await this.executor({uri: _uri, method: 'DELETE'})) as Promise<void>;
+    }
 }
 
 export type IssueServiceOptions = {
@@ -136,5 +145,8 @@ export type IssueServiceOptions = {
     'relateTo': {
         id: number, 
         relatedToId: number
+    }, 
+    'unRelate': {
+        id: number
     }
 }
