@@ -3,9 +3,8 @@ import type { UserView } from '../user'
 import { api } from '@/api'
 import { useTable } from '@/hooks/useTable'
 import { SecurityScanOutlined, UserOutlined } from '@ant-design/icons'
-import { ProCard } from '@ant-design/pro-components'
 import { createFileRoute } from '@tanstack/react-router'
-import { Divider, Segmented, Table } from 'antd'
+import { Segmented, Table } from 'antd'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/_dashboard/system/role/$id')({

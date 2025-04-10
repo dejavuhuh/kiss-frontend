@@ -12,4 +12,5 @@ export interface Dynamic_User {
     username?: string;
     password?: string;
     roles?: Array<Dynamic_Role>;
+    roleIds?: Array<number>;
 }

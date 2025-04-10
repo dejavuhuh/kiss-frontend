@@ -5,6 +5,23 @@ export type UserDto = {
          */
         id: number;
         username: string;
+        roles: Array<{
+            /**
+             * ID
+             */
+            id: number;
+            /**
+             * 角色名称
+             */
+            name: string;
+            permissions: Array<{
+                /**
+                 * ID
+                 */
+                id: number;
+                code: string;
+            }>;
+        }>;
     }, 
     'UserFetchers/LIST_ITEM': {
         /**
@@ -16,5 +33,15 @@ export type UserDto = {
          */
         createdTime: string;
         username: string;
+        roles: Array<{
+            /**
+             * ID
+             */
+            id: number;
+            /**
+             * 角色名称
+             */
+            name: string;
+        }>;
     }
 }

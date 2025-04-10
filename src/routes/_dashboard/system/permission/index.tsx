@@ -2,9 +2,9 @@ import type { RequestOf, ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import { api } from '@/api'
 import { CopyableText } from '@/components'
-import { mapTree, traverseTree } from '@/utils/tree'
-import { ModalForm, ProFormCheckbox, ProFormDependency, ProFormSelect, ProFormText, ProFormTreeSelect, QueryFilter } from '@ant-design/pro-components'
-import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query'
+import { traverseTree } from '@/utils/tree'
+import { ModalForm, ProFormDependency, ProFormSelect, ProFormText, ProFormTreeSelect, QueryFilter } from '@ant-design/pro-components'
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { App, Button, Space, Table, Tag, Typography } from 'antd'
 import { useMemo } from 'react'
@@ -47,10 +47,7 @@ function PermissionManagement() {
       }
     })
     // Concat parent code with child code
-    return mapTree<PermissionView, PermissionView>(data, (node, parent) => ({
-      ...node,
-      code: parent ? `${parent.code}:${node.code}` : node.code,
-    }))
+    return data
   }, [data])
 
   const createPermission = useMutation({

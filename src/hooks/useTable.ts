@@ -11,9 +11,10 @@ interface Row {
 interface UseTableOptions<T extends Row> {
   queryKey: QueryKey
   queryFn: () => Promise<T[]>
+  checkable?: (row: T) => boolean
 }
 
-export function useTable<T extends Row>({ queryKey, queryFn }: UseTableOptions<T>) {
+export function useTable<T extends Row>({ queryKey, queryFn, checkable = () => true }: UseTableOptions<T>) {
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
 
   const { refetch, data, isFetching } = useQuery({
@@ -39,6 +40,7 @@ export function useTable<T extends Row>({ queryKey, queryFn }: UseTableOptions<T
         selectedRowKeys,
         onChange: setSelectedRowKeys,
         columnWidth: 50,
+        getCheckboxProps: row => ({ disabled: !checkable(row) }),
       },
       pagination: {
         showTotal: total => `共 ${total} 条`,

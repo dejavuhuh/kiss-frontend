@@ -1,14 +1,4 @@
 export type RoleDto = {
-    'AuthenticationService/CURRENT_USER_ROLE': {
-        /**
-         * ID
-         */
-        id: number;
-        /**
-         * 角色名称
-         */
-        name: string;
-    }, 
     'RoleFetchers/LIST_ITEM': {
         /**
          * ID

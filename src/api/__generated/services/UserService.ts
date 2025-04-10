@@ -6,6 +6,15 @@ export class UserService {
     
     constructor(private executor: Executor) {}
     
+    readonly assignRoles: (options: UserServiceOptions['assignRoles']) => Promise<
+        void
+    > = async(options) => {
+        let _uri = '/users/';
+        _uri += encodeURIComponent(options.id);
+        _uri += '/assignRoles';
+        return (await this.executor({uri: _uri, method: 'PUT', body: options.body})) as Promise<void>;
+    }
+    
     readonly list: (options: UserServiceOptions['list']) => Promise<
         Array<UserDto['UserFetchers/LIST_ITEM']>
     > = async(options) => {
@@ -40,5 +49,9 @@ export class UserService {
 export type UserServiceOptions = {
     'list': {
         specification: UserSpecification
+    }, 
+    'assignRoles': {
+        id: number, 
+        body: Array<number>
     }
 }
