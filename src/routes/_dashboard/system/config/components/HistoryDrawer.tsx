@@ -1,8 +1,10 @@
 import { api } from '@/api'
-import { ClockCircleOutlined, CodeOutlined, CodepenOutlined, CodeSandboxOutlined, ContainerOutlined, DiffOutlined, EditOutlined, EyeOutlined, FileTextOutlined, HistoryOutlined, UserOutlined } from '@ant-design/icons'
+import { MonacoDiffEditor } from '@/components/MonacoDiffEditor'
+import { ClockCircleOutlined, FileTextOutlined, HistoryOutlined, UserOutlined } from '@ant-design/icons'
 import { DrawerForm } from '@ant-design/pro-components'
 import { useQuery } from '@tanstack/react-query'
-import { Button, Timeline, Tooltip, Typography } from 'antd'
+import { Button, Modal, Tag, Timeline, Tooltip, Typography } from 'antd'
+import { useState } from 'react'
 
 interface HistoryDrawerProps {
   id: number
@@ -14,6 +16,8 @@ export function HistoryDrawer({ id }: HistoryDrawerProps) {
     queryFn: () => api.configService.listHistories({ id }),
   })
 
+  const [diff, setDiff] = useState<{ original?: string, modified?: string }>()
+
   return (
     <DrawerForm
       title="修改历史"
@@ -23,7 +27,7 @@ export function HistoryDrawer({ id }: HistoryDrawerProps) {
     >
       <Timeline
         mode="left"
-        items={data.map(({ id, creator, createdTime, reason }) => ({
+        items={data.map(({ creator, createdTime, reason, yaml }, index) => ({
           color: 'blue',
           children: (
             <div className="flex flex-col gap-1">
@@ -32,7 +36,7 @@ export function HistoryDrawer({ id }: HistoryDrawerProps) {
                   {reason}
                 </Typography.Title>
                 <Tooltip title="查看差异">
-                  <Typography.Link>
+                  <Typography.Link onClick={() => setDiff({ modified: yaml, original: data[index + 1]?.yaml })}>
                     <FileTextOutlined />
                   </Typography.Link>
                 </Tooltip>
@@ -49,6 +53,27 @@ export function HistoryDrawer({ id }: HistoryDrawerProps) {
           ),
         }))}
       />
+      <Modal
+        width="100vw"
+        style={{ top: 20 }}
+        title="版本差异"
+        open={!!diff}
+        footer={false}
+        onCancel={() => setDiff(undefined)}
+      >
+        <div className="flex items-center mb-2">
+          <span className="text-[13px]">上一版本</span>
+          <span className="ml-auto font-semibold text-[13px] text-primary">当前版本</span>
+        </div>
+        {diff && (
+          <MonacoDiffEditor
+            original={diff.original}
+            modified={diff.modified}
+            language="yaml"
+            className="h-[calc(100vh-160px)] w-full"
+          />
+        )}
+      </Modal>
     </DrawerForm>
   )
 }
