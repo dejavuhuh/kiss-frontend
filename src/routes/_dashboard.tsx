@@ -40,6 +40,11 @@ const items: MenuItem[] = [
         label: <Link to="/system/job">定时任务</Link>,
         icon: <ClockCircleOutlined />,
       },
+      {
+        key: '/system/config',
+        label: <Link to="/system/config">配置中心</Link>,
+        icon: <SettingOutlined />,
+      },
     ],
   },
   {

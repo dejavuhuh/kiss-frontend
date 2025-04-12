@@ -1,4 +1,5 @@
 export type {AuthenticationService_SignInRequest} from './AuthenticationService_SignInRequest';
+export type {ConfigInput} from './ConfigInput';
 export type {FaultService_ServerErrorBody} from './FaultService_ServerErrorBody';
 export type {HttpRequest} from './HttpRequest';
 export type {IssueInput} from './IssueInput';

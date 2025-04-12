@@ -1,6 +1,7 @@
 import type {Executor} from './';
 import {
     AuthenticationService, 
+    ConfigService, 
     FaultService, 
     IssueService, 
     JobService, 
@@ -31,6 +32,8 @@ export class Api {
     
     readonly s3service: S3Service
     
+    readonly configService: ConfigService
+    
     readonly permissionService: PermissionService
     
     readonly roleService: RoleService
@@ -46,6 +49,7 @@ export class Api {
         this.jobService = new JobService(executor);
         this.loggingService = new LoggingService(executor);
         this.s3service = new S3Service(executor);
+        this.configService = new ConfigService(executor);
         this.permissionService = new PermissionService(executor);
         this.roleService = new RoleService(executor);
         this.userService = new UserService(executor);

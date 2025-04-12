@@ -18,6 +18,7 @@ import { Route as DashboardDashboardImport } from './routes/_dashboard/dashboard
 import { Route as DashboardFaultIndexImport } from './routes/_dashboard/fault/index'
 import { Route as AuthenticationSignUpIndexImport } from './routes/_authentication/sign-up/index'
 import { Route as AuthenticationSignInIndexImport } from './routes/_authentication/sign-in/index'
+import { Route as DashboardSystemConfigRouteImport } from './routes/_dashboard/system/config/route'
 import { Route as DashboardTraceSessionIndexImport } from './routes/_dashboard/trace/session/index'
 import { Route as DashboardTraceIssueIndexImport } from './routes/_dashboard/trace/issue/index'
 import { Route as DashboardSystemUserIndexImport } from './routes/_dashboard/system/user/index'
@@ -28,6 +29,8 @@ import { Route as DashboardComponentS3UploadIndexImport } from './routes/_dashbo
 import { Route as DashboardComponentRichTextEditorIndexImport } from './routes/_dashboard/component/rich-text-editor/index'
 import { Route as DashboardTraceIssueIdImport } from './routes/_dashboard/trace/issue/$id'
 import { Route as DashboardSystemRoleIdImport } from './routes/_dashboard/system/role/$id'
+import { Route as DashboardSystemConfigIndex2Import } from './routes/_dashboard/system/config/index2'
+import { Route as DashboardSystemConfigIdImport } from './routes/_dashboard/system/config/$id'
 
 // Create/Update Routes
 
@@ -70,6 +73,14 @@ const AuthenticationSignInIndexRoute = AuthenticationSignInIndexImport.update({
   path: '/sign-in/',
   getParentRoute: () => AuthenticationRoute,
 } as any)
+
+const DashboardSystemConfigRouteRoute = DashboardSystemConfigRouteImport.update(
+  {
+    id: '/system/config',
+    path: '/system/config',
+    getParentRoute: () => DashboardRoute,
+  } as any,
+)
 
 const DashboardTraceSessionIndexRoute = DashboardTraceSessionIndexImport.update(
   {
@@ -136,6 +147,19 @@ const DashboardSystemRoleIdRoute = DashboardSystemRoleIdImport.update({
   getParentRoute: () => DashboardRoute,
 } as any)
 
+const DashboardSystemConfigIndex2Route =
+  DashboardSystemConfigIndex2Import.update({
+    id: '/index2',
+    path: '/index2',
+    getParentRoute: () => DashboardSystemConfigRouteRoute,
+  } as any)
+
+const DashboardSystemConfigIdRoute = DashboardSystemConfigIdImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => DashboardSystemConfigRouteRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -168,6 +192,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardDashboardImport
       parentRoute: typeof DashboardImport
     }
+    '/_dashboard/system/config': {
+      id: '/_dashboard/system/config'
+      path: '/system/config'
+      fullPath: '/system/config'
+      preLoaderRoute: typeof DashboardSystemConfigRouteImport
+      parentRoute: typeof DashboardImport
+    }
     '/_authentication/sign-in/': {
       id: '/_authentication/sign-in/'
       path: '/sign-in'
@@ -188,6 +219,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/fault'
       preLoaderRoute: typeof DashboardFaultIndexImport
       parentRoute: typeof DashboardImport
+    }
+    '/_dashboard/system/config/$id': {
+      id: '/_dashboard/system/config/$id'
+      path: '/$id'
+      fullPath: '/system/config/$id'
+      preLoaderRoute: typeof DashboardSystemConfigIdImport
+      parentRoute: typeof DashboardSystemConfigRouteImport
+    }
+    '/_dashboard/system/config/index2': {
+      id: '/_dashboard/system/config/index2'
+      path: '/index2'
+      fullPath: '/system/config/index2'
+      preLoaderRoute: typeof DashboardSystemConfigIndex2Import
+      parentRoute: typeof DashboardSystemConfigRouteImport
     }
     '/_dashboard/system/role/$id': {
       id: '/_dashboard/system/role/$id'
@@ -278,8 +323,25 @@ const AuthenticationRouteWithChildren = AuthenticationRoute._addFileChildren(
   AuthenticationRouteChildren,
 )
 
+interface DashboardSystemConfigRouteRouteChildren {
+  DashboardSystemConfigIdRoute: typeof DashboardSystemConfigIdRoute
+  DashboardSystemConfigIndex2Route: typeof DashboardSystemConfigIndex2Route
+}
+
+const DashboardSystemConfigRouteRouteChildren: DashboardSystemConfigRouteRouteChildren =
+  {
+    DashboardSystemConfigIdRoute: DashboardSystemConfigIdRoute,
+    DashboardSystemConfigIndex2Route: DashboardSystemConfigIndex2Route,
+  }
+
+const DashboardSystemConfigRouteRouteWithChildren =
+  DashboardSystemConfigRouteRoute._addFileChildren(
+    DashboardSystemConfigRouteRouteChildren,
+  )
+
 interface DashboardRouteChildren {
   DashboardDashboardRoute: typeof DashboardDashboardRoute
+  DashboardSystemConfigRouteRoute: typeof DashboardSystemConfigRouteRouteWithChildren
   DashboardFaultIndexRoute: typeof DashboardFaultIndexRoute
   DashboardSystemRoleIdRoute: typeof DashboardSystemRoleIdRoute
   DashboardTraceIssueIdRoute: typeof DashboardTraceIssueIdRoute
@@ -295,6 +357,7 @@ interface DashboardRouteChildren {
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardDashboardRoute: DashboardDashboardRoute,
+  DashboardSystemConfigRouteRoute: DashboardSystemConfigRouteRouteWithChildren,
   DashboardFaultIndexRoute: DashboardFaultIndexRoute,
   DashboardSystemRoleIdRoute: DashboardSystemRoleIdRoute,
   DashboardTraceIssueIdRoute: DashboardTraceIssueIdRoute,
@@ -317,9 +380,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof DashboardRouteWithChildren
   '/dashboard': typeof DashboardDashboardRoute
+  '/system/config': typeof DashboardSystemConfigRouteRouteWithChildren
   '/sign-in': typeof AuthenticationSignInIndexRoute
   '/sign-up': typeof AuthenticationSignUpIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
+  '/system/config/$id': typeof DashboardSystemConfigIdRoute
+  '/system/config/index2': typeof DashboardSystemConfigIndex2Route
   '/system/role/$id': typeof DashboardSystemRoleIdRoute
   '/trace/issue/$id': typeof DashboardTraceIssueIdRoute
   '/component/rich-text-editor': typeof DashboardComponentRichTextEditorIndexRoute
@@ -336,9 +402,12 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof DashboardRouteWithChildren
   '/dashboard': typeof DashboardDashboardRoute
+  '/system/config': typeof DashboardSystemConfigRouteRouteWithChildren
   '/sign-in': typeof AuthenticationSignInIndexRoute
   '/sign-up': typeof AuthenticationSignUpIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
+  '/system/config/$id': typeof DashboardSystemConfigIdRoute
+  '/system/config/index2': typeof DashboardSystemConfigIndex2Route
   '/system/role/$id': typeof DashboardSystemRoleIdRoute
   '/trace/issue/$id': typeof DashboardTraceIssueIdRoute
   '/component/rich-text-editor': typeof DashboardComponentRichTextEditorIndexRoute
@@ -357,9 +426,12 @@ export interface FileRoutesById {
   '/_authentication': typeof AuthenticationRouteWithChildren
   '/_dashboard': typeof DashboardRouteWithChildren
   '/_dashboard/dashboard': typeof DashboardDashboardRoute
+  '/_dashboard/system/config': typeof DashboardSystemConfigRouteRouteWithChildren
   '/_authentication/sign-in/': typeof AuthenticationSignInIndexRoute
   '/_authentication/sign-up/': typeof AuthenticationSignUpIndexRoute
   '/_dashboard/fault/': typeof DashboardFaultIndexRoute
+  '/_dashboard/system/config/$id': typeof DashboardSystemConfigIdRoute
+  '/_dashboard/system/config/index2': typeof DashboardSystemConfigIndex2Route
   '/_dashboard/system/role/$id': typeof DashboardSystemRoleIdRoute
   '/_dashboard/trace/issue/$id': typeof DashboardTraceIssueIdRoute
   '/_dashboard/component/rich-text-editor/': typeof DashboardComponentRichTextEditorIndexRoute
@@ -378,9 +450,12 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/dashboard'
+    | '/system/config'
     | '/sign-in'
     | '/sign-up'
     | '/fault'
+    | '/system/config/$id'
+    | '/system/config/index2'
     | '/system/role/$id'
     | '/trace/issue/$id'
     | '/component/rich-text-editor'
@@ -396,9 +471,12 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/dashboard'
+    | '/system/config'
     | '/sign-in'
     | '/sign-up'
     | '/fault'
+    | '/system/config/$id'
+    | '/system/config/index2'
     | '/system/role/$id'
     | '/trace/issue/$id'
     | '/component/rich-text-editor'
@@ -415,9 +493,12 @@ export interface FileRouteTypes {
     | '/_authentication'
     | '/_dashboard'
     | '/_dashboard/dashboard'
+    | '/_dashboard/system/config'
     | '/_authentication/sign-in/'
     | '/_authentication/sign-up/'
     | '/_dashboard/fault/'
+    | '/_dashboard/system/config/$id'
+    | '/_dashboard/system/config/index2'
     | '/_dashboard/system/role/$id'
     | '/_dashboard/trace/issue/$id'
     | '/_dashboard/component/rich-text-editor/'
@@ -472,6 +553,7 @@ export const routeTree = rootRoute
       "filePath": "_dashboard.tsx",
       "children": [
         "/_dashboard/dashboard",
+        "/_dashboard/system/config",
         "/_dashboard/fault/",
         "/_dashboard/system/role/$id",
         "/_dashboard/trace/issue/$id",
@@ -489,6 +571,14 @@ export const routeTree = rootRoute
       "filePath": "_dashboard/dashboard.tsx",
       "parent": "/_dashboard"
     },
+    "/_dashboard/system/config": {
+      "filePath": "_dashboard/system/config/route.tsx",
+      "parent": "/_dashboard",
+      "children": [
+        "/_dashboard/system/config/$id",
+        "/_dashboard/system/config/index2"
+      ]
+    },
     "/_authentication/sign-in/": {
       "filePath": "_authentication/sign-in/index.tsx",
       "parent": "/_authentication"
@@ -500,6 +590,14 @@ export const routeTree = rootRoute
     "/_dashboard/fault/": {
       "filePath": "_dashboard/fault/index.tsx",
       "parent": "/_dashboard"
+    },
+    "/_dashboard/system/config/$id": {
+      "filePath": "_dashboard/system/config/$id.tsx",
+      "parent": "/_dashboard/system/config"
+    },
+    "/_dashboard/system/config/index2": {
+      "filePath": "_dashboard/system/config/index2.tsx",
+      "parent": "/_dashboard/system/config"
     },
     "/_dashboard/system/role/$id": {
       "filePath": "_dashboard/system/role/$id.tsx",

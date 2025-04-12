@@ -1,4 +1,5 @@
 export {AuthenticationService} from './AuthenticationService';
+export {ConfigService} from './ConfigService';
 export {FaultService} from './FaultService';
 export {IssueService} from './IssueService';
 export {JobService} from './JobService';

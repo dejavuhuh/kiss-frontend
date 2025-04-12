@@ -108,16 +108,14 @@ function RouteComponent() {
             key: 'request',
             children: (
               <div className="flex flex-col gap-4 mt-1.5">
-                <Typography.Title level={5} className="mb-0">请求地址</Typography.Title>
                 <div className="flex items-center gap-2.5">
                   <Tag color={methodColors[method]} bordered={false} className="font-mono mr-0">{method}</Tag>
                   <CopyableText>{data.request.url}</CopyableText>
                 </div>
-                <ProDescriptions column={1} className="pl-0.5">
-                  <ProDescriptions.Item label="Trace ID">
-                    <CopyableText>{data.traceId}</CopyableText>
-                  </ProDescriptions.Item>
-                </ProDescriptions>
+                <div className="flex items-center gap-2.5">
+                  <Tag color="magenta" bordered={false} className="font-mono mr-0">TraceID</Tag>
+                  <CopyableText>{data.traceId}</CopyableText>
+                </div>
                 <Segmented<typeof tab>
                   value={tab}
                   className="w-fit"

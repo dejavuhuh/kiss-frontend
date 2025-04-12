@@ -29,22 +29,38 @@ self.MonacoEnvironment = {
 interface MonacoEditorProps {
   language: string
   value?: string
+  onChange?: (value?: string) => void
   className?: string
+  tabSize?: number
 }
 
-export function MonacoEditor({ language, value, className }: MonacoEditorProps) {
+export function MonacoEditor({ language, value, onChange, className, tabSize = 4 }: MonacoEditorProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
+
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.setValue(value ?? '')
+    }
+  }, [value])
 
   useEffect(() => {
     const editor = monaco.editor.create(containerRef.current!, {
       value,
       language,
       automaticLayout: true,
+      tabSize,
+    })
+
+    editor.onDidChangeModelContent(() => {
+      const newValue = editor.getValue()
+      onChange?.(newValue === '' ? undefined : newValue)
     })
 
     editorRef.current = editor
-  }, [language, value])
+  }, [])
 
-  return <div className={cn('border', className)} ref={containerRef} />
+  return (
+    <div className={cn('border', className)} ref={containerRef} />
+  )
 }
