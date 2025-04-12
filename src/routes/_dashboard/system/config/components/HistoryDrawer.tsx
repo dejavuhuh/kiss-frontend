@@ -62,7 +62,7 @@ export function HistoryDrawer({ id }: HistoryDrawerProps) {
         onCancel={() => setDiff(undefined)}
       >
         <div className="flex items-center mb-2">
-          <span className="text-[13px]">上一版本</span>
+          <span className="text-[13px] font-semibold text-secondary">上一版本</span>
           <span className="ml-auto font-semibold text-[13px] text-primary">当前版本</span>
         </div>
         {diff && (
