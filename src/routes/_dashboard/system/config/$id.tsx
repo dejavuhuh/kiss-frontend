@@ -1,12 +1,14 @@
 import { api } from '@/api'
 import { MonacoEditor } from '@/components'
-import { ClockCircleOutlined, DeleteOutlined, EditOutlined, EllipsisOutlined, FileTextOutlined, HistoryOutlined, SaveOutlined, UserOutlined } from '@ant-design/icons'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { isValidYaml } from '@/utils/yaml'
+import { ClockCircleOutlined, DeleteOutlined, EditOutlined, EllipsisOutlined, FileTextOutlined, SaveOutlined, UserOutlined } from '@ant-design/icons'
+import { ModalForm, ProFormTextArea } from '@ant-design/pro-components'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { Button, Dropdown, Tooltip, Typography } from 'antd'
 import useApp from 'antd/es/app/useApp'
-import yaml from 'js-yaml'
 import { useState } from 'react'
+import { HistoryDrawer } from './components'
 
 export const Route = createFileRoute('/_dashboard/system/config/$id')({
   component: ConfigDetails,
@@ -16,13 +18,16 @@ export const Route = createFileRoute('/_dashboard/system/config/$id')({
 })
 
 function ConfigDetails() {
+  const queryClient = useQueryClient()
+  const navigate = Route.useNavigate()
   const { id } = Route.useParams()
-  const { message } = useApp()
+  const { message, modal } = useApp()
 
   const [currentYaml, setCurrentYaml] = useState<string>()
+  const [saveModalOpen, setSaveModalOpen] = useState(false)
 
   const { data, refetch } = useQuery({
-    queryKey: ['config', id],
+    queryKey: ['config-details', id],
     async queryFn() {
       const data = await api.configService.get({ id })
       setCurrentYaml(data.yaml)
@@ -34,30 +39,12 @@ function ConfigDetails() {
     mutationFn: api.configService.saveYaml,
     onSuccess() {
       message.success('保存成功')
+      queryClient.invalidateQueries({
+        queryKey: ['config', id, 'histories'],
+      })
       refetch()
     },
   })
-
-  const handleSave = () => {
-    if (currentYaml === undefined) {
-      return
-    }
-    try {
-      yaml.load(currentYaml)
-    }
-
-    catch (e) {
-      console.error(e)
-      message.error(
-        <>
-          <span className="font-mono mr-1">yaml</span>
-          格式错误
-        </>,
-      )
-      return
-    }
-    saveYaml.mutate({ id, body: currentYaml })
-  }
 
   if (!data) {
     return null
@@ -85,16 +72,54 @@ function ConfigDetails() {
         </div>
         <div className="flex items-center gap-2 ml-auto">
           {currentYaml !== data.yaml && (
-            <Button
-              icon={<SaveOutlined />}
-              type="primary"
-              onClick={handleSave}
-              loading={saveYaml.isPending}
-            >
-              保存
-            </Button>
+            <>
+              <Button
+                onClick={() => {
+                  if (currentYaml) {
+                    if (!isValidYaml(currentYaml)) {
+                      message.error(
+                        <>
+                          <span className="font-mono mr-1">yaml</span>
+                          格式错误
+                        </>,
+                      )
+                      return
+                    }
+                  }
+                  setSaveModalOpen(true)
+                }}
+                icon={<SaveOutlined />}
+                type="primary"
+              >
+                保存
+              </Button>
+              <ModalForm<{ reason: string }>
+                open={saveModalOpen}
+                onOpenChange={setSaveModalOpen}
+                title="保存配置"
+                width={500}
+                modalProps={{ destroyOnClose: true }}
+                onFinish={async ({ reason }) => {
+                  await saveYaml.mutateAsync({
+                    id,
+                    body: {
+                      yaml: currentYaml,
+                      version: data.version,
+                      reason,
+                    },
+                  })
+                  return true
+                }}
+              >
+                <ProFormTextArea
+                  name="reason"
+                  placeholder="请填写描述信息"
+                  rules={[{ required: true, message: '请填写描述信息' }]}
+                />
+              </ModalForm>
+            </>
           )}
-          <Button icon={<HistoryOutlined />}>修改历史</Button>
+          <HistoryDrawer id={id} />
           <Dropdown
             menu={{ items: [
               {
@@ -102,6 +127,30 @@ function ConfigDetails() {
                 label: '删除配置',
                 danger: true,
                 icon: <DeleteOutlined />,
+                onClick() {
+                  modal.confirm({
+                    title: '删除配置',
+                    content: <>
+                      确定要删除
+                      <span className="font-bold text-primary mx-1 font-mono">
+                        {data.name}
+                        .yaml
+                      </span>
+                      配置吗？
+                    </>,
+                    okButtonProps: {
+                      danger: true,
+                    },
+                    async onOk() {
+                      await api.configService.delete({ id })
+                      message.success('删除成功')
+                      await navigate({ to: '/system/config' })
+                      queryClient.invalidateQueries({
+                        queryKey: ['config'],
+                      })
+                    },
+                  })
+                },
               },
             ] }}
             trigger={['click']}

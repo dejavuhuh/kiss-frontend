@@ -3,7 +3,7 @@ import { api } from '@/api'
 import { cn } from '@/utils'
 import { FileOutlined, PlusOutlined } from '@ant-design/icons'
 import { ModalForm, ProFormText } from '@ant-design/pro-components'
-import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { App, Button, Empty } from 'antd'
 
@@ -18,7 +18,7 @@ function RouteComponent() {
   const params = Route.useParams() as { id?: number }
   const { message } = App.useApp()
 
-  const { data, refetch } = useSuspenseQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['config'],
     async queryFn() {
       const data = await api.configService.list()
@@ -36,6 +36,10 @@ function RouteComponent() {
       refetch()
     },
   })
+
+  if (!data) {
+    return null
+  }
 
   return (
     <div className="flex h-full gap-4">

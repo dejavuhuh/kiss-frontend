@@ -135,7 +135,7 @@ function PermissionManagement() {
                 modal.confirm({
                   title: '删除权限',
                   content: <>
-                    确定删除
+                    确定要删除
                     <span className="font-bold text-primary mx-0.5">{record.name}</span>
                     权限吗？
                   </>,

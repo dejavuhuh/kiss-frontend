@@ -121,7 +121,7 @@ function RolesManagement() {
                   modal.confirm({
                     title: '删除角色',
                     content: <>
-                      确定删除
+                      确定要删除
                       <span className="font-bold text-primary mx-0.5">{record.name}</span>
                       角色吗？
                     </>,
@@ -174,7 +174,7 @@ function RolesManagement() {
                     title: '删除角色',
                     content: (
                       <>
-                        <span>确定删除这</span>
+                        <span>确定要删除这</span>
                         <Typography.Link className="m-0.5" strong>{selectedRowKeys.length}</Typography.Link>
                         <span>个角色吗？</span>
                       </>

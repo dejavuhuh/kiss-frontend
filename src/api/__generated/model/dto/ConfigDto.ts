@@ -10,6 +10,7 @@ export type ConfigDto = {
         createdTime: string;
         name: string;
         yaml?: string | undefined;
+        version: number;
         creator: {
             /**
              * ID
@@ -28,6 +29,7 @@ export type ConfigDto = {
          */
         createdTime: string;
         name: string;
+        version: number;
         creator: {
             /**
              * ID

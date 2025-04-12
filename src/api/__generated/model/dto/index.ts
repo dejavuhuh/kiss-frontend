@@ -1,4 +1,5 @@
 export type {ConfigDto} from './ConfigDto';
+export type {ConfigHistoryDto} from './ConfigHistoryDto';
 export type {IssueDto} from './IssueDto';
 export type {PermissionDto} from './PermissionDto';
 export type {RoleDto} from './RoleDto';
