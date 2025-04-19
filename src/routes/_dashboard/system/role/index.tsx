@@ -1,5 +1,6 @@
 import type { RequestOf, ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
+import type { Dayjs } from 'dayjs'
 import { api } from '@/api'
 import { Permission } from '@/components'
 import { useTable } from '@/hooks/useTable'
@@ -24,7 +25,7 @@ function RolesManagement() {
   const currentUser = getCurrentUser()
 
   const { modal, message } = App.useApp()
-  const [form] = Form.useForm<{ name?: string, createdTime?: string[] }>()
+  const [form] = Form.useForm<{ name?: string, createdTime?: Dayjs[] }>()
 
   const {
     reload,
@@ -34,12 +35,12 @@ function RolesManagement() {
   } = useTable({
     queryKey: ['roles'],
     queryFn: () => {
-      const { name, createdTime } = form.getFieldsValue()
+      const { createdTime, ...values } = form.getFieldsValue()
       return api.roleService.list({
         specification: {
-          name,
-          minCreatedTime: createdTime?.[0],
-          maxCreatedTime: createdTime?.[1],
+          ...values,
+          minCreatedTime: createdTime?.[0].toISOString(),
+          maxCreatedTime: createdTime?.[1].toISOString(),
         },
       })
     },

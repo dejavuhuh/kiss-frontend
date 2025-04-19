@@ -1,5 +1,6 @@
 import type {Executor} from '../';
 import type {RoleDto, UserDto} from '../model/dto/';
+import type {Dynamic_Role} from '../model/dynamic/';
 import type {RoleInput, RoleSpecification, UserSpecification} from '../model/static/';
 
 /**
@@ -13,10 +14,10 @@ export class RoleService {
      * 创建角色
      */
     readonly create: (options: RoleServiceOptions['create']) => Promise<
-        void
+        Dynamic_Role
     > = async(options) => {
         let _uri = '/roles';
-        return (await this.executor({uri: _uri, method: 'POST', body: options.body})) as Promise<void>;
+        return (await this.executor({uri: _uri, method: 'POST', body: options.body})) as Promise<Dynamic_Role>;
     }
     
     /**
