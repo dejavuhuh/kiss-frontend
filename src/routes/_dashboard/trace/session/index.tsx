@@ -4,7 +4,7 @@ import { api } from '@/api'
 import { useTable } from '@/hooks/useTable'
 import { ProFormDateTimeRangePicker, ProFormText, QueryFilter } from '@ant-design/pro-components'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { App, Form, Radio, Segmented, Space, Table, Typography } from 'antd'
+import { App, Form, Radio, Space, Table, Typography } from 'antd'
 
 export const Route = createFileRoute('/_dashboard/trace/session/')({
   component: SessionManagement,
@@ -66,11 +66,13 @@ function SessionManagement() {
               onClick={() => {
                 modal.confirm({
                   title: '强制下线',
-                  content: <>
-                    确定要强制下线
-                    <span className="font-bold text-primary mx-0.5">{record.user.username}</span>
-                    用户吗？
-                  </>,
+                  content: (
+                    <>
+                      确定要强制下线
+                      <span className="font-bold text-primary mx-0.5">{record.user.username}</span>
+                      用户吗？
+                    </>
+                  ),
                   okButtonProps: {
                     danger: true,
                   },

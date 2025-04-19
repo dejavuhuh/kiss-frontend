@@ -58,6 +58,7 @@ export function MonacoEditor({ language, value, onChange, className, tabSize = 4
     })
 
     editorRef.current = editor
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

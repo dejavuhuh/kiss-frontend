@@ -106,11 +106,7 @@ function PermissionManagement() {
         const { id } = record
         return (
           <Space onClick={e => e.stopPropagation()}>
-            <Link
-              onClick={async (e) => {
-                // await api.permissionService.bindableRoles({ id })
-              }}
-            >
+            <Link>
               编辑
             </Link>
             <ModalForm<{ roleIds: number[] }>
@@ -134,11 +130,13 @@ function PermissionManagement() {
               onClick={() => {
                 modal.confirm({
                   title: '删除权限',
-                  content: <>
-                    确定要删除
-                    <span className="font-bold text-primary mx-0.5">{record.name}</span>
-                    权限吗？
-                  </>,
+                  content: (
+                    <>
+                      确定要删除
+                      <span className="font-bold text-primary mx-0.5">{record.name}</span>
+                      权限吗？
+                    </>
+                  ),
                   okButtonProps: {
                     danger: true,
                   },

@@ -3,7 +3,7 @@ import { MonacoDiffEditor } from '@/components/MonacoDiffEditor'
 import { ClockCircleOutlined, FileTextOutlined, HistoryOutlined, UserOutlined } from '@ant-design/icons'
 import { DrawerForm } from '@ant-design/pro-components'
 import { useQuery } from '@tanstack/react-query'
-import { Button, Modal, Tag, Timeline, Tooltip, Typography } from 'antd'
+import { Button, Modal, Timeline, Tooltip, Typography } from 'antd'
 import { useState } from 'react'
 
 interface HistoryDrawerProps {

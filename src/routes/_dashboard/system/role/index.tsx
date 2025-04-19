@@ -120,11 +120,13 @@ function RolesManagement() {
                 onClick={() => {
                   modal.confirm({
                     title: '删除角色',
-                    content: <>
-                      确定要删除
-                      <span className="font-bold text-primary mx-0.5">{record.name}</span>
-                      角色吗？
-                    </>,
+                    content: (
+                      <>
+                        确定要删除
+                        <span className="font-bold text-primary mx-0.5">{record.name}</span>
+                        角色吗？
+                      </>
+                    ),
                     okButtonProps: {
                       danger: true,
                     },

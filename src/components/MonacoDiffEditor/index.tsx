@@ -35,17 +35,14 @@ export function MonacoDiffEditor({ className, language, original, modified }: Mo
       language,
     )
 
-    const diffEditor = monaco.editor.createDiffEditor(
-      containerRef.current!,
-      {
-      },
-    )
+    const diffEditor = monaco.editor.createDiffEditor(containerRef.current!)
     diffEditor.setModel({
       original: originalModel,
       modified: modifiedModel,
     })
 
     editorRef.current = diffEditor
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return <div className={cn('border', className)} ref={containerRef} />

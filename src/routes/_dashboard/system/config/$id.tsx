@@ -130,14 +130,16 @@ function ConfigDetails() {
                 onClick() {
                   modal.confirm({
                     title: '删除配置',
-                    content: <>
-                      确定要删除
-                      <span className="font-bold text-primary mx-1 font-mono">
-                        {data.name}
-                        .yaml
-                      </span>
-                      配置吗？
-                    </>,
+                    content: (
+                      <>
+                        确定要删除
+                        <span className="font-bold text-primary mx-1 font-mono">
+                          {data.name}
+                          .yaml
+                        </span>
+                        配置吗？
+                      </>
+                    ),
                     okButtonProps: {
                       danger: true,
                     },

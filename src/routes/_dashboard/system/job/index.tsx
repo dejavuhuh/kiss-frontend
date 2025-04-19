@@ -1,19 +1,18 @@
 import { api } from '@/api'
+import { CopyableText } from '@/components'
 import { FileTextOutlined, PlayCircleOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons'
 import { ProCard, ProDescriptions } from '@ant-design/pro-components'
-import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { App, Switch, Tooltip, Typography } from 'antd'
+import { App, Switch, Tooltip } from 'antd'
 
 export const Route = createFileRoute('/_dashboard/system/job/')({
   component: JobsManagement,
+  loader: api.jobService.list,
 })
 
 function JobsManagement() {
-  const { data, refetch } = useSuspenseQuery({
-    queryKey: ['jobs'],
-    queryFn: api.jobService.list,
-  })
+  const jobs = Route.useLoaderData()
 
   const { message, modal } = App.useApp()
 
@@ -21,7 +20,6 @@ function JobsManagement() {
     mutationFn: api.jobService.trigger,
     onSuccess() {
       message.success('执行成功')
-      refetch()
     },
   })
 
@@ -29,7 +27,7 @@ function JobsManagement() {
     <div className="space-y-4">
       <div className="card">sss</div>
       <div className="grid grid-cols-3 gap-4">
-        {data.map(({ name, description, cron }) => (
+        {jobs.map(({ name, description, cron }) => (
           <ProCard
             key={name}
             title={description}
@@ -54,7 +52,7 @@ function JobsManagement() {
           >
             <ProDescriptions column={1} size="small" colon={false}>
               <ProDescriptions.Item label="实现类">
-                <Typography.Text copyable className="font-mono">{name}</Typography.Text>
+                <CopyableText>{name}</CopyableText>
               </ProDescriptions.Item>
               <ProDescriptions.Item label="CRON 表达式">
                 <div className="flex items-center gap-2">
