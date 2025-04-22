@@ -3,6 +3,7 @@ import {
     AuthenticationService, 
     ConfigService, 
     FaultService, 
+    FeishuService, 
     IssueService, 
     JobService, 
     LoggingService, 
@@ -23,6 +24,8 @@ export class Api {
     readonly sessionService: SessionService
     
     readonly faultService: FaultService
+    
+    readonly feishuService: FeishuService
     
     readonly issueService: IssueService
     
@@ -45,6 +48,7 @@ export class Api {
         this.sessionHistoryService = new SessionHistoryService(executor);
         this.sessionService = new SessionService(executor);
         this.faultService = new FaultService(executor);
+        this.feishuService = new FeishuService(executor);
         this.issueService = new IssueService(executor);
         this.jobService = new JobService(executor);
         this.loggingService = new LoggingService(executor);

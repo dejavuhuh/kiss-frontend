@@ -30,6 +30,7 @@ import { Route as DashboardComponentRichTextEditorIndexImport } from './routes/_
 import { Route as DashboardTraceIssueIdImport } from './routes/_dashboard/trace/issue/$id'
 import { Route as DashboardSystemRoleIdImport } from './routes/_dashboard/system/role/$id'
 import { Route as DashboardSystemConfigIdImport } from './routes/_dashboard/system/config/$id'
+import { Route as AuthenticationOauth2CodeFeishuImport } from './routes/_authentication/oauth2/code/feishu'
 
 // Create/Update Routes
 
@@ -152,6 +153,13 @@ const DashboardSystemConfigIdRoute = DashboardSystemConfigIdImport.update({
   getParentRoute: () => DashboardSystemConfigRouteRoute,
 } as any)
 
+const AuthenticationOauth2CodeFeishuRoute =
+  AuthenticationOauth2CodeFeishuImport.update({
+    id: '/oauth2/code/feishu',
+    path: '/oauth2/code/feishu',
+    getParentRoute: () => AuthenticationRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -211,6 +219,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/fault'
       preLoaderRoute: typeof DashboardFaultIndexImport
       parentRoute: typeof DashboardImport
+    }
+    '/_authentication/oauth2/code/feishu': {
+      id: '/_authentication/oauth2/code/feishu'
+      path: '/oauth2/code/feishu'
+      fullPath: '/oauth2/code/feishu'
+      preLoaderRoute: typeof AuthenticationOauth2CodeFeishuImport
+      parentRoute: typeof AuthenticationImport
     }
     '/_dashboard/system/config/$id': {
       id: '/_dashboard/system/config/$id'
@@ -297,11 +312,13 @@ declare module '@tanstack/react-router' {
 interface AuthenticationRouteChildren {
   AuthenticationSignInIndexRoute: typeof AuthenticationSignInIndexRoute
   AuthenticationSignUpIndexRoute: typeof AuthenticationSignUpIndexRoute
+  AuthenticationOauth2CodeFeishuRoute: typeof AuthenticationOauth2CodeFeishuRoute
 }
 
 const AuthenticationRouteChildren: AuthenticationRouteChildren = {
   AuthenticationSignInIndexRoute: AuthenticationSignInIndexRoute,
   AuthenticationSignUpIndexRoute: AuthenticationSignUpIndexRoute,
+  AuthenticationOauth2CodeFeishuRoute: AuthenticationOauth2CodeFeishuRoute,
 }
 
 const AuthenticationRouteWithChildren = AuthenticationRoute._addFileChildren(
@@ -367,6 +384,7 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof AuthenticationSignInIndexRoute
   '/sign-up': typeof AuthenticationSignUpIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
+  '/oauth2/code/feishu': typeof AuthenticationOauth2CodeFeishuRoute
   '/system/config/$id': typeof DashboardSystemConfigIdRoute
   '/system/role/$id': typeof DashboardSystemRoleIdRoute
   '/trace/issue/$id': typeof DashboardTraceIssueIdRoute
@@ -388,6 +406,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof AuthenticationSignInIndexRoute
   '/sign-up': typeof AuthenticationSignUpIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
+  '/oauth2/code/feishu': typeof AuthenticationOauth2CodeFeishuRoute
   '/system/config/$id': typeof DashboardSystemConfigIdRoute
   '/system/role/$id': typeof DashboardSystemRoleIdRoute
   '/trace/issue/$id': typeof DashboardTraceIssueIdRoute
@@ -411,6 +430,7 @@ export interface FileRoutesById {
   '/_authentication/sign-in/': typeof AuthenticationSignInIndexRoute
   '/_authentication/sign-up/': typeof AuthenticationSignUpIndexRoute
   '/_dashboard/fault/': typeof DashboardFaultIndexRoute
+  '/_authentication/oauth2/code/feishu': typeof AuthenticationOauth2CodeFeishuRoute
   '/_dashboard/system/config/$id': typeof DashboardSystemConfigIdRoute
   '/_dashboard/system/role/$id': typeof DashboardSystemRoleIdRoute
   '/_dashboard/trace/issue/$id': typeof DashboardTraceIssueIdRoute
@@ -434,6 +454,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/fault'
+    | '/oauth2/code/feishu'
     | '/system/config/$id'
     | '/system/role/$id'
     | '/trace/issue/$id'
@@ -454,6 +475,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/fault'
+    | '/oauth2/code/feishu'
     | '/system/config/$id'
     | '/system/role/$id'
     | '/trace/issue/$id'
@@ -475,6 +497,7 @@ export interface FileRouteTypes {
     | '/_authentication/sign-in/'
     | '/_authentication/sign-up/'
     | '/_dashboard/fault/'
+    | '/_authentication/oauth2/code/feishu'
     | '/_dashboard/system/config/$id'
     | '/_dashboard/system/role/$id'
     | '/_dashboard/trace/issue/$id'
@@ -523,7 +546,8 @@ export const routeTree = rootRoute
       "filePath": "_authentication.tsx",
       "children": [
         "/_authentication/sign-in/",
-        "/_authentication/sign-up/"
+        "/_authentication/sign-up/",
+        "/_authentication/oauth2/code/feishu"
       ]
     },
     "/_dashboard": {
@@ -566,6 +590,10 @@ export const routeTree = rootRoute
     "/_dashboard/fault/": {
       "filePath": "_dashboard/fault/index.tsx",
       "parent": "/_dashboard"
+    },
+    "/_authentication/oauth2/code/feishu": {
+      "filePath": "_authentication/oauth2/code/feishu.tsx",
+      "parent": "/_authentication"
     },
     "/_dashboard/system/config/$id": {
       "filePath": "_dashboard/system/config/$id.tsx",

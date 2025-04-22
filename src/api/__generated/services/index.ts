@@ -1,6 +1,7 @@
 export {AuthenticationService} from './AuthenticationService';
 export {ConfigService} from './ConfigService';
 export {FaultService} from './FaultService';
+export {FeishuService} from './FeishuService';
 export {IssueService} from './IssueService';
 export {JobService} from './JobService';
 export {LoggingService} from './LoggingService';
