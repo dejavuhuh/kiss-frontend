@@ -1,9 +1,30 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Segmented } from 'antd'
+import { useState } from 'react'
 
 export const Route = createFileRoute('/_dashboard/user/my-application/')({
-  component: RouteComponent,
+  component: MyApplication,
 })
 
-function RouteComponent() {
-  return <div>Hello "/_dashboard/user/my-application/"!</div>
+function MyApplication() {
+  const [type, setType] = useState<'permission' | 'other'>('permission')
+
+  return (
+    <div className="card">
+      <Segmented
+        value={type}
+        onChange={setType}
+        options={[
+          {
+            label: '权限申请',
+            value: 'permission',
+          },
+          {
+            label: '其他申请',
+            value: 'other',
+          },
+        ]}
+      />
+    </div>
+  )
 }
