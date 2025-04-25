@@ -7,6 +7,7 @@ export type {IssueSpecification} from './IssueSpecification';
 export type {JobService_JobView} from './JobService_JobView';
 export type {LoggingService_ConfigureLevelEvent} from './LoggingService_ConfigureLevelEvent';
 export type {Page} from './Page';
+export type {PermissionApplicationInput} from './PermissionApplicationInput';
 export type {PermissionInput} from './PermissionInput';
 export type {RoleInput} from './RoleInput';
 export type {RoleSpecification} from './RoleSpecification';

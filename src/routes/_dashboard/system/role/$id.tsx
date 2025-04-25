@@ -55,7 +55,7 @@ function RoleUsers({ id }: { id: number }) {
     },
     {
       title: '用户名',
-      dataIndex: 'username',
+      dataIndex: 'displayName',
     },
     {
       title: '创建时间',

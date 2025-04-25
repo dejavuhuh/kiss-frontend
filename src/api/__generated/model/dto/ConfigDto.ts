@@ -16,7 +16,7 @@ export type ConfigDto = {
              * ID
              */
             id: number;
-            username: string;
+            displayName: string;
         };
     }, 
     'ConfigService/LIST_ITEM': {
@@ -35,7 +35,7 @@ export type ConfigDto = {
              * ID
              */
             id: number;
-            username: string;
+            displayName: string;
         };
     }
 }

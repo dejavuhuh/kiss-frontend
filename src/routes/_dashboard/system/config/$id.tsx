@@ -60,7 +60,7 @@ function ConfigDetails() {
         </Typography.Title>
         <div className="text-secondary space-x-1">
           <UserOutlined />
-          <span>{data.creator.username}</span>
+          <span>{data.creator.displayName}</span>
         </div>
         <div className="text-secondary space-x-1">
           <ClockCircleOutlined />

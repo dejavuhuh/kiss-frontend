@@ -43,7 +43,7 @@ function IssueFeedback() {
       },
     },
     {
-      dataIndex: ['creator', 'username'],
+      dataIndex: ['creator', 'displayName'],
       title: '提交人',
     },
     {

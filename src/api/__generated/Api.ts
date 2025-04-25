@@ -7,6 +7,7 @@ import {
     IssueService, 
     JobService, 
     LoggingService, 
+    PermissionApplicationService, 
     PermissionService, 
     RoleService, 
     S3Service, 
@@ -16,6 +17,8 @@ import {
 } from './services/';
 
 export class Api {
+    
+    readonly permissionApplicationService: PermissionApplicationService
     
     readonly authenticationService: AuthenticationService
     
@@ -44,6 +47,7 @@ export class Api {
     readonly userService: UserService
     
     constructor(executor: Executor) {
+        this.permissionApplicationService = new PermissionApplicationService(executor);
         this.authenticationService = new AuthenticationService(executor);
         this.sessionHistoryService = new SessionHistoryService(executor);
         this.sessionService = new SessionService(executor);

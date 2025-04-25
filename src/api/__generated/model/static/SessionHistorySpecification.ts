@@ -5,5 +5,5 @@ export interface SessionHistorySpecification {
     reason?: HistoryReason | undefined;
     minCreatedTime?: string | undefined;
     maxCreatedTime?: string | undefined;
-    username?: string | undefined;
+    displayName?: string | undefined;
 }

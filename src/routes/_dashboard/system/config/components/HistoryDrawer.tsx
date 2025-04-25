@@ -43,7 +43,7 @@ export function HistoryDrawer({ id }: HistoryDrawerProps) {
               </div>
               <div className="text-secondary space-x-1">
                 <UserOutlined />
-                <span>{creator.username}</span>
+                <span>{creator.displayName}</span>
               </div>
               <div className="text-secondary space-x-1">
                 <ClockCircleOutlined />

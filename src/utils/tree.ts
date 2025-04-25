@@ -44,3 +44,15 @@ export function findTreeNode<T extends TreeNode<T>>(
     }
   }
 }
+
+export function filterTree<T extends TreeNode<T>>(
+  tree: T[],
+  predicate: (node: T) => boolean,
+): T[] {
+  return tree.filter((node) => {
+    if (node.children) {
+      node.children = filterTree(node.children, predicate)
+    }
+    return predicate(node)
+  })
+}

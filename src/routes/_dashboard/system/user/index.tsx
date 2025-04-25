@@ -54,7 +54,7 @@ function UserManagement() {
     },
     {
       title: '用户名',
-      dataIndex: 'username',
+      dataIndex: 'displayName',
     },
     {
       title: '角色',

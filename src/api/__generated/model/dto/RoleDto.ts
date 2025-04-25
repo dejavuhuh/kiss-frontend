@@ -21,7 +21,7 @@ export type RoleDto = {
              * ID
              */
             id: number;
-            username: string;
+            displayName: string;
         };
     }, 
     'RoleFetchers/SIMPLE': {

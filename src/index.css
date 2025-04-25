@@ -26,7 +26,8 @@
   td {
     @apply tabular-nums;
   }
-  .ant-select-tree-switcher {
+  .ant-select-tree-switcher,
+  .ant-tree-switcher {
     display: flex;
     align-items: center;
     justify-content: center;

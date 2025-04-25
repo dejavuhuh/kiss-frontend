@@ -14,7 +14,7 @@ export type SessionDto = {
              * ID
              */
             id: number;
-            username: string;
+            displayName: string;
         };
     }
 }

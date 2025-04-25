@@ -57,7 +57,7 @@ function RouteComponent() {
                     <Typography.Title level={3} className="mb-0">{data.title}</Typography.Title>
                     <div className="text-secondary text-base space-x-1">
                       <UserOutlined />
-                      <span>{data.creator.username}</span>
+                      <span>{data.creator.displayName}</span>
                     </div>
                     <div className="text-secondary text-base space-x-1">
                       <ClockCircleOutlined />

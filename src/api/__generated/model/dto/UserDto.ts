@@ -4,7 +4,6 @@ export type UserDto = {
          * ID
          */
         id: number;
-        username: string;
         roles: Array<{
             /**
              * ID
@@ -32,7 +31,7 @@ export type UserDto = {
          * 创建时间
          */
         createdTime: string;
-        username: string;
+        displayName: string;
         roles: Array<{
             /**
              * ID

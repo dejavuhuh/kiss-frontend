@@ -37,7 +37,7 @@ function SessionManagement() {
     },
     {
       title: '用户名',
-      dataIndex: ['user', 'username'],
+      dataIndex: ['user', 'displayName'],
       render(text, { id }) {
         return (
           <Link to="/system/role/$id" params={{ id }}>
@@ -69,7 +69,7 @@ function SessionManagement() {
                   content: (
                     <>
                       确定要强制下线
-                      <span className="font-bold text-primary mx-0.5">{record.user.username}</span>
+                      <span className="font-bold text-primary mx-0.5">{record.user.displayName}</span>
                       用户吗？
                     </>
                   ),

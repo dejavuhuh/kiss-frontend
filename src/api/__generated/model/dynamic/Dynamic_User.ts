@@ -9,8 +9,7 @@ export interface Dynamic_User {
      * 创建时间
      */
     createdTime?: string;
-    username?: string;
-    password?: string;
+    displayName?: string;
     roles?: Array<Dynamic_Role>;
     roleIds?: Array<number>;
 }

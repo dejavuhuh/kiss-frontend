@@ -15,10 +15,12 @@ import { Route as DashboardImport } from './routes/_dashboard'
 import { Route as AuthenticationImport } from './routes/_authentication'
 import { Route as IndexImport } from './routes/index'
 import { Route as DashboardDashboardImport } from './routes/_dashboard/dashboard'
+import { Route as Dashboard403Import } from './routes/_dashboard/403'
 import { Route as DashboardFaultIndexImport } from './routes/_dashboard/fault/index'
 import { Route as AuthenticationSignUpIndexImport } from './routes/_authentication/sign-up/index'
 import { Route as AuthenticationSignInIndexImport } from './routes/_authentication/sign-in/index'
 import { Route as DashboardSystemConfigRouteImport } from './routes/_dashboard/system/config/route'
+import { Route as DashboardUserMyApplicationIndexImport } from './routes/_dashboard/user/my-application/index'
 import { Route as DashboardTraceSessionIndexImport } from './routes/_dashboard/trace/session/index'
 import { Route as DashboardTraceIssueIndexImport } from './routes/_dashboard/trace/issue/index'
 import { Route as DashboardSystemUserIndexImport } from './routes/_dashboard/system/user/index'
@@ -56,6 +58,12 @@ const DashboardDashboardRoute = DashboardDashboardImport.update({
   getParentRoute: () => DashboardRoute,
 } as any)
 
+const Dashboard403Route = Dashboard403Import.update({
+  id: '/403',
+  path: '/403',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
 const DashboardFaultIndexRoute = DashboardFaultIndexImport.update({
   id: '/fault/',
   path: '/fault/',
@@ -81,6 +89,13 @@ const DashboardSystemConfigRouteRoute = DashboardSystemConfigRouteImport.update(
     getParentRoute: () => DashboardRoute,
   } as any,
 )
+
+const DashboardUserMyApplicationIndexRoute =
+  DashboardUserMyApplicationIndexImport.update({
+    id: '/user/my-application/',
+    path: '/user/my-application/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
 
 const DashboardTraceSessionIndexRoute = DashboardTraceSessionIndexImport.update(
   {
@@ -184,6 +199,13 @@ declare module '@tanstack/react-router' {
       fullPath: ''
       preLoaderRoute: typeof DashboardImport
       parentRoute: typeof rootRoute
+    }
+    '/_dashboard/403': {
+      id: '/_dashboard/403'
+      path: '/403'
+      fullPath: '/403'
+      preLoaderRoute: typeof Dashboard403Import
+      parentRoute: typeof DashboardImport
     }
     '/_dashboard/dashboard': {
       id: '/_dashboard/dashboard'
@@ -304,6 +326,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardTraceSessionIndexImport
       parentRoute: typeof DashboardImport
     }
+    '/_dashboard/user/my-application/': {
+      id: '/_dashboard/user/my-application/'
+      path: '/user/my-application'
+      fullPath: '/user/my-application'
+      preLoaderRoute: typeof DashboardUserMyApplicationIndexImport
+      parentRoute: typeof DashboardImport
+    }
   }
 }
 
@@ -340,6 +369,7 @@ const DashboardSystemConfigRouteRouteWithChildren =
   )
 
 interface DashboardRouteChildren {
+  Dashboard403Route: typeof Dashboard403Route
   DashboardDashboardRoute: typeof DashboardDashboardRoute
   DashboardSystemConfigRouteRoute: typeof DashboardSystemConfigRouteRouteWithChildren
   DashboardFaultIndexRoute: typeof DashboardFaultIndexRoute
@@ -353,9 +383,11 @@ interface DashboardRouteChildren {
   DashboardSystemUserIndexRoute: typeof DashboardSystemUserIndexRoute
   DashboardTraceIssueIndexRoute: typeof DashboardTraceIssueIndexRoute
   DashboardTraceSessionIndexRoute: typeof DashboardTraceSessionIndexRoute
+  DashboardUserMyApplicationIndexRoute: typeof DashboardUserMyApplicationIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
+  Dashboard403Route: Dashboard403Route,
   DashboardDashboardRoute: DashboardDashboardRoute,
   DashboardSystemConfigRouteRoute: DashboardSystemConfigRouteRouteWithChildren,
   DashboardFaultIndexRoute: DashboardFaultIndexRoute,
@@ -370,6 +402,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardSystemUserIndexRoute: DashboardSystemUserIndexRoute,
   DashboardTraceIssueIndexRoute: DashboardTraceIssueIndexRoute,
   DashboardTraceSessionIndexRoute: DashboardTraceSessionIndexRoute,
+  DashboardUserMyApplicationIndexRoute: DashboardUserMyApplicationIndexRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
@@ -379,6 +412,7 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof DashboardRouteWithChildren
+  '/403': typeof Dashboard403Route
   '/dashboard': typeof DashboardDashboardRoute
   '/system/config': typeof DashboardSystemConfigRouteRouteWithChildren
   '/sign-in': typeof AuthenticationSignInIndexRoute
@@ -396,11 +430,13 @@ export interface FileRoutesByFullPath {
   '/system/user': typeof DashboardSystemUserIndexRoute
   '/trace/issue': typeof DashboardTraceIssueIndexRoute
   '/trace/session': typeof DashboardTraceSessionIndexRoute
+  '/user/my-application': typeof DashboardUserMyApplicationIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof DashboardRouteWithChildren
+  '/403': typeof Dashboard403Route
   '/dashboard': typeof DashboardDashboardRoute
   '/system/config': typeof DashboardSystemConfigRouteRouteWithChildren
   '/sign-in': typeof AuthenticationSignInIndexRoute
@@ -418,6 +454,7 @@ export interface FileRoutesByTo {
   '/system/user': typeof DashboardSystemUserIndexRoute
   '/trace/issue': typeof DashboardTraceIssueIndexRoute
   '/trace/session': typeof DashboardTraceSessionIndexRoute
+  '/user/my-application': typeof DashboardUserMyApplicationIndexRoute
 }
 
 export interface FileRoutesById {
@@ -425,6 +462,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authentication': typeof AuthenticationRouteWithChildren
   '/_dashboard': typeof DashboardRouteWithChildren
+  '/_dashboard/403': typeof Dashboard403Route
   '/_dashboard/dashboard': typeof DashboardDashboardRoute
   '/_dashboard/system/config': typeof DashboardSystemConfigRouteRouteWithChildren
   '/_authentication/sign-in/': typeof AuthenticationSignInIndexRoute
@@ -442,6 +480,7 @@ export interface FileRoutesById {
   '/_dashboard/system/user/': typeof DashboardSystemUserIndexRoute
   '/_dashboard/trace/issue/': typeof DashboardTraceIssueIndexRoute
   '/_dashboard/trace/session/': typeof DashboardTraceSessionIndexRoute
+  '/_dashboard/user/my-application/': typeof DashboardUserMyApplicationIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -449,6 +488,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
+    | '/403'
     | '/dashboard'
     | '/system/config'
     | '/sign-in'
@@ -466,10 +506,12 @@ export interface FileRouteTypes {
     | '/system/user'
     | '/trace/issue'
     | '/trace/session'
+    | '/user/my-application'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | ''
+    | '/403'
     | '/dashboard'
     | '/system/config'
     | '/sign-in'
@@ -487,11 +529,13 @@ export interface FileRouteTypes {
     | '/system/user'
     | '/trace/issue'
     | '/trace/session'
+    | '/user/my-application'
   id:
     | '__root__'
     | '/'
     | '/_authentication'
     | '/_dashboard'
+    | '/_dashboard/403'
     | '/_dashboard/dashboard'
     | '/_dashboard/system/config'
     | '/_authentication/sign-in/'
@@ -509,6 +553,7 @@ export interface FileRouteTypes {
     | '/_dashboard/system/user/'
     | '/_dashboard/trace/issue/'
     | '/_dashboard/trace/session/'
+    | '/_dashboard/user/my-application/'
   fileRoutesById: FileRoutesById
 }
 
@@ -553,6 +598,7 @@ export const routeTree = rootRoute
     "/_dashboard": {
       "filePath": "_dashboard.tsx",
       "children": [
+        "/_dashboard/403",
         "/_dashboard/dashboard",
         "/_dashboard/system/config",
         "/_dashboard/fault/",
@@ -565,8 +611,13 @@ export const routeTree = rootRoute
         "/_dashboard/system/role/",
         "/_dashboard/system/user/",
         "/_dashboard/trace/issue/",
-        "/_dashboard/trace/session/"
+        "/_dashboard/trace/session/",
+        "/_dashboard/user/my-application/"
       ]
+    },
+    "/_dashboard/403": {
+      "filePath": "_dashboard/403.tsx",
+      "parent": "/_dashboard"
     },
     "/_dashboard/dashboard": {
       "filePath": "_dashboard/dashboard.tsx",
@@ -637,6 +688,10 @@ export const routeTree = rootRoute
     },
     "/_dashboard/trace/session/": {
       "filePath": "_dashboard/trace/session/index.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/user/my-application/": {
+      "filePath": "_dashboard/user/my-application/index.tsx",
       "parent": "/_dashboard"
     }
   }

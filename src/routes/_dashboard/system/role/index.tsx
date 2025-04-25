@@ -90,7 +90,7 @@ function RolesManagement() {
     },
     {
       title: '创建人',
-      dataIndex: ['creator', 'username'],
+      dataIndex: ['creator', 'displayName'],
     },
     {
       title: '操作',

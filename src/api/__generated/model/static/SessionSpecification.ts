@@ -11,5 +11,5 @@ export interface SessionSpecification {
      * 创建时间
      */
     maxCreatedTime?: string | undefined;
-    username?: string | undefined;
+    displayName?: string | undefined;
 }

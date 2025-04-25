@@ -21,10 +21,10 @@ export class UserService {
         let _uri = '/users';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
-        _value = options.specification.username;
+        _value = options.specification.displayName;
         if (_value !== undefined && _value !== null) {
             _uri += _separator
-            _uri += 'username='
+            _uri += 'displayName='
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }

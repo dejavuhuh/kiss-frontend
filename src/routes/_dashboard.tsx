@@ -1,20 +1,16 @@
 import type { MenuProps } from 'antd'
 import { api } from '@/api'
 import { cn } from '@/utils'
-import { setCurrentUser } from '@/utils/user'
+import { filterTree } from '@/utils/tree'
+import { hasPermission, setCurrentUser } from '@/utils/user'
 import { BellOutlined, ClockCircleOutlined, CodeOutlined, EditOutlined, FileTextOutlined, IdcardOutlined, IssuesCloseOutlined, LogoutOutlined, MenuFoldOutlined, SecurityScanOutlined, SettingOutlined, UploadOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
-import { useQuery } from '@tanstack/react-query'
-import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet, redirect, useLocation } from '@tanstack/react-router'
 import { Button, Menu, Spin } from 'antd'
 import { Suspense, useState } from 'react'
 
-export const Route = createFileRoute('/_dashboard')({
-  component: DashboardLayout,
-})
-
 type MenuItem = Required<MenuProps>['items'][number]
 
-const items: MenuItem[] = [
+const menus: MenuItem[] = [
   {
     key: '/system',
     label: '系统管理',
@@ -44,6 +40,18 @@ const items: MenuItem[] = [
         key: '/system/config',
         label: <Link to="/system/config">配置中心</Link>,
         icon: <SettingOutlined />,
+      },
+    ],
+  },
+  {
+    key: '/user',
+    label: '用户中心',
+    icon: <UserOutlined />,
+    children: [
+      {
+        key: '/user/my-application',
+        label: <Link to="/user/my-application">我的申请</Link>,
+        icon: <IdcardOutlined />,
       },
     ],
   },
@@ -88,6 +96,28 @@ const items: MenuItem[] = [
   },
 ]
 
+const WHITE_LIST = [
+  '/dashboard',
+  '/user',
+  '/user/my-application',
+  '/403',
+]
+
+export const Route = createFileRoute('/_dashboard')({
+  component: DashboardLayout,
+  async beforeLoad({ location }) {
+    const currentUser = await api.authenticationService.getCurrentUser()
+    setCurrentUser(currentUser)
+
+    // Check permission
+    const path = location.pathname
+    const permissionCode = path.slice(1).replace(/\//g, ':')
+    if (!hasPermission(permissionCode) && !WHITE_LIST.includes(path)) {
+      throw redirect({ to: '/403' })
+    }
+  },
+})
+
 function collectParentKeys(pathname: string) {
   const parentKeys: string[] = []
   let current = pathname
@@ -104,19 +134,14 @@ function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false)
   const { pathname } = useLocation()
 
-  const { data, isPending, error } = useQuery({
-    queryKey: ['current-user'],
-    queryFn: api.authenticationService.getCurrentUser,
-  })
-
   const navigate = Route.useNavigate()
-
-  if (isPending || error) {
-    return 'Loading...'
-  }
-  setCurrentUser(data)
-
   const parentKeys = collectParentKeys(pathname)
+
+  const accessibleMenus = filterTree(menus, (item) => {
+    const path = item.key
+    const permissionCode = path.slice(1).replace(/\//g, ':')
+    return WHITE_LIST.includes(path) || hasPermission(permissionCode)
+  })
 
   return (
     <div className="h-screen flex">
@@ -127,7 +152,7 @@ function DashboardLayout() {
           defaultSelectedKeys={[pathname]}
           defaultOpenKeys={parentKeys}
           inlineCollapsed={collapsed}
-          items={items}
+          items={accessibleMenus}
         />
       </nav>
       <div className="flex-1 flex flex-col">

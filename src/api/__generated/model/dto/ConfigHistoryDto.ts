@@ -15,7 +15,7 @@ export type ConfigHistoryDto = {
              * ID
              */
             id: number;
-            username: string;
+            displayName: string;
         };
     }
 }

@@ -5,7 +5,7 @@ export class FeishuService {
     constructor(private executor: Executor) {}
     
     readonly authorize: (options: FeishuServiceOptions['authorize']) => Promise<
-        void
+        string
     > = async(options) => {
         let _uri = '/feishu/authorize';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
@@ -20,7 +20,7 @@ export class FeishuService {
         _uri += 'redirectUri='
         _uri += encodeURIComponent(_value);
         _separator = '&';
-        return (await this.executor({uri: _uri, method: 'POST'})) as Promise<void>;
+        return (await this.executor({uri: _uri, method: 'POST'})) as Promise<string>;
     }
 }
 

@@ -6,6 +6,13 @@ export class AuthenticationService {
     
     constructor(private executor: Executor) {}
     
+    readonly applyForPermissions: () => Promise<
+        void
+    > = async() => {
+        let _uri = '/apply-for-permissions';
+        return (await this.executor({uri: _uri, method: 'POST'})) as Promise<void>;
+    }
+    
     readonly getCurrentUser: () => Promise<
         UserDto['AuthenticationService/CURRENT_USER']
     > = async() => {
@@ -43,5 +50,6 @@ export type AuthenticationServiceOptions = {
         body: AuthenticationService_SignInRequest
     }, 
     'signOut': {}, 
-    'getCurrentUser': {}
+    'getCurrentUser': {}, 
+    'applyForPermissions': {}
 }

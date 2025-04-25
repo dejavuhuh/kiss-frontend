@@ -21,7 +21,7 @@ export type IssueDto = {
              * ID
              */
             id: number;
-            username: string;
+            displayName: string;
         };
         relatedTo?: {
             /**
@@ -51,7 +51,7 @@ export type IssueDto = {
              * ID
              */
             id: number;
-            username: string;
+            displayName: string;
         };
     }, 
     'IssueService/RELATABLE': {
@@ -65,7 +65,7 @@ export type IssueDto = {
              * ID
              */
             id: number;
-            username: string;
+            displayName: string;
         };
     }
 }

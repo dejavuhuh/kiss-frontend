@@ -10,3 +10,11 @@ export function setCurrentUser(user: User) {
 export function getCurrentUser() {
   return currentUser
 }
+
+export function getPermissions() {
+  return currentUser.roles.flatMap(role => role.permissions)
+}
+
+export function hasPermission(code: string) {
+  return getPermissions().some(permission => permission.code === code)
+}

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { getCurrentUser } from '@/utils/user'
+import { hasPermission } from '@/utils/user'
 
 interface PermissionProps {
   code: string
@@ -7,10 +7,7 @@ interface PermissionProps {
 }
 
 export function Permission({ code, children, ...props }: PermissionProps) {
-  const currentUser = getCurrentUser()
-  const permissions = currentUser.roles.flatMap(role => role.permissions)
-
-  if (!permissions.some(permission => permission.code === code)) {
+  if (!hasPermission(code)) {
     return null
   }
 
