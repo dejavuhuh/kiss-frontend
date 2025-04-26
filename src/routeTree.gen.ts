@@ -16,6 +16,7 @@ import { Route as AuthenticationImport } from './routes/_authentication'
 import { Route as IndexImport } from './routes/index'
 import { Route as DashboardDashboardImport } from './routes/_dashboard/dashboard'
 import { Route as Dashboard403Import } from './routes/_dashboard/403'
+import { Route as FlowEditorIndexImport } from './routes/flow_/editor/index'
 import { Route as DashboardFaultIndexImport } from './routes/_dashboard/fault/index'
 import { Route as AuthenticationSignUpIndexImport } from './routes/_authentication/sign-up/index'
 import { Route as AuthenticationSignInIndexImport } from './routes/_authentication/sign-in/index'
@@ -62,6 +63,12 @@ const Dashboard403Route = Dashboard403Import.update({
   id: '/403',
   path: '/403',
   getParentRoute: () => DashboardRoute,
+} as any)
+
+const FlowEditorIndexRoute = FlowEditorIndexImport.update({
+  id: '/flow_/editor/',
+  path: '/flow/editor/',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const DashboardFaultIndexRoute = DashboardFaultIndexImport.update({
@@ -242,6 +249,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardFaultIndexImport
       parentRoute: typeof DashboardImport
     }
+    '/flow_/editor/': {
+      id: '/flow_/editor/'
+      path: '/flow/editor'
+      fullPath: '/flow/editor'
+      preLoaderRoute: typeof FlowEditorIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/_authentication/oauth2/code/feishu': {
       id: '/_authentication/oauth2/code/feishu'
       path: '/oauth2/code/feishu'
@@ -418,6 +432,7 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof AuthenticationSignInIndexRoute
   '/sign-up': typeof AuthenticationSignUpIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
+  '/flow/editor': typeof FlowEditorIndexRoute
   '/oauth2/code/feishu': typeof AuthenticationOauth2CodeFeishuRoute
   '/system/config/$id': typeof DashboardSystemConfigIdRoute
   '/system/role/$id': typeof DashboardSystemRoleIdRoute
@@ -442,6 +457,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof AuthenticationSignInIndexRoute
   '/sign-up': typeof AuthenticationSignUpIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
+  '/flow/editor': typeof FlowEditorIndexRoute
   '/oauth2/code/feishu': typeof AuthenticationOauth2CodeFeishuRoute
   '/system/config/$id': typeof DashboardSystemConfigIdRoute
   '/system/role/$id': typeof DashboardSystemRoleIdRoute
@@ -468,6 +484,7 @@ export interface FileRoutesById {
   '/_authentication/sign-in/': typeof AuthenticationSignInIndexRoute
   '/_authentication/sign-up/': typeof AuthenticationSignUpIndexRoute
   '/_dashboard/fault/': typeof DashboardFaultIndexRoute
+  '/flow_/editor/': typeof FlowEditorIndexRoute
   '/_authentication/oauth2/code/feishu': typeof AuthenticationOauth2CodeFeishuRoute
   '/_dashboard/system/config/$id': typeof DashboardSystemConfigIdRoute
   '/_dashboard/system/role/$id': typeof DashboardSystemRoleIdRoute
@@ -494,6 +511,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/fault'
+    | '/flow/editor'
     | '/oauth2/code/feishu'
     | '/system/config/$id'
     | '/system/role/$id'
@@ -517,6 +535,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/fault'
+    | '/flow/editor'
     | '/oauth2/code/feishu'
     | '/system/config/$id'
     | '/system/role/$id'
@@ -541,6 +560,7 @@ export interface FileRouteTypes {
     | '/_authentication/sign-in/'
     | '/_authentication/sign-up/'
     | '/_dashboard/fault/'
+    | '/flow_/editor/'
     | '/_authentication/oauth2/code/feishu'
     | '/_dashboard/system/config/$id'
     | '/_dashboard/system/role/$id'
@@ -561,12 +581,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticationRoute: typeof AuthenticationRouteWithChildren
   DashboardRoute: typeof DashboardRouteWithChildren
+  FlowEditorIndexRoute: typeof FlowEditorIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticationRoute: AuthenticationRouteWithChildren,
   DashboardRoute: DashboardRouteWithChildren,
+  FlowEditorIndexRoute: FlowEditorIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -581,7 +603,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_authentication",
-        "/_dashboard"
+        "/_dashboard",
+        "/flow_/editor/"
       ]
     },
     "/": {
@@ -641,6 +664,9 @@ export const routeTree = rootRoute
     "/_dashboard/fault/": {
       "filePath": "_dashboard/fault/index.tsx",
       "parent": "/_dashboard"
+    },
+    "/flow_/editor/": {
+      "filePath": "flow_/editor/index.tsx"
     },
     "/_authentication/oauth2/code/feishu": {
       "filePath": "_authentication/oauth2/code/feishu.tsx",
