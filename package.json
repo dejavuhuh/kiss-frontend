@@ -25,6 +25,7 @@
     "@tiptap/pm": "^2.11.7",
     "@tiptap/react": "^2.11.7",
     "@tiptap/starter-kit": "^2.11.7",
+    "@xyflow/react": "^12.6.0",
     "ahooks": "^3.8.4",
     "antd": "^5.24.4",
     "clsx": "^2.1.1",

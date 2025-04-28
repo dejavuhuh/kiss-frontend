@@ -1,7 +1,7 @@
 import type { Key } from 'react'
 import { cn } from '@/utils'
 import { ArrowLeftOutlined } from '@ant-design/icons'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
 import { useState } from 'react'
 import { FlowDesigner } from './components'
@@ -12,11 +12,12 @@ export const Route = createFileRoute('/flow_/editor/')({
 
 function RouteComponent() {
   const [activeTab, setActiveTab] = useState<'info' | 'design' | 'settings'>('design')
+  const router = useRouter()
 
   return (
     <div className="flex flex-col h-screen">
       <header className="h-15 border-b items-center flex px-2 shrink-0">
-        <Button icon={<ArrowLeftOutlined />} type="text" size="large" />
+        <Button icon={<ArrowLeftOutlined />} type="text" size="large" onClick={() => router.history.back()} />
         <div className="flex-1" />
         <Tabs
           active={activeTab}
@@ -39,7 +40,7 @@ function RouteComponent() {
         <div className="flex-1" />
         <Button type="primary" className="mr-2">发布</Button>
       </header>
-      <div className="overflow-y-auto">
+      <div className="overflow-y-auto flex-1">
         {activeTab === 'design' && <FlowDesigner />}
       </div>
     </div>
