@@ -14,4 +14,5 @@ export type {RoleSpecification} from './RoleSpecification';
 export type {SaveYamlInput} from './SaveYamlInput';
 export type {SessionHistorySpecification} from './SessionHistorySpecification';
 export type {SessionSpecification} from './SessionSpecification';
+export type {SubscriptionPlanInput} from './SubscriptionPlanInput';
 export type {UserSpecification} from './UserSpecification';

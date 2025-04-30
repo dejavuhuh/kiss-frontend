@@ -9,10 +9,12 @@ import {
     LoggingService, 
     PermissionApplicationService, 
     PermissionService, 
+    RechargeService, 
     RoleService, 
     S3Service, 
     SessionHistoryService, 
     SessionService, 
+    SubscriptionPlanService, 
     UserService
 } from './services/';
 
@@ -36,6 +38,10 @@ export class Api {
     
     readonly loggingService: LoggingService
     
+    readonly rechargeService: RechargeService
+    
+    readonly subscriptionPlanService: SubscriptionPlanService
+    
     readonly s3service: S3Service
     
     readonly configService: ConfigService
@@ -56,6 +62,8 @@ export class Api {
         this.issueService = new IssueService(executor);
         this.jobService = new JobService(executor);
         this.loggingService = new LoggingService(executor);
+        this.rechargeService = new RechargeService(executor);
+        this.subscriptionPlanService = new SubscriptionPlanService(executor);
         this.s3service = new S3Service(executor);
         this.configService = new ConfigService(executor);
         this.permissionService = new PermissionService(executor);

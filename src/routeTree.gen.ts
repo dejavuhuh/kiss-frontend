@@ -28,6 +28,8 @@ import { Route as DashboardSystemUserIndexImport } from './routes/_dashboard/sys
 import { Route as DashboardSystemRoleIndexImport } from './routes/_dashboard/system/role/index'
 import { Route as DashboardSystemPermissionIndexImport } from './routes/_dashboard/system/permission/index'
 import { Route as DashboardSystemJobIndexImport } from './routes/_dashboard/system/job/index'
+import { Route as DashboardPaymentSubscriptionIndexImport } from './routes/_dashboard/payment/subscription/index'
+import { Route as DashboardPaymentRechargeIndexImport } from './routes/_dashboard/payment/recharge/index'
 import { Route as DashboardComponentS3UploadIndexImport } from './routes/_dashboard/component/s3-upload/index'
 import { Route as DashboardComponentRichTextEditorIndexImport } from './routes/_dashboard/component/rich-text-editor/index'
 import { Route as DashboardTraceIssueIdImport } from './routes/_dashboard/trace/issue/$id'
@@ -142,6 +144,20 @@ const DashboardSystemJobIndexRoute = DashboardSystemJobIndexImport.update({
   path: '/system/job/',
   getParentRoute: () => DashboardRoute,
 } as any)
+
+const DashboardPaymentSubscriptionIndexRoute =
+  DashboardPaymentSubscriptionIndexImport.update({
+    id: '/payment/subscription/',
+    path: '/payment/subscription/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+
+const DashboardPaymentRechargeIndexRoute =
+  DashboardPaymentRechargeIndexImport.update({
+    id: '/payment/recharge/',
+    path: '/payment/recharge/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
 
 const DashboardComponentS3UploadIndexRoute =
   DashboardComponentS3UploadIndexImport.update({
@@ -298,6 +314,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardComponentS3UploadIndexImport
       parentRoute: typeof DashboardImport
     }
+    '/_dashboard/payment/recharge/': {
+      id: '/_dashboard/payment/recharge/'
+      path: '/payment/recharge'
+      fullPath: '/payment/recharge'
+      preLoaderRoute: typeof DashboardPaymentRechargeIndexImport
+      parentRoute: typeof DashboardImport
+    }
+    '/_dashboard/payment/subscription/': {
+      id: '/_dashboard/payment/subscription/'
+      path: '/payment/subscription'
+      fullPath: '/payment/subscription'
+      preLoaderRoute: typeof DashboardPaymentSubscriptionIndexImport
+      parentRoute: typeof DashboardImport
+    }
     '/_dashboard/system/job/': {
       id: '/_dashboard/system/job/'
       path: '/system/job'
@@ -391,6 +421,8 @@ interface DashboardRouteChildren {
   DashboardTraceIssueIdRoute: typeof DashboardTraceIssueIdRoute
   DashboardComponentRichTextEditorIndexRoute: typeof DashboardComponentRichTextEditorIndexRoute
   DashboardComponentS3UploadIndexRoute: typeof DashboardComponentS3UploadIndexRoute
+  DashboardPaymentRechargeIndexRoute: typeof DashboardPaymentRechargeIndexRoute
+  DashboardPaymentSubscriptionIndexRoute: typeof DashboardPaymentSubscriptionIndexRoute
   DashboardSystemJobIndexRoute: typeof DashboardSystemJobIndexRoute
   DashboardSystemPermissionIndexRoute: typeof DashboardSystemPermissionIndexRoute
   DashboardSystemRoleIndexRoute: typeof DashboardSystemRoleIndexRoute
@@ -410,6 +442,9 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardComponentRichTextEditorIndexRoute:
     DashboardComponentRichTextEditorIndexRoute,
   DashboardComponentS3UploadIndexRoute: DashboardComponentS3UploadIndexRoute,
+  DashboardPaymentRechargeIndexRoute: DashboardPaymentRechargeIndexRoute,
+  DashboardPaymentSubscriptionIndexRoute:
+    DashboardPaymentSubscriptionIndexRoute,
   DashboardSystemJobIndexRoute: DashboardSystemJobIndexRoute,
   DashboardSystemPermissionIndexRoute: DashboardSystemPermissionIndexRoute,
   DashboardSystemRoleIndexRoute: DashboardSystemRoleIndexRoute,
@@ -439,6 +474,8 @@ export interface FileRoutesByFullPath {
   '/trace/issue/$id': typeof DashboardTraceIssueIdRoute
   '/component/rich-text-editor': typeof DashboardComponentRichTextEditorIndexRoute
   '/component/s3-upload': typeof DashboardComponentS3UploadIndexRoute
+  '/payment/recharge': typeof DashboardPaymentRechargeIndexRoute
+  '/payment/subscription': typeof DashboardPaymentSubscriptionIndexRoute
   '/system/job': typeof DashboardSystemJobIndexRoute
   '/system/permission': typeof DashboardSystemPermissionIndexRoute
   '/system/role': typeof DashboardSystemRoleIndexRoute
@@ -464,6 +501,8 @@ export interface FileRoutesByTo {
   '/trace/issue/$id': typeof DashboardTraceIssueIdRoute
   '/component/rich-text-editor': typeof DashboardComponentRichTextEditorIndexRoute
   '/component/s3-upload': typeof DashboardComponentS3UploadIndexRoute
+  '/payment/recharge': typeof DashboardPaymentRechargeIndexRoute
+  '/payment/subscription': typeof DashboardPaymentSubscriptionIndexRoute
   '/system/job': typeof DashboardSystemJobIndexRoute
   '/system/permission': typeof DashboardSystemPermissionIndexRoute
   '/system/role': typeof DashboardSystemRoleIndexRoute
@@ -491,6 +530,8 @@ export interface FileRoutesById {
   '/_dashboard/trace/issue/$id': typeof DashboardTraceIssueIdRoute
   '/_dashboard/component/rich-text-editor/': typeof DashboardComponentRichTextEditorIndexRoute
   '/_dashboard/component/s3-upload/': typeof DashboardComponentS3UploadIndexRoute
+  '/_dashboard/payment/recharge/': typeof DashboardPaymentRechargeIndexRoute
+  '/_dashboard/payment/subscription/': typeof DashboardPaymentSubscriptionIndexRoute
   '/_dashboard/system/job/': typeof DashboardSystemJobIndexRoute
   '/_dashboard/system/permission/': typeof DashboardSystemPermissionIndexRoute
   '/_dashboard/system/role/': typeof DashboardSystemRoleIndexRoute
@@ -518,6 +559,8 @@ export interface FileRouteTypes {
     | '/trace/issue/$id'
     | '/component/rich-text-editor'
     | '/component/s3-upload'
+    | '/payment/recharge'
+    | '/payment/subscription'
     | '/system/job'
     | '/system/permission'
     | '/system/role'
@@ -542,6 +585,8 @@ export interface FileRouteTypes {
     | '/trace/issue/$id'
     | '/component/rich-text-editor'
     | '/component/s3-upload'
+    | '/payment/recharge'
+    | '/payment/subscription'
     | '/system/job'
     | '/system/permission'
     | '/system/role'
@@ -567,6 +612,8 @@ export interface FileRouteTypes {
     | '/_dashboard/trace/issue/$id'
     | '/_dashboard/component/rich-text-editor/'
     | '/_dashboard/component/s3-upload/'
+    | '/_dashboard/payment/recharge/'
+    | '/_dashboard/payment/subscription/'
     | '/_dashboard/system/job/'
     | '/_dashboard/system/permission/'
     | '/_dashboard/system/role/'
@@ -629,6 +676,8 @@ export const routeTree = rootRoute
         "/_dashboard/trace/issue/$id",
         "/_dashboard/component/rich-text-editor/",
         "/_dashboard/component/s3-upload/",
+        "/_dashboard/payment/recharge/",
+        "/_dashboard/payment/subscription/",
         "/_dashboard/system/job/",
         "/_dashboard/system/permission/",
         "/_dashboard/system/role/",
@@ -690,6 +739,14 @@ export const routeTree = rootRoute
     },
     "/_dashboard/component/s3-upload/": {
       "filePath": "_dashboard/component/s3-upload/index.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/payment/recharge/": {
+      "filePath": "_dashboard/payment/recharge/index.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/payment/subscription/": {
+      "filePath": "_dashboard/payment/subscription/index.tsx",
       "parent": "/_dashboard"
     },
     "/_dashboard/system/job/": {

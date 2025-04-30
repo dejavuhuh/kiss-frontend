@@ -3,7 +3,7 @@ import { api } from '@/api'
 import { cn } from '@/utils'
 import { filterTree } from '@/utils/tree'
 import { hasPermission, setCurrentUser } from '@/utils/user'
-import { ApartmentOutlined, BellOutlined, ClockCircleOutlined, CodeOutlined, EditOutlined, FileTextOutlined, IdcardOutlined, IssuesCloseOutlined, LogoutOutlined, MenuFoldOutlined, SecurityScanOutlined, SettingOutlined, UploadOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
+import { ApartmentOutlined, BellOutlined, ClockCircleOutlined, CodeOutlined, EditOutlined, FileTextOutlined, IdcardOutlined, IssuesCloseOutlined, LogoutOutlined, MenuFoldOutlined, PayCircleOutlined, SecurityScanOutlined, SettingOutlined, UploadOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
 import { createFileRoute, Link, Outlet, redirect, useLocation } from '@tanstack/react-router'
 import { Button, Menu, Spin } from 'antd'
 import { Suspense, useState } from 'react'
@@ -64,6 +64,21 @@ const menus: MenuItem[] = [
         key: '/flow/editor',
         label: <Link to="/flow/editor">流程编辑器</Link>,
         icon: <EditOutlined />,
+      },
+    ],
+  },
+  {
+    key: '/payment',
+    label: '支付管理',
+    icon: <PayCircleOutlined />,
+    children: [
+      {
+        key: '/payment/subscription',
+        label: <Link to="/payment/subscription">订阅服务</Link>,
+      },
+      {
+        key: '/payment/recharge',
+        label: <Link to="/payment/recharge">充值服务</Link>,
       },
     ],
   },

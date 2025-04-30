@@ -1,3 +1,5 @@
+export type {BillingCycle} from './BillingCycle';
+export {BillingCycle_CONSTANTS} from './BillingCycle';
 export type {HistoryReason} from './HistoryReason';
 export {HistoryReason_CONSTANTS} from './HistoryReason';
 export type {IssueState} from './IssueState';
