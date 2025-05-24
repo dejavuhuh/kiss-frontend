@@ -18,7 +18,7 @@ type LoginType = 'account' | 'feishu'
 function SignIn() {
   const { notification } = App.useApp()
   const navigate = Route.useNavigate()
-  const [tab, setTab] = useState<LoginType>('feishu')
+  const [tab, setTab] = useState<LoginType>('account')
 
   const signIn = useMutation({
     mutationFn: api.authenticationService.signIn,

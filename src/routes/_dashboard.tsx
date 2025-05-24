@@ -3,7 +3,7 @@ import { api } from '@/api'
 import { cn } from '@/utils'
 import { filterTree } from '@/utils/tree'
 import { hasPermission, setCurrentUser } from '@/utils/user'
-import { ApartmentOutlined, BellOutlined, ClockCircleOutlined, CodeOutlined, EditOutlined, FileTextOutlined, IdcardOutlined, IssuesCloseOutlined, LogoutOutlined, MenuFoldOutlined, PayCircleOutlined, ProductOutlined, SecurityScanOutlined, SettingOutlined, TaobaoOutlined, UploadOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
+import { ApartmentOutlined, ApiOutlined, BellOutlined, ClockCircleOutlined, CodeOutlined, EditOutlined, FileTextOutlined, IdcardOutlined, IssuesCloseOutlined, LogoutOutlined, MenuFoldOutlined, PayCircleOutlined, ProductOutlined, SecurityScanOutlined, SettingOutlined, TaobaoOutlined, UploadOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
 import { createFileRoute, Link, Outlet, redirect, useLocation } from '@tanstack/react-router'
 import { Button, Menu, Spin } from 'antd'
 import { Suspense, useState } from 'react'
@@ -28,8 +28,13 @@ const menus: MenuItem[] = [
       },
       {
         key: '/system/permission',
-        label: <Link to="/system/permission">权限管理</Link>,
+        label: <Link to="/system/permission">页面权限</Link>,
         icon: <SecurityScanOutlined />,
+      },
+      {
+        key: '/system/api',
+        label: <Link to="/system/api">接口权限</Link>,
+        icon: <ApiOutlined />,
       },
       {
         key: '/system/job',
@@ -151,7 +156,7 @@ const WHITE_LIST = [
 export const Route = createFileRoute('/_dashboard')({
   component: DashboardLayout,
   async beforeLoad({ location, context: { queryClient } }) {
-    const currentUser = await queryClient.fetchQuery({
+    const currentUser = await queryClient.ensureQueryData({
       queryKey: ['current-user'],
       queryFn: api.authenticationService.getCurrentUser,
     })

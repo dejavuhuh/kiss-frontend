@@ -26,12 +26,6 @@
   td {
     @apply tabular-nums;
   }
-  .ant-select-tree-switcher,
-  .ant-tree-switcher {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 }
 
 @layer components {
@@ -40,6 +34,23 @@
   }
   .ant-image {
     display: block;
+  }
+
+  /* Antd styles overrides */
+  .ant-select-tree-switcher,
+  .ant-tree-switcher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ant-tree .ant-tree-switcher, 
+  .ant-tree .ant-tree-checkbox {
+    margin-inline-end: 0;
+  }
+
+  .ant-tree .ant-tree-node-content-wrapper {
+    padding-inline: 6px;
   }
 }
 

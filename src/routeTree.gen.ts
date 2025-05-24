@@ -28,6 +28,7 @@ import { Route as DashboardSystemUserIndexImport } from './routes/_dashboard/sys
 import { Route as DashboardSystemRoleIndexImport } from './routes/_dashboard/system/role/index'
 import { Route as DashboardSystemPermissionIndexImport } from './routes/_dashboard/system/permission/index'
 import { Route as DashboardSystemJobIndexImport } from './routes/_dashboard/system/job/index'
+import { Route as DashboardSystemApiIndexImport } from './routes/_dashboard/system/api/index'
 import { Route as DashboardPaymentSubscriptionIndexImport } from './routes/_dashboard/payment/subscription/index'
 import { Route as DashboardPaymentRechargeIndexImport } from './routes/_dashboard/payment/recharge/index'
 import { Route as DashboardComponentS3UploadIndexImport } from './routes/_dashboard/component/s3-upload/index'
@@ -143,6 +144,12 @@ const DashboardSystemPermissionIndexRoute =
 const DashboardSystemJobIndexRoute = DashboardSystemJobIndexImport.update({
   id: '/system/job/',
   path: '/system/job/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardSystemApiIndexRoute = DashboardSystemApiIndexImport.update({
+  id: '/system/api/',
+  path: '/system/api/',
   getParentRoute: () => DashboardRoute,
 } as any)
 
@@ -336,6 +343,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardPaymentSubscriptionIndexImport
       parentRoute: typeof DashboardImport
     }
+    '/_dashboard/system/api/': {
+      id: '/_dashboard/system/api/'
+      path: '/system/api'
+      fullPath: '/system/api'
+      preLoaderRoute: typeof DashboardSystemApiIndexImport
+      parentRoute: typeof DashboardImport
+    }
     '/_dashboard/system/job/': {
       id: '/_dashboard/system/job/'
       path: '/system/job'
@@ -438,6 +452,7 @@ interface DashboardRouteChildren {
   DashboardComponentS3UploadIndexRoute: typeof DashboardComponentS3UploadIndexRoute
   DashboardPaymentRechargeIndexRoute: typeof DashboardPaymentRechargeIndexRoute
   DashboardPaymentSubscriptionIndexRoute: typeof DashboardPaymentSubscriptionIndexRoute
+  DashboardSystemApiIndexRoute: typeof DashboardSystemApiIndexRoute
   DashboardSystemJobIndexRoute: typeof DashboardSystemJobIndexRoute
   DashboardSystemPermissionIndexRoute: typeof DashboardSystemPermissionIndexRoute
   DashboardSystemRoleIndexRoute: typeof DashboardSystemRoleIndexRoute
@@ -461,6 +476,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardPaymentRechargeIndexRoute: DashboardPaymentRechargeIndexRoute,
   DashboardPaymentSubscriptionIndexRoute:
     DashboardPaymentSubscriptionIndexRoute,
+  DashboardSystemApiIndexRoute: DashboardSystemApiIndexRoute,
   DashboardSystemJobIndexRoute: DashboardSystemJobIndexRoute,
   DashboardSystemPermissionIndexRoute: DashboardSystemPermissionIndexRoute,
   DashboardSystemRoleIndexRoute: DashboardSystemRoleIndexRoute,
@@ -494,6 +510,7 @@ export interface FileRoutesByFullPath {
   '/component/s3-upload': typeof DashboardComponentS3UploadIndexRoute
   '/payment/recharge': typeof DashboardPaymentRechargeIndexRoute
   '/payment/subscription': typeof DashboardPaymentSubscriptionIndexRoute
+  '/system/api': typeof DashboardSystemApiIndexRoute
   '/system/job': typeof DashboardSystemJobIndexRoute
   '/system/permission': typeof DashboardSystemPermissionIndexRoute
   '/system/role': typeof DashboardSystemRoleIndexRoute
@@ -522,6 +539,7 @@ export interface FileRoutesByTo {
   '/component/s3-upload': typeof DashboardComponentS3UploadIndexRoute
   '/payment/recharge': typeof DashboardPaymentRechargeIndexRoute
   '/payment/subscription': typeof DashboardPaymentSubscriptionIndexRoute
+  '/system/api': typeof DashboardSystemApiIndexRoute
   '/system/job': typeof DashboardSystemJobIndexRoute
   '/system/permission': typeof DashboardSystemPermissionIndexRoute
   '/system/role': typeof DashboardSystemRoleIndexRoute
@@ -552,6 +570,7 @@ export interface FileRoutesById {
   '/_dashboard/component/s3-upload/': typeof DashboardComponentS3UploadIndexRoute
   '/_dashboard/payment/recharge/': typeof DashboardPaymentRechargeIndexRoute
   '/_dashboard/payment/subscription/': typeof DashboardPaymentSubscriptionIndexRoute
+  '/_dashboard/system/api/': typeof DashboardSystemApiIndexRoute
   '/_dashboard/system/job/': typeof DashboardSystemJobIndexRoute
   '/_dashboard/system/permission/': typeof DashboardSystemPermissionIndexRoute
   '/_dashboard/system/role/': typeof DashboardSystemRoleIndexRoute
@@ -582,6 +601,7 @@ export interface FileRouteTypes {
     | '/component/s3-upload'
     | '/payment/recharge'
     | '/payment/subscription'
+    | '/system/api'
     | '/system/job'
     | '/system/permission'
     | '/system/role'
@@ -609,6 +629,7 @@ export interface FileRouteTypes {
     | '/component/s3-upload'
     | '/payment/recharge'
     | '/payment/subscription'
+    | '/system/api'
     | '/system/job'
     | '/system/permission'
     | '/system/role'
@@ -637,6 +658,7 @@ export interface FileRouteTypes {
     | '/_dashboard/component/s3-upload/'
     | '/_dashboard/payment/recharge/'
     | '/_dashboard/payment/subscription/'
+    | '/_dashboard/system/api/'
     | '/_dashboard/system/job/'
     | '/_dashboard/system/permission/'
     | '/_dashboard/system/role/'
@@ -702,6 +724,7 @@ export const routeTree = rootRoute
         "/_dashboard/component/s3-upload/",
         "/_dashboard/payment/recharge/",
         "/_dashboard/payment/subscription/",
+        "/_dashboard/system/api/",
         "/_dashboard/system/job/",
         "/_dashboard/system/permission/",
         "/_dashboard/system/role/",
@@ -772,6 +795,10 @@ export const routeTree = rootRoute
     },
     "/_dashboard/payment/subscription/": {
       "filePath": "_dashboard/payment/subscription/index.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/system/api/": {
+      "filePath": "_dashboard/system/api/index.tsx",
       "parent": "/_dashboard"
     },
     "/_dashboard/system/job/": {

@@ -163,7 +163,7 @@ function PermissionManagement() {
       </QueryFilter>
       <div className="card space-y-4">
         <div className="flex items-center gap-2">
-          <Typography.Title level={5} className="mb-0 mr-auto">权限树</Typography.Title>
+          <Typography.Title level={5} className="mb-0 mr-auto">菜单树</Typography.Title>
           <ModalForm<PermissionInput>
             title="创建权限"
             width={500}
