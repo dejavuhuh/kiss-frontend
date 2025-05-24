@@ -36,6 +36,7 @@ import { Route as DashboardTraceIssueIdImport } from './routes/_dashboard/trace/
 import { Route as DashboardSystemRoleIdImport } from './routes/_dashboard/system/role/$id'
 import { Route as DashboardSystemConfigIdImport } from './routes/_dashboard/system/config/$id'
 import { Route as AuthenticationOauth2CodeFeishuImport } from './routes/_authentication/oauth2/code/feishu'
+import { Route as DashboardECommerceProductCategoryIndexImport } from './routes/_dashboard/e-commerce/product/category/index'
 
 // Create/Update Routes
 
@@ -196,6 +197,13 @@ const AuthenticationOauth2CodeFeishuRoute =
     id: '/oauth2/code/feishu',
     path: '/oauth2/code/feishu',
     getParentRoute: () => AuthenticationRoute,
+  } as any)
+
+const DashboardECommerceProductCategoryIndexRoute =
+  DashboardECommerceProductCategoryIndexImport.update({
+    id: '/e-commerce/product/category/',
+    path: '/e-commerce/product/category/',
+    getParentRoute: () => DashboardRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -377,6 +385,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardUserMyApplicationIndexImport
       parentRoute: typeof DashboardImport
     }
+    '/_dashboard/e-commerce/product/category/': {
+      id: '/_dashboard/e-commerce/product/category/'
+      path: '/e-commerce/product/category'
+      fullPath: '/e-commerce/product/category'
+      preLoaderRoute: typeof DashboardECommerceProductCategoryIndexImport
+      parentRoute: typeof DashboardImport
+    }
   }
 }
 
@@ -430,6 +445,7 @@ interface DashboardRouteChildren {
   DashboardTraceIssueIndexRoute: typeof DashboardTraceIssueIndexRoute
   DashboardTraceSessionIndexRoute: typeof DashboardTraceSessionIndexRoute
   DashboardUserMyApplicationIndexRoute: typeof DashboardUserMyApplicationIndexRoute
+  DashboardECommerceProductCategoryIndexRoute: typeof DashboardECommerceProductCategoryIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
@@ -452,6 +468,8 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardTraceIssueIndexRoute: DashboardTraceIssueIndexRoute,
   DashboardTraceSessionIndexRoute: DashboardTraceSessionIndexRoute,
   DashboardUserMyApplicationIndexRoute: DashboardUserMyApplicationIndexRoute,
+  DashboardECommerceProductCategoryIndexRoute:
+    DashboardECommerceProductCategoryIndexRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
@@ -483,6 +501,7 @@ export interface FileRoutesByFullPath {
   '/trace/issue': typeof DashboardTraceIssueIndexRoute
   '/trace/session': typeof DashboardTraceSessionIndexRoute
   '/user/my-application': typeof DashboardUserMyApplicationIndexRoute
+  '/e-commerce/product/category': typeof DashboardECommerceProductCategoryIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -510,6 +529,7 @@ export interface FileRoutesByTo {
   '/trace/issue': typeof DashboardTraceIssueIndexRoute
   '/trace/session': typeof DashboardTraceSessionIndexRoute
   '/user/my-application': typeof DashboardUserMyApplicationIndexRoute
+  '/e-commerce/product/category': typeof DashboardECommerceProductCategoryIndexRoute
 }
 
 export interface FileRoutesById {
@@ -539,6 +559,7 @@ export interface FileRoutesById {
   '/_dashboard/trace/issue/': typeof DashboardTraceIssueIndexRoute
   '/_dashboard/trace/session/': typeof DashboardTraceSessionIndexRoute
   '/_dashboard/user/my-application/': typeof DashboardUserMyApplicationIndexRoute
+  '/_dashboard/e-commerce/product/category/': typeof DashboardECommerceProductCategoryIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -568,6 +589,7 @@ export interface FileRouteTypes {
     | '/trace/issue'
     | '/trace/session'
     | '/user/my-application'
+    | '/e-commerce/product/category'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -594,6 +616,7 @@ export interface FileRouteTypes {
     | '/trace/issue'
     | '/trace/session'
     | '/user/my-application'
+    | '/e-commerce/product/category'
   id:
     | '__root__'
     | '/'
@@ -621,6 +644,7 @@ export interface FileRouteTypes {
     | '/_dashboard/trace/issue/'
     | '/_dashboard/trace/session/'
     | '/_dashboard/user/my-application/'
+    | '/_dashboard/e-commerce/product/category/'
   fileRoutesById: FileRoutesById
 }
 
@@ -684,7 +708,8 @@ export const routeTree = rootRoute
         "/_dashboard/system/user/",
         "/_dashboard/trace/issue/",
         "/_dashboard/trace/session/",
-        "/_dashboard/user/my-application/"
+        "/_dashboard/user/my-application/",
+        "/_dashboard/e-commerce/product/category/"
       ]
     },
     "/_dashboard/403": {
@@ -775,6 +800,10 @@ export const routeTree = rootRoute
     },
     "/_dashboard/user/my-application/": {
       "filePath": "_dashboard/user/my-application/index.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/e-commerce/product/category/": {
+      "filePath": "_dashboard/e-commerce/product/category/index.tsx",
       "parent": "/_dashboard"
     }
   }

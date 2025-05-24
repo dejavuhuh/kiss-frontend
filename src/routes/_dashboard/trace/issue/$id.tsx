@@ -52,7 +52,7 @@ function RouteComponent() {
             key: 'detail',
             children: (
               <div className="flex mt-3 gap-4">
-                <div>
+                <div className="flex-1">
                   <div className="flex items-end gap-4 mb-6">
                     <Typography.Title level={3} className="mb-0">{data.title}</Typography.Title>
                     <div className="text-secondary text-base space-x-1">
@@ -67,7 +67,7 @@ function RouteComponent() {
                   <RichTextEditor value={data.description} readonly bucket="system-error-screenshot" />
                 </div>
                 <div className="border-r" />
-                <div className="w-[600px] space-y-1">
+                <div className="w-[300px] space-y-1">
                   <div className="flex items-center gap-2">
                     <Typography.Title level={5} className="mb-0">关联问题</Typography.Title>
                     {!data.relatedTo && data.relatedFrom.length === 0 && <RelatedToIssueButton id={id} />}

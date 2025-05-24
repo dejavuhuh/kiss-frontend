@@ -3,7 +3,7 @@ import { api } from '@/api'
 import { cn } from '@/utils'
 import { filterTree } from '@/utils/tree'
 import { hasPermission, setCurrentUser } from '@/utils/user'
-import { ApartmentOutlined, BellOutlined, ClockCircleOutlined, CodeOutlined, EditOutlined, FileTextOutlined, IdcardOutlined, IssuesCloseOutlined, LogoutOutlined, MenuFoldOutlined, PayCircleOutlined, SecurityScanOutlined, SettingOutlined, UploadOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
+import { ApartmentOutlined, BellOutlined, ClockCircleOutlined, CodeOutlined, EditOutlined, FileTextOutlined, IdcardOutlined, IssuesCloseOutlined, LogoutOutlined, MenuFoldOutlined, PayCircleOutlined, ProductOutlined, SecurityScanOutlined, SettingOutlined, TaobaoOutlined, UploadOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
 import { createFileRoute, Link, Outlet, redirect, useLocation } from '@tanstack/react-router'
 import { Button, Menu, Spin } from 'antd'
 import { Suspense, useState } from 'react'
@@ -118,6 +118,24 @@ const menus: MenuItem[] = [
         key: '/component/rich-text-editor',
         label: <Link to="/component/rich-text-editor">富文本编辑器</Link>,
         icon: <EditOutlined />,
+      },
+    ],
+  },
+  {
+    key: '/e-commerce',
+    label: '电商业务',
+    icon: <TaobaoOutlined />,
+    children: [
+      {
+        key: '/e-commerce/product',
+        label: '商品管理',
+        icon: <ProductOutlined />,
+        children: [
+          {
+            key: '/e-commerce/product/category',
+            label: <Link to="/e-commerce/product/category">商品分类</Link>,
+          },
+        ],
       },
     ],
   },
