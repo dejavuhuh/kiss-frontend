@@ -2,7 +2,6 @@ import type { RequestOf, ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import type { Dayjs } from 'dayjs'
 import { api } from '@/api'
-import { Permission } from '@/components'
 import { useTable } from '@/hooks/useTable'
 import { getCurrentUser } from '@/utils/user'
 import { DownloadOutlined } from '@ant-design/icons'
@@ -210,9 +209,9 @@ function RolesManagement() {
               isKeyPressSubmit
               modalProps={{ destroyOnClose: true }}
               trigger={(
-                <Permission code="system:role:create">
-                  <Button type="primary">创建角色</Button>
-                </Permission>
+                // <Permission code="system:role:create">
+                <Button type="primary">创建角色</Button>
+                // </Permission>
               )}
             >
               <ProFormText name="name" label="角色名称" rules={[{ required: true }]} />

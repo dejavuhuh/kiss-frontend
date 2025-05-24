@@ -161,7 +161,7 @@ export const Route = createFileRoute('/_dashboard')({
     const path = location.pathname
     const permissionCode = path.slice(1).replace(/\//g, ':')
     if (!hasPermission(permissionCode) && !WHITE_LIST.includes(path)) {
-      // throw redirect({ to: '/403' })
+      throw redirect({ to: '/403' })
     }
   },
 })
@@ -188,8 +188,7 @@ function DashboardLayout() {
   const accessibleMenus = filterTree(menus, (item) => {
     const path = item.key
     const permissionCode = path.slice(1).replace(/\//g, ':')
-    return true
-    // return WHITE_LIST.includes(path) || hasPermission(permissionCode)
+    return WHITE_LIST.includes(path) || hasPermission(permissionCode)
   })
 
   return (
