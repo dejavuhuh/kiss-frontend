@@ -132,8 +132,11 @@ const WHITE_LIST = [
 
 export const Route = createFileRoute('/_dashboard')({
   component: DashboardLayout,
-  async beforeLoad({ location }) {
-    const currentUser = await api.authenticationService.getCurrentUser()
+  async beforeLoad({ location, context: { queryClient } }) {
+    const currentUser = await queryClient.fetchQuery({
+      queryKey: ['current-user'],
+      queryFn: api.authenticationService.getCurrentUser,
+    })
     setCurrentUser(currentUser)
 
     // Check permission

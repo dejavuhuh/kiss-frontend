@@ -16,7 +16,12 @@ import { routeTree } from './routeTree.gen'
 import './index.css'
 
 // Create a new router instance
-const router = createRouter({ routeTree })
+const router = createRouter({
+  routeTree,
+  context: {
+    queryClient: undefined!,
+  },
+})
 
 declare module '@tanstack/react-router' {
   interface Register {
@@ -117,7 +122,7 @@ function InnerApp() {
   return (
     <QueryClientProvider client={queryClient}>
       <IssueReportModal context={issueContext} open={!!issueContext} onCancel={() => setIssueContext(undefined)} />
-      <RouterProvider router={router} />
+      <RouterProvider router={router} context={{ queryClient }} />
     </QueryClientProvider>
   )
 }
