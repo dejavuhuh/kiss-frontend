@@ -52,6 +52,10 @@
   .ant-tree .ant-tree-node-content-wrapper {
     padding-inline: 6px;
   }
+
+  .ant-empty .ant-empty-footer {
+    margin-top: 4px;
+  }
 }
 
 :root {
