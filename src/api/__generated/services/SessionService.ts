@@ -2,10 +2,16 @@ import type {Executor} from '../';
 import type {SessionDto} from '../model/dto/';
 import type {SessionSpecification} from '../model/static/';
 
+/**
+ * 会话管理
+ */
 export class SessionService {
     
     constructor(private executor: Executor) {}
     
+    /**
+     * 强制下线
+     */
     readonly kickOut: (options: SessionServiceOptions['kickOut']) => Promise<
         void
     > = async(options) => {
@@ -15,6 +21,9 @@ export class SessionService {
         return (await this.executor({uri: _uri, method: 'POST'})) as Promise<void>;
     }
     
+    /**
+     * 查询会话列表
+     */
     readonly list: (options: SessionServiceOptions['list']) => Promise<
         Array<SessionDto['SessionService/LIST_ITEM']>
     > = async(options) => {

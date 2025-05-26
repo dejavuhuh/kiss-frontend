@@ -2,10 +2,16 @@ import type {Executor} from '../';
 import type {UserDto} from '../model/dto/';
 import type {UserSpecification} from '../model/static/';
 
+/**
+ * 用户管理
+ */
 export class UserService {
     
     constructor(private executor: Executor) {}
     
+    /**
+     * 分配角色
+     */
     readonly assignRoles: (options: UserServiceOptions['assignRoles']) => Promise<
         void
     > = async(options) => {
@@ -15,6 +21,9 @@ export class UserService {
         return (await this.executor({uri: _uri, method: 'PUT', body: options.body})) as Promise<void>;
     }
     
+    /**
+     * 查询用户列表
+     */
     readonly list: (options: UserServiceOptions['list']) => Promise<
         Array<UserDto['UserFetchers/LIST_ITEM']>
     > = async(options) => {

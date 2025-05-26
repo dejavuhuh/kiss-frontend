@@ -1,7 +1,9 @@
+export type {ApiDto} from './ApiDto';
 export type {ConfigDto} from './ConfigDto';
 export type {ConfigHistoryDto} from './ConfigHistoryDto';
 export type {IssueDto} from './IssueDto';
 export type {PermissionDto} from './PermissionDto';
+export type {ProductCategoryDto} from './ProductCategoryDto';
 export type {RoleDto} from './RoleDto';
 export type {SessionDto} from './SessionDto';
 export type {SubscriptionPlanDto} from './SubscriptionPlanDto';

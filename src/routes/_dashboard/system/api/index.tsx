@@ -50,7 +50,7 @@ function RouteComponent() {
             />
           </div>
         )}
-        {selectedKey && <ApiList permissionId={selectedKey} />}
+        {selectedKey && <ApiList id={selectedKey} />}
       </div>
     </div>
   )

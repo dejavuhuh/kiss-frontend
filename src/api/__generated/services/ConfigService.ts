@@ -2,10 +2,16 @@ import type {Executor} from '../';
 import type {ConfigDto, ConfigHistoryDto} from '../model/dto/';
 import type {ConfigInput, SaveYamlInput} from '../model/static/';
 
+/**
+ * 配置管理
+ */
 export class ConfigService {
     
     constructor(private executor: Executor) {}
     
+    /**
+     * 创建配置
+     */
     readonly create: (options: ConfigServiceOptions['create']) => Promise<
         void
     > = async(options) => {
@@ -13,6 +19,9 @@ export class ConfigService {
         return (await this.executor({uri: _uri, method: 'POST', body: options.body})) as Promise<void>;
     }
     
+    /**
+     * 删除配置
+     */
     readonly delete: (options: ConfigServiceOptions['delete']) => Promise<
         void
     > = async(options) => {
@@ -21,6 +30,9 @@ export class ConfigService {
         return (await this.executor({uri: _uri, method: 'DELETE'})) as Promise<void>;
     }
     
+    /**
+     * 查询配置详情
+     */
     readonly get: (options: ConfigServiceOptions['get']) => Promise<
         ConfigDto['ConfigService/DETAIL']
     > = async(options) => {
@@ -29,6 +41,9 @@ export class ConfigService {
         return (await this.executor({uri: _uri, method: 'GET'})) as Promise<ConfigDto['ConfigService/DETAIL']>;
     }
     
+    /**
+     * 查询配置列表
+     */
     readonly list: () => Promise<
         Array<ConfigDto['ConfigService/LIST_ITEM']>
     > = async() => {
@@ -36,6 +51,9 @@ export class ConfigService {
         return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<ConfigDto['ConfigService/LIST_ITEM']>>;
     }
     
+    /**
+     * 查询配置历史
+     */
     readonly listHistories: (options: ConfigServiceOptions['listHistories']) => Promise<
         Array<ConfigHistoryDto['ConfigService/HISTORY_LIST_ITEM']>
     > = async(options) => {
@@ -45,6 +63,9 @@ export class ConfigService {
         return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<ConfigHistoryDto['ConfigService/HISTORY_LIST_ITEM']>>;
     }
     
+    /**
+     * 保存YAML
+     */
     readonly saveYaml: (options: ConfigServiceOptions['saveYaml']) => Promise<
         void
     > = async(options) => {

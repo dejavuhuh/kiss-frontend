@@ -2,10 +2,16 @@ import type {Executor} from '../';
 import type {Dynamic_SessionHistory} from '../model/dynamic/';
 import type {Page, SessionHistorySpecification} from '../model/static/';
 
+/**
+ * 历史会话管理
+ */
 export class SessionHistoryService {
     
     constructor(private executor: Executor) {}
     
+    /**
+     * 查询历史会话
+     */
     readonly list: (options: SessionHistoryServiceOptions['list']) => Promise<
         Page<Dynamic_SessionHistory>
     > = async(options) => {

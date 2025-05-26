@@ -1,5 +1,5 @@
 import type {PermissionType} from '../enums/';
-import type {Dynamic_Role} from './';
+import type {Dynamic_Api, Dynamic_PermissionAuditLog, Dynamic_Role} from './';
 
 export interface Dynamic_Permission {
     /**
@@ -18,4 +18,6 @@ export interface Dynamic_Permission {
     children?: Array<Dynamic_Permission>;
     roles?: Array<Dynamic_Role>;
     roleIds?: Array<number>;
+    auditLogs?: Array<Dynamic_PermissionAuditLog>;
+    apis?: Array<Dynamic_Api>;
 }

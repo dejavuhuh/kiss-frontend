@@ -4,7 +4,7 @@ import type {Dynamic_Role} from '../model/dynamic/';
 import type {RoleInput, RoleSpecification, UserSpecification} from '../model/static/';
 
 /**
- * 角色服务
+ * 角色管理
  */
 export class RoleService {
     
@@ -57,7 +57,7 @@ export class RoleService {
     }
     
     /**
-     * 列表查询
+     * 查询角色列表
      * 
      * @parameter {RoleServiceOptions['list']} options
      * - specification 查询条件

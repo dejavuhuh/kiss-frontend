@@ -1,10 +1,16 @@
 import type {Executor} from '../';
 import type {PermissionApplicationInput} from '../model/static/';
 
+/**
+ * 权限申请管理
+ */
 export class PermissionApplicationService {
     
     constructor(private executor: Executor) {}
     
+    /**
+     * 发起权限申请
+     */
     readonly create: (options: PermissionApplicationServiceOptions['create']) => Promise<
         void
     > = async(options) => {

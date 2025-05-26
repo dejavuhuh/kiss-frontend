@@ -22,5 +22,7 @@ export interface Dynamic_Role {
      */
     description?: string | undefined;
     permissions?: Array<Dynamic_Permission>;
+    permissionIds?: Array<number>;
     users?: Array<Dynamic_User>;
+    userIds?: Array<number>;
 }

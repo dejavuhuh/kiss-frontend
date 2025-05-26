@@ -2,10 +2,16 @@ import type {Executor} from '../';
 import type {IssueDto} from '../model/dto/';
 import type {IssueInput, IssueSpecification, Page} from '../model/static/';
 
+/**
+ * 问题管理
+ */
 export class IssueService {
     
     constructor(private executor: Executor) {}
     
+    /**
+     * 查询问题详情
+     */
     readonly get: (options: IssueServiceOptions['get']) => Promise<
         IssueDto['IssueService/GET']
     > = async(options) => {
@@ -14,6 +20,9 @@ export class IssueService {
         return (await this.executor({uri: _uri, method: 'GET'})) as Promise<IssueDto['IssueService/GET']>;
     }
     
+    /**
+     * 查询问题列表
+     */
     readonly list: (options: IssueServiceOptions['list']) => Promise<
         Page<IssueDto['IssueService/LIST_ITEM']>
     > = async(options) => {
@@ -83,7 +92,7 @@ export class IssueService {
     }
     
     /**
-     * 获取可关联的问题列表
+     * 查询可关联的问题列表
      */
     readonly relatable: (options: IssueServiceOptions['relatable']) => Promise<
         Array<IssueDto['IssueService/RELATABLE']>
@@ -94,6 +103,9 @@ export class IssueService {
         return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<IssueDto['IssueService/RELATABLE']>>;
     }
     
+    /**
+     * 关联问题
+     */
     readonly relateTo: (options: IssueServiceOptions['relateTo']) => Promise<
         void
     > = async(options) => {
@@ -110,6 +122,9 @@ export class IssueService {
         return (await this.executor({uri: _uri, method: 'PUT'})) as Promise<void>;
     }
     
+    /**
+     * 上报问题
+     */
     readonly report: (options: IssueServiceOptions['report']) => Promise<
         void
     > = async(options) => {
@@ -117,6 +132,9 @@ export class IssueService {
         return (await this.executor({uri: _uri, method: 'POST', body: options.body})) as Promise<void>;
     }
     
+    /**
+     * 取消关联问题
+     */
     readonly unRelate: (options: IssueServiceOptions['unRelate']) => Promise<
         void
     > = async(options) => {

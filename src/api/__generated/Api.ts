@@ -9,6 +9,7 @@ import {
     LoggingService, 
     PermissionApplicationService, 
     PermissionService, 
+    ProductCategoryService, 
     RechargeService, 
     RoleService, 
     S3Service, 
@@ -27,6 +28,8 @@ export class Api {
     readonly sessionHistoryService: SessionHistoryService
     
     readonly sessionService: SessionService
+    
+    readonly productCategoryService: ProductCategoryService
     
     readonly faultService: FaultService
     
@@ -57,6 +60,7 @@ export class Api {
         this.authenticationService = new AuthenticationService(executor);
         this.sessionHistoryService = new SessionHistoryService(executor);
         this.sessionService = new SessionService(executor);
+        this.productCategoryService = new ProductCategoryService(executor);
         this.faultService = new FaultService(executor);
         this.feishuService = new FeishuService(executor);
         this.issueService = new IssueService(executor);

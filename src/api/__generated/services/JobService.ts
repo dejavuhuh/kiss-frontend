@@ -1,10 +1,16 @@
 import type {Executor} from '../';
 import type {JobService_JobView} from '../model/static/';
 
+/**
+ * 定时任务管理
+ */
 export class JobService {
     
     constructor(private executor: Executor) {}
     
+    /**
+     * 查询定时任务列表
+     */
     readonly list: () => Promise<
         Array<JobService_JobView>
     > = async() => {
@@ -12,6 +18,9 @@ export class JobService {
         return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<JobService_JobView>>;
     }
     
+    /**
+     * 触发定时任务
+     */
     readonly trigger: (options: JobServiceOptions['trigger']) => Promise<
         void
     > = async(options) => {

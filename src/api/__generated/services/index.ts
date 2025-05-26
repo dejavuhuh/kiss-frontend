@@ -7,6 +7,7 @@ export {JobService} from './JobService';
 export {LoggingService} from './LoggingService';
 export {PermissionApplicationService} from './PermissionApplicationService';
 export {PermissionService} from './PermissionService';
+export {ProductCategoryService} from './ProductCategoryService';
 export {RechargeService} from './RechargeService';
 export {RoleService} from './RoleService';
 export {S3Service} from './S3Service';

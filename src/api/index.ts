@@ -22,6 +22,9 @@ export const api = new Api(async ({ uri, method, body }) => {
   const authorization = `Bearer ${localStorage.getItem('token')}`
   const traceId = crypto.randomUUID().replace(/-/g, '')
 
+  // 适当停顿以提升用户确认感
+  await new Promise(resolve => setTimeout(resolve, 150))
+
   const response = await fetch(requestUrl, {
     method,
     body: bodyString,

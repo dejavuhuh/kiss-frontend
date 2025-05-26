@@ -1,10 +1,16 @@
 import type {Executor} from '../';
 import type {Method} from '../model/enums/';
 
+/**
+ * S3服务
+ */
 export class S3Service {
     
     constructor(private executor: Executor) {}
     
+    /**
+     * 获取预签名URL
+     */
     readonly preSignedUrl: (options: S3ServiceOptions['preSignedUrl']) => Promise<
         string
     > = async(options) => {

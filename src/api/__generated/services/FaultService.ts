@@ -1,6 +1,9 @@
 import type {Executor} from '../';
 import type {FaultService_ServerErrorBody} from '../model/static/';
 
+/**
+ * 故障演练
+ */
 export class FaultService {
     
     constructor(private executor: Executor) {}
