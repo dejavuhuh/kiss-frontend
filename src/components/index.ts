@@ -1,3 +1,5 @@
 export * from './CopyableText'
+export * from './HttpMethodTag'
 export * from './MonacoEditor'
 export * from './Permission'
+export * from './SearchHighlight'

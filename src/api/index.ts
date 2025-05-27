@@ -23,7 +23,7 @@ export const api = new Api(async ({ uri, method, body }) => {
   const traceId = crypto.randomUUID().replace(/-/g, '')
 
   // 适当停顿以提升用户确认感
-  await new Promise(resolve => setTimeout(resolve, 150))
+  await new Promise(resolve => setTimeout(resolve, 100))
 
   const response = await fetch(requestUrl, {
     method,

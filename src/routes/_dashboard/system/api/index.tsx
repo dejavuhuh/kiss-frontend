@@ -28,7 +28,7 @@ function RouteComponent() {
         </Typography.Title>
         <Divider className="my-0" />
         <Tree
-          className="px-2 py-2.5"
+          className="px-2 py-3"
           selectedKeys={selectedKey ? [selectedKey] : []}
           onSelect={selectedKeys => selectedKeys.length ? setSelectedKey(selectedKeys[0] as number) : setSelectedKey(undefined)}
           // @ts-expect-error antd bugs

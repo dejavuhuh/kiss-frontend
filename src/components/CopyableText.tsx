@@ -5,10 +5,11 @@ import { Tooltip } from 'antd'
 import { useState } from 'react'
 
 interface CopyableTextProps {
-  children: string
+  children: ReactNode
+  copyText?: string
 }
 
-export function CopyableText({ children }: CopyableTextProps) {
+export function CopyableText({ children, copyText }: CopyableTextProps) {
   const [tip, setTip] = useState<ReactNode>('点击复制')
 
   return (
@@ -16,7 +17,7 @@ export function CopyableText({ children }: CopyableTextProps) {
       <span
         className="font-mono hover:underline decoration-dashed cursor-pointer"
         onClick={async () => {
-          await copyToClipboard(children)
+          await copyToClipboard(typeof children === 'string' ? children : copyText ?? '')
           setTip(
             <div className="flex items-center gap-1">
               <CheckCircleFilled className="text-success" />

@@ -78,6 +78,19 @@ export class PermissionService {
     }
     
     /**
+     * 移除已绑定的接口
+     */
+    readonly unbindApi: (options: PermissionServiceOptions['unbindApi']) => Promise<
+        void
+    > = async(options) => {
+        let _uri = '/permissions/';
+        _uri += encodeURIComponent(options.id);
+        _uri += '/bound-apis/';
+        _uri += encodeURIComponent(options.apiId);
+        return (await this.executor({uri: _uri, method: 'DELETE'})) as Promise<void>;
+    }
+    
+    /**
      * 查询未绑定的接口
      */
     readonly unboundApis: (options: PermissionServiceOptions['unboundApis']) => Promise<
@@ -125,5 +138,9 @@ export type PermissionServiceOptions = {
     }, 
     'boundApis': {
         id: number
+    }, 
+    'unbindApi': {
+        id: number, 
+        apiId: number
     }
 }

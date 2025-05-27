@@ -1,7 +1,6 @@
 import type { HttpRequest } from '@/api/__generated/model/static'
-import type { TagProps } from 'antd'
 import { api } from '@/api'
-import { CopyableText, MonacoEditor } from '@/components'
+import { CopyableText, HttpMethodTag, MonacoEditor } from '@/components'
 import { RichTextEditor } from '@/components/form'
 import { ClockCircleOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons'
 import { ProCard } from '@ant-design/pro-components'
@@ -17,14 +16,6 @@ export const Route = createFileRoute('/_dashboard/trace/issue/$id')({
     parse: ({ id }) => ({ id } as unknown as { id: number }),
   },
 })
-
-const methodColors: Record<string, TagProps['color']> = {
-  GET: 'green',
-  POST: 'blue',
-  PUT: 'orange',
-  DELETE: 'red',
-  PATCH: 'purple',
-}
 
 function RouteComponent() {
   const { id } = Route.useParams()
@@ -109,7 +100,7 @@ function RouteComponent() {
             children: (
               <div className="flex flex-col gap-4 mt-1.5">
                 <div className="flex items-center gap-2.5">
-                  <Tag color={methodColors[method]} bordered={false} className="font-mono mr-0">{method}</Tag>
+                  <HttpMethodTag method={method} />
                   <CopyableText>{data.request.url}</CopyableText>
                 </div>
                 <div className="flex items-center gap-2.5">
