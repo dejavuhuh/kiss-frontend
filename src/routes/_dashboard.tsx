@@ -146,11 +146,12 @@ const menus: MenuItem[] = [
   },
 ]
 
-const WHITE_LIST = [
-  '/dashboard',
-  '/user',
-  '/user/my-application',
-  '/403',
+const WHITE_LIST_REGEXPS: RegExp[] = [
+  /^\/dashboard$/,
+  /^\/user$/,
+  /^\/user\/my-application$/,
+  /^\/403$/,
+  /^\/system\/config\/\d+$/,
 ]
 
 export const Route = createFileRoute('/_dashboard')({
@@ -165,7 +166,7 @@ export const Route = createFileRoute('/_dashboard')({
     // Check permission
     const path = location.pathname
     const permissionCode = path.slice(1).replace(/\//g, ':')
-    if (!hasPermission(permissionCode) && !WHITE_LIST.includes(path)) {
+    if (!hasPermission(permissionCode) && !WHITE_LIST_REGEXPS.some(regex => regex.test(path))) {
       throw redirect({ to: '/403' })
     }
   },
@@ -193,7 +194,7 @@ function DashboardLayout() {
   const accessibleMenus = filterTree(menus, (item) => {
     const path = item.key
     const permissionCode = path.slice(1).replace(/\//g, ':')
-    return WHITE_LIST.includes(path) || hasPermission(permissionCode)
+    return WHITE_LIST_REGEXPS.some(regex => regex.test(path)) || hasPermission(permissionCode)
   })
 
   return (

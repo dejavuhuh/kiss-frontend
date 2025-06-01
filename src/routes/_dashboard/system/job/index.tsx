@@ -2,17 +2,19 @@ import { api } from '@/api'
 import { CopyableText } from '@/components'
 import { FileTextOutlined, PlayCircleOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons'
 import { ProCard, ProDescriptions } from '@ant-design/pro-components'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { App, Switch, Tooltip } from 'antd'
 
 export const Route = createFileRoute('/_dashboard/system/job/')({
   component: JobsManagement,
-  loader: api.jobService.list,
 })
 
 function JobsManagement() {
-  const jobs = Route.useLoaderData()
+  const { data: jobs = [] } = useQuery({
+    queryKey: ['jobs'],
+    queryFn: api.jobService.list,
+  })
 
   const { message, modal } = App.useApp()
 
@@ -25,7 +27,6 @@ function JobsManagement() {
 
   return (
     <div className="space-y-4">
-      <div className="card">sss</div>
       <div className="grid grid-cols-3 gap-4">
         {jobs.map(({ name, description, cron }) => (
           <ProCard

@@ -74,6 +74,9 @@ function InnerApp() {
       message.error('未登录或登录已过期')
       router.navigate({ to: '/sign-in' })
     }
+    else if (status === 403) {
+      message.error('暂无接口权限')
+    }
     else if (status === 400) {
       message.error(detail)
     }

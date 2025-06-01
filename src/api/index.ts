@@ -39,6 +39,10 @@ export const api = new Api(async ({ uri, method, body }) => {
     throw { status: response.status }
   }
 
+  if (response.status === 403) {
+    throw { status: response.status }
+  }
+
   if (response.status === 500) {
     const url = `${location.origin}${requestUrl}`
     const searchParams = new URL(url).searchParams
