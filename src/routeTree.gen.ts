@@ -14,10 +14,10 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as DashboardImport } from './routes/_dashboard'
 import { Route as AuthenticationImport } from './routes/_authentication'
 import { Route as IndexImport } from './routes/index'
-import { Route as DashboardDashboardImport } from './routes/_dashboard/dashboard'
 import { Route as Dashboard403Import } from './routes/_dashboard/403'
 import { Route as FlowEditorIndexImport } from './routes/flow_/editor/index'
 import { Route as DashboardFaultIndexImport } from './routes/_dashboard/fault/index'
+import { Route as DashboardDashboardIndexImport } from './routes/_dashboard/dashboard/index'
 import { Route as AuthenticationSignUpIndexImport } from './routes/_authentication/sign-up/index'
 import { Route as AuthenticationSignInIndexImport } from './routes/_authentication/sign-in/index'
 import { Route as DashboardSystemConfigRouteImport } from './routes/_dashboard/system/config/route'
@@ -57,12 +57,6 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DashboardDashboardRoute = DashboardDashboardImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => DashboardRoute,
-} as any)
-
 const Dashboard403Route = Dashboard403Import.update({
   id: '/403',
   path: '/403',
@@ -78,6 +72,12 @@ const FlowEditorIndexRoute = FlowEditorIndexImport.update({
 const DashboardFaultIndexRoute = DashboardFaultIndexImport.update({
   id: '/fault/',
   path: '/fault/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardDashboardIndexRoute = DashboardDashboardIndexImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
   getParentRoute: () => DashboardRoute,
 } as any)
 
@@ -245,13 +245,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Dashboard403Import
       parentRoute: typeof DashboardImport
     }
-    '/_dashboard/dashboard': {
-      id: '/_dashboard/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardDashboardImport
-      parentRoute: typeof DashboardImport
-    }
     '/_dashboard/system/config': {
       id: '/_dashboard/system/config'
       path: '/system/config'
@@ -272,6 +265,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/sign-up'
       preLoaderRoute: typeof AuthenticationSignUpIndexImport
       parentRoute: typeof AuthenticationImport
+    }
+    '/_dashboard/dashboard/': {
+      id: '/_dashboard/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardDashboardIndexImport
+      parentRoute: typeof DashboardImport
     }
     '/_dashboard/fault/': {
       id: '/_dashboard/fault/'
@@ -443,8 +443,8 @@ const DashboardSystemConfigRouteRouteWithChildren =
 
 interface DashboardRouteChildren {
   Dashboard403Route: typeof Dashboard403Route
-  DashboardDashboardRoute: typeof DashboardDashboardRoute
   DashboardSystemConfigRouteRoute: typeof DashboardSystemConfigRouteRouteWithChildren
+  DashboardDashboardIndexRoute: typeof DashboardDashboardIndexRoute
   DashboardFaultIndexRoute: typeof DashboardFaultIndexRoute
   DashboardSystemRoleIdRoute: typeof DashboardSystemRoleIdRoute
   DashboardTraceIssueIdRoute: typeof DashboardTraceIssueIdRoute
@@ -465,8 +465,8 @@ interface DashboardRouteChildren {
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   Dashboard403Route: Dashboard403Route,
-  DashboardDashboardRoute: DashboardDashboardRoute,
   DashboardSystemConfigRouteRoute: DashboardSystemConfigRouteRouteWithChildren,
+  DashboardDashboardIndexRoute: DashboardDashboardIndexRoute,
   DashboardFaultIndexRoute: DashboardFaultIndexRoute,
   DashboardSystemRoleIdRoute: DashboardSystemRoleIdRoute,
   DashboardTraceIssueIdRoute: DashboardTraceIssueIdRoute,
@@ -496,10 +496,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof DashboardRouteWithChildren
   '/403': typeof Dashboard403Route
-  '/dashboard': typeof DashboardDashboardRoute
   '/system/config': typeof DashboardSystemConfigRouteRouteWithChildren
   '/sign-in': typeof AuthenticationSignInIndexRoute
   '/sign-up': typeof AuthenticationSignUpIndexRoute
+  '/dashboard': typeof DashboardDashboardIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
   '/flow/editor': typeof FlowEditorIndexRoute
   '/oauth2/code/feishu': typeof AuthenticationOauth2CodeFeishuRoute
@@ -525,10 +525,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof DashboardRouteWithChildren
   '/403': typeof Dashboard403Route
-  '/dashboard': typeof DashboardDashboardRoute
   '/system/config': typeof DashboardSystemConfigRouteRouteWithChildren
   '/sign-in': typeof AuthenticationSignInIndexRoute
   '/sign-up': typeof AuthenticationSignUpIndexRoute
+  '/dashboard': typeof DashboardDashboardIndexRoute
   '/fault': typeof DashboardFaultIndexRoute
   '/flow/editor': typeof FlowEditorIndexRoute
   '/oauth2/code/feishu': typeof AuthenticationOauth2CodeFeishuRoute
@@ -556,10 +556,10 @@ export interface FileRoutesById {
   '/_authentication': typeof AuthenticationRouteWithChildren
   '/_dashboard': typeof DashboardRouteWithChildren
   '/_dashboard/403': typeof Dashboard403Route
-  '/_dashboard/dashboard': typeof DashboardDashboardRoute
   '/_dashboard/system/config': typeof DashboardSystemConfigRouteRouteWithChildren
   '/_authentication/sign-in/': typeof AuthenticationSignInIndexRoute
   '/_authentication/sign-up/': typeof AuthenticationSignUpIndexRoute
+  '/_dashboard/dashboard/': typeof DashboardDashboardIndexRoute
   '/_dashboard/fault/': typeof DashboardFaultIndexRoute
   '/flow_/editor/': typeof FlowEditorIndexRoute
   '/_authentication/oauth2/code/feishu': typeof AuthenticationOauth2CodeFeishuRoute
@@ -587,10 +587,10 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/403'
-    | '/dashboard'
     | '/system/config'
     | '/sign-in'
     | '/sign-up'
+    | '/dashboard'
     | '/fault'
     | '/flow/editor'
     | '/oauth2/code/feishu'
@@ -615,10 +615,10 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/403'
-    | '/dashboard'
     | '/system/config'
     | '/sign-in'
     | '/sign-up'
+    | '/dashboard'
     | '/fault'
     | '/flow/editor'
     | '/oauth2/code/feishu'
@@ -644,10 +644,10 @@ export interface FileRouteTypes {
     | '/_authentication'
     | '/_dashboard'
     | '/_dashboard/403'
-    | '/_dashboard/dashboard'
     | '/_dashboard/system/config'
     | '/_authentication/sign-in/'
     | '/_authentication/sign-up/'
+    | '/_dashboard/dashboard/'
     | '/_dashboard/fault/'
     | '/flow_/editor/'
     | '/_authentication/oauth2/code/feishu'
@@ -715,8 +715,8 @@ export const routeTree = rootRoute
       "filePath": "_dashboard.tsx",
       "children": [
         "/_dashboard/403",
-        "/_dashboard/dashboard",
         "/_dashboard/system/config",
+        "/_dashboard/dashboard/",
         "/_dashboard/fault/",
         "/_dashboard/system/role/$id",
         "/_dashboard/trace/issue/$id",
@@ -739,10 +739,6 @@ export const routeTree = rootRoute
       "filePath": "_dashboard/403.tsx",
       "parent": "/_dashboard"
     },
-    "/_dashboard/dashboard": {
-      "filePath": "_dashboard/dashboard.tsx",
-      "parent": "/_dashboard"
-    },
     "/_dashboard/system/config": {
       "filePath": "_dashboard/system/config/route.tsx",
       "parent": "/_dashboard",
@@ -757,6 +753,10 @@ export const routeTree = rootRoute
     "/_authentication/sign-up/": {
       "filePath": "_authentication/sign-up/index.tsx",
       "parent": "/_authentication"
+    },
+    "/_dashboard/dashboard/": {
+      "filePath": "_dashboard/dashboard/index.tsx",
+      "parent": "/_dashboard"
     },
     "/_dashboard/fault/": {
       "filePath": "_dashboard/fault/index.tsx",

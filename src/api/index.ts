@@ -31,7 +31,7 @@ export const api = new Api(async ({ uri, method, body }) => {
     headers: {
       'Content-Type': contentType,
       'Authorization': authorization,
-      'X-TraceId': traceId,
+      'X-TraceID': traceId,
     },
   })
 
@@ -58,7 +58,7 @@ export const api = new Api(async ({ uri, method, body }) => {
         'Sec-Fetch-Mode': 'cors',
         'Sec-Fetch-Site': 'same-origin',
         'User-Agent': navigator.userAgent,
-        'X-TraceId': traceId,
+        'X-TraceID': traceId,
         'sec-ch-ua': getSecChUa(),
         'sec-ch-ua-mobile': `?${navigator.userAgentData?.mobile ? 1 : 0}`,
         'sec-ch-ua-platform': `"${navigator.userAgentData?.platform}"`,

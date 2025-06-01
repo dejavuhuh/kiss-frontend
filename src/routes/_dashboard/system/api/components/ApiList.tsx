@@ -4,7 +4,7 @@ import { api } from '@/api'
 import { CopyableText, HttpMethodTag, SearchHighlight } from '@/components'
 import { PlusOutlined } from '@ant-design/icons'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { App, Button, Empty, Input, Spin, Table, Typography } from 'antd'
+import { App, Button, Empty, Input, Spin, Table, Tag, Typography } from 'antd'
 import { useState } from 'react'
 
 type ApiView = ResponseOf<typeof api.permissionService.boundApis>[number]
