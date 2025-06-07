@@ -1,5 +1,6 @@
 import { api } from '@/api'
 import { MonacoDiffEditor } from '@/components/MonacoDiffEditor'
+import { formatDateTime } from '@/utils'
 import { ClockCircleOutlined, FileTextOutlined, HistoryOutlined, UserOutlined } from '@ant-design/icons'
 import { DrawerForm } from '@ant-design/pro-components'
 import { useQuery } from '@tanstack/react-query'
@@ -47,7 +48,7 @@ export function HistoryDrawer({ id }: HistoryDrawerProps) {
               </div>
               <div className="text-secondary space-x-1">
                 <ClockCircleOutlined />
-                <span>{new Date(createdTime).toLocaleString()}</span>
+                <span>{formatDateTime(createdTime)}</span>
               </div>
             </div>
           ),

@@ -2,6 +2,7 @@ import type { ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import { api } from '@/api'
 import { usePageableTable } from '@/hooks/usePageableTable'
+import { formatDateTime } from '@/utils'
 import { ProFormDateTimeRangePicker, ProFormText, QueryFilter } from '@ant-design/pro-components'
 import { createFileRoute, Link as RouterLink } from '@tanstack/react-router'
 import { Form, Space, Table } from 'antd'
@@ -49,7 +50,7 @@ function IssueFeedback() {
     {
       title: '创建时间',
       dataIndex: 'createdTime',
-      render: value => new Date(value).toLocaleString(),
+      render: formatDateTime,
     },
   ]
 

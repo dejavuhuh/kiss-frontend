@@ -1,5 +1,6 @@
 import { api } from '@/api'
 import { MonacoEditor } from '@/components'
+import { formatDateTime } from '@/utils'
 import { isValidYaml } from '@/utils/yaml'
 import { ClockCircleOutlined, DeleteOutlined, EditOutlined, EllipsisOutlined, FileTextOutlined, SaveOutlined, UserOutlined } from '@ant-design/icons'
 import { ModalForm, ProFormTextArea } from '@ant-design/pro-components'
@@ -64,11 +65,11 @@ function ConfigDetails() {
         </div>
         <div className="text-secondary space-x-1">
           <ClockCircleOutlined />
-          <span>{new Date(data.createdTime).toLocaleString()}</span>
+          <span>{formatDateTime(data.createdTime)}</span>
         </div>
         <div className="text-secondary space-x-1">
           <EditOutlined />
-          <span>{new Date(data.createdTime).toLocaleString()}</span>
+          <span>{formatDateTime(data.createdTime)}</span>
         </div>
         <div className="flex items-center gap-2 ml-auto">
           {currentYaml !== data.yaml && (

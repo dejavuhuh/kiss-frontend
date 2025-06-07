@@ -4,6 +4,7 @@ import type { Dayjs } from 'dayjs'
 import { api } from '@/api'
 import { Permission } from '@/components'
 import { useTable } from '@/hooks/useTable'
+import { formatDateTime } from '@/utils'
 import { getCurrentUser } from '@/utils/user'
 import { DownloadOutlined } from '@ant-design/icons'
 import { ModalForm, ProFormDateTimeRangePicker, ProFormText, ProFormTextArea, QueryFilter } from '@ant-design/pro-components'
@@ -86,7 +87,7 @@ function RolesManagement() {
     {
       title: '创建时间',
       dataIndex: 'createdTime',
-      render: value => new Date(value).toLocaleString(),
+      render: formatDateTime,
     },
     {
       title: '创建人',

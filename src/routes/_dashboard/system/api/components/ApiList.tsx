@@ -97,6 +97,7 @@ export function ApiList({ id }: { id: number }) {
         pagination={false}
         rowKey={row => row.id}
         size="small"
+        bordered
       />
     </div>
   )

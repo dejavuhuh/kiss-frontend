@@ -12,9 +12,17 @@ interface UseTableOptions<T extends Row> {
   queryKey: QueryKey
   queryFn: () => Promise<T[]>
   checkable?: (row: T) => boolean
+  showPagination?: boolean
+  showCheckbox?: boolean
 }
 
-export function useTable<T extends Row>({ queryKey, queryFn, checkable = () => true }: UseTableOptions<T>) {
+export function useTable<T extends Row>({
+  queryKey,
+  queryFn,
+  checkable = () => true,
+  showPagination = true,
+  showCheckbox = true,
+}: UseTableOptions<T>) {
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
 
   const { refetch, data, isFetching } = useQuery({
@@ -36,15 +44,20 @@ export function useTable<T extends Row>({ queryKey, queryFn, checkable = () => t
       loading: isFetching,
       dataSource: data,
       rowKey: row => row.id,
-      rowSelection: {
-        selectedRowKeys,
-        onChange: setSelectedRowKeys,
-        columnWidth: 50,
-        getCheckboxProps: row => ({ disabled: !checkable(row) }),
-      },
-      pagination: {
-        showTotal: total => `共 ${total} 条`,
-      },
+      size: 'middle',
+      rowSelection: showCheckbox
+        ? {
+            selectedRowKeys,
+            onChange: setSelectedRowKeys,
+            columnWidth: 50,
+            getCheckboxProps: row => ({ disabled: !checkable(row) }),
+          }
+        : undefined,
+      pagination: showPagination
+        ? {
+            showTotal: total => `共 ${total} 条`,
+          }
+        : false,
     } as TableProps<T>,
   } as const
 }

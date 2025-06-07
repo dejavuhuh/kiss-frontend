@@ -2,6 +2,7 @@ import type { ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import { api } from '@/api'
 import { useTable } from '@/hooks/useTable'
+import { formatDateTime } from '@/utils'
 import { getCurrentUser } from '@/utils/user'
 import { UsergroupAddOutlined } from '@ant-design/icons'
 import { ModalForm, ProFormDateTimeRangePicker, ProFormText, QueryFilter } from '@ant-design/pro-components'
@@ -68,7 +69,7 @@ function UserManagement() {
     {
       title: '创建时间',
       dataIndex: 'createdTime',
-      render: value => new Date(value).toLocaleString(),
+      render: formatDateTime,
     },
     {
       title: '操作',

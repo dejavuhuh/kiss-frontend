@@ -2,6 +2,7 @@ import type { HttpRequest } from '@/api/__generated/model/static'
 import { api } from '@/api'
 import { CopyableText, HttpMethodTag, MonacoEditor } from '@/components'
 import { RichTextEditor } from '@/components/form'
+import { formatDateTime } from '@/utils'
 import { ClockCircleOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons'
 import { ProCard } from '@ant-design/pro-components'
 import { useQuery } from '@tanstack/react-query'
@@ -52,7 +53,7 @@ function RouteComponent() {
                     </div>
                     <div className="text-secondary text-base space-x-1">
                       <ClockCircleOutlined />
-                      <span>{new Date(data.createdTime).toLocaleString()}</span>
+                      <span>{formatDateTime(data.createdTime)}</span>
                     </div>
                   </div>
                   <RichTextEditor value={data.description} readonly bucket="system-error-screenshot" />

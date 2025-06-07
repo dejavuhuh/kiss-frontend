@@ -35,6 +35,9 @@
   .ant-image {
     display: block;
   }
+  .ant-table {
+    @apply font-mono;
+  }
 
   /* Antd styles overrides */
   .ant-select-tree-switcher,

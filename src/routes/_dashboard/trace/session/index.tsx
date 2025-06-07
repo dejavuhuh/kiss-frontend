@@ -2,6 +2,7 @@ import type { ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import { api } from '@/api'
 import { useTable } from '@/hooks/useTable'
+import { formatDateTime } from '@/utils'
 import { ProFormDateTimeRangePicker, ProFormText, QueryFilter } from '@ant-design/pro-components'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { App, Form, Radio, Space, Table, Typography } from 'antd'
@@ -49,12 +50,12 @@ function SessionManagement() {
     {
       title: '失效时间',
       dataIndex: 'expiredTime',
-      render: value => new Date(value).toLocaleString(),
+      render: formatDateTime,
     },
     {
       title: '创建时间',
       dataIndex: 'createdTime',
-      render: value => new Date(value).toLocaleString(),
+      render: formatDateTime,
     },
     {
       title: '操作',

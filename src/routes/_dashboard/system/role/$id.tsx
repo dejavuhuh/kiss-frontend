@@ -2,6 +2,7 @@ import type { TableProps } from 'antd'
 import type { UserView } from '../user'
 import { api } from '@/api'
 import { useTable } from '@/hooks/useTable'
+import { formatDateTime } from '@/utils'
 import { SecurityScanOutlined, UserOutlined } from '@ant-design/icons'
 import { createFileRoute } from '@tanstack/react-router'
 import { Segmented, Table } from 'antd'
@@ -60,7 +61,7 @@ function RoleUsers({ id }: { id: number }) {
     {
       title: '创建时间',
       dataIndex: 'createdTime',
-      render: value => new Date(value).toLocaleString(),
+      render: formatDateTime,
     },
   ]
 
