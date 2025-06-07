@@ -162,8 +162,9 @@ function PermissionManagement() {
         <ProFormText name="keywords" label="关键词" placeholder="权限名称/权限编码" />
       </QueryFilter>
       <div className="card space-y-4">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <Typography.Title level={5} className="mb-0 mr-auto">菜单树</Typography.Title>
+          <Button>导出数据</Button>
           <ModalForm<PermissionInput>
             title="创建权限"
             width={500}

@@ -20,20 +20,9 @@ export class ProductCategoryService {
     }
     
     /**
-     * 根据上级分类 ID 查询下级分类
+     * 查询商品分类树
      */
-    readonly listByParentId: (options: ProductCategoryServiceOptions['listByParentId']) => Promise<
-        Array<ProductCategoryDto['ProductCategoryService/LIST_ITEM']>
-    > = async(options) => {
-        let _uri = '/product-categories/';
-        _uri += encodeURIComponent(options.id);
-        return (await this.executor({uri: _uri, method: 'GET'})) as Promise<Array<ProductCategoryDto['ProductCategoryService/LIST_ITEM']>>;
-    }
-    
-    /**
-     * 查询一级分类
-     */
-    readonly listRoots: () => Promise<
+    readonly list: () => Promise<
         Array<ProductCategoryDto['ProductCategoryService/LIST_ITEM']>
     > = async() => {
         let _uri = '/product-categories';
@@ -45,8 +34,5 @@ export type ProductCategoryServiceOptions = {
     'create': {
         body: ProductCategoryInput
     }, 
-    'listRoots': {}, 
-    'listByParentId': {
-        id: number
-    }
+    'list': {}
 }

@@ -1,5 +1,5 @@
 export interface ProductCategoryInput {
     name: string;
-    sortOrder: number;
+    isLeaf: boolean;
     parentId?: number | undefined;
 }

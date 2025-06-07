@@ -9,6 +9,8 @@ export type ProductCategoryDto = {
          */
         createdTime: string;
         name: string;
+        isLeaf: boolean;
         sortOrder: number;
+        children?: Array<ProductCategoryDto['ProductCategoryService/LIST_ITEM']> | undefined;
     }
 }
