@@ -3,7 +3,7 @@ import { api } from '@/api'
 import { cn } from '@/utils'
 import { filterTree } from '@/utils/tree'
 import { hasPermission, setCurrentUser } from '@/utils/user'
-import { ApartmentOutlined, ApiOutlined, BellOutlined, ClockCircleOutlined, CodeOutlined, EditOutlined, FileTextOutlined, IdcardOutlined, IssuesCloseOutlined, LogoutOutlined, MenuFoldOutlined, PayCircleOutlined, ProductOutlined, SecurityScanOutlined, SettingOutlined, TaobaoOutlined, UploadOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
+import { ApartmentOutlined, ApiOutlined, BellOutlined, ClockCircleOutlined, CodeOutlined, DownloadOutlined, EditOutlined, FileTextOutlined, IdcardOutlined, IssuesCloseOutlined, LogoutOutlined, MenuFoldOutlined, PayCircleOutlined, ProductOutlined, SecurityScanOutlined, SettingOutlined, TaobaoOutlined, UploadOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
 import { createFileRoute, Link, Outlet, redirect, useLocation } from '@tanstack/react-router'
 import { Button, Menu, Spin } from 'antd'
 import { Suspense, useState } from 'react'
@@ -141,6 +141,17 @@ const menus: MenuItem[] = [
             label: <Link to="/e-commerce/product/category">商品分类</Link>,
           },
         ],
+      },
+    ],
+  },
+  {
+    key: '/export',
+    label: '数据导出',
+    icon: <DownloadOutlined />,
+    children: [
+      {
+        key: '/export/big-data',
+        label: <Link to="/export/big-data">海量数据导出</Link>,
       },
     ],
   },

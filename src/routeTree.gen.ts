@@ -31,6 +31,7 @@ import { Route as DashboardSystemJobIndexImport } from './routes/_dashboard/syst
 import { Route as DashboardSystemApiIndexImport } from './routes/_dashboard/system/api/index'
 import { Route as DashboardPaymentSubscriptionIndexImport } from './routes/_dashboard/payment/subscription/index'
 import { Route as DashboardPaymentRechargeIndexImport } from './routes/_dashboard/payment/recharge/index'
+import { Route as DashboardExportBigDataIndexImport } from './routes/_dashboard/export/big-data/index'
 import { Route as DashboardComponentS3UploadIndexImport } from './routes/_dashboard/component/s3-upload/index'
 import { Route as DashboardComponentRichTextEditorIndexImport } from './routes/_dashboard/component/rich-text-editor/index'
 import { Route as DashboardTraceIssueIdImport } from './routes/_dashboard/trace/issue/$id'
@@ -164,6 +165,13 @@ const DashboardPaymentRechargeIndexRoute =
   DashboardPaymentRechargeIndexImport.update({
     id: '/payment/recharge/',
     path: '/payment/recharge/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+
+const DashboardExportBigDataIndexRoute =
+  DashboardExportBigDataIndexImport.update({
+    id: '/export/big-data/',
+    path: '/export/big-data/',
     getParentRoute: () => DashboardRoute,
   } as any)
 
@@ -329,6 +337,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardComponentS3UploadIndexImport
       parentRoute: typeof DashboardImport
     }
+    '/_dashboard/export/big-data/': {
+      id: '/_dashboard/export/big-data/'
+      path: '/export/big-data'
+      fullPath: '/export/big-data'
+      preLoaderRoute: typeof DashboardExportBigDataIndexImport
+      parentRoute: typeof DashboardImport
+    }
     '/_dashboard/payment/recharge/': {
       id: '/_dashboard/payment/recharge/'
       path: '/payment/recharge'
@@ -450,6 +465,7 @@ interface DashboardRouteChildren {
   DashboardTraceIssueIdRoute: typeof DashboardTraceIssueIdRoute
   DashboardComponentRichTextEditorIndexRoute: typeof DashboardComponentRichTextEditorIndexRoute
   DashboardComponentS3UploadIndexRoute: typeof DashboardComponentS3UploadIndexRoute
+  DashboardExportBigDataIndexRoute: typeof DashboardExportBigDataIndexRoute
   DashboardPaymentRechargeIndexRoute: typeof DashboardPaymentRechargeIndexRoute
   DashboardPaymentSubscriptionIndexRoute: typeof DashboardPaymentSubscriptionIndexRoute
   DashboardSystemApiIndexRoute: typeof DashboardSystemApiIndexRoute
@@ -473,6 +489,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardComponentRichTextEditorIndexRoute:
     DashboardComponentRichTextEditorIndexRoute,
   DashboardComponentS3UploadIndexRoute: DashboardComponentS3UploadIndexRoute,
+  DashboardExportBigDataIndexRoute: DashboardExportBigDataIndexRoute,
   DashboardPaymentRechargeIndexRoute: DashboardPaymentRechargeIndexRoute,
   DashboardPaymentSubscriptionIndexRoute:
     DashboardPaymentSubscriptionIndexRoute,
@@ -508,6 +525,7 @@ export interface FileRoutesByFullPath {
   '/trace/issue/$id': typeof DashboardTraceIssueIdRoute
   '/component/rich-text-editor': typeof DashboardComponentRichTextEditorIndexRoute
   '/component/s3-upload': typeof DashboardComponentS3UploadIndexRoute
+  '/export/big-data': typeof DashboardExportBigDataIndexRoute
   '/payment/recharge': typeof DashboardPaymentRechargeIndexRoute
   '/payment/subscription': typeof DashboardPaymentSubscriptionIndexRoute
   '/system/api': typeof DashboardSystemApiIndexRoute
@@ -537,6 +555,7 @@ export interface FileRoutesByTo {
   '/trace/issue/$id': typeof DashboardTraceIssueIdRoute
   '/component/rich-text-editor': typeof DashboardComponentRichTextEditorIndexRoute
   '/component/s3-upload': typeof DashboardComponentS3UploadIndexRoute
+  '/export/big-data': typeof DashboardExportBigDataIndexRoute
   '/payment/recharge': typeof DashboardPaymentRechargeIndexRoute
   '/payment/subscription': typeof DashboardPaymentSubscriptionIndexRoute
   '/system/api': typeof DashboardSystemApiIndexRoute
@@ -568,6 +587,7 @@ export interface FileRoutesById {
   '/_dashboard/trace/issue/$id': typeof DashboardTraceIssueIdRoute
   '/_dashboard/component/rich-text-editor/': typeof DashboardComponentRichTextEditorIndexRoute
   '/_dashboard/component/s3-upload/': typeof DashboardComponentS3UploadIndexRoute
+  '/_dashboard/export/big-data/': typeof DashboardExportBigDataIndexRoute
   '/_dashboard/payment/recharge/': typeof DashboardPaymentRechargeIndexRoute
   '/_dashboard/payment/subscription/': typeof DashboardPaymentSubscriptionIndexRoute
   '/_dashboard/system/api/': typeof DashboardSystemApiIndexRoute
@@ -599,6 +619,7 @@ export interface FileRouteTypes {
     | '/trace/issue/$id'
     | '/component/rich-text-editor'
     | '/component/s3-upload'
+    | '/export/big-data'
     | '/payment/recharge'
     | '/payment/subscription'
     | '/system/api'
@@ -627,6 +648,7 @@ export interface FileRouteTypes {
     | '/trace/issue/$id'
     | '/component/rich-text-editor'
     | '/component/s3-upload'
+    | '/export/big-data'
     | '/payment/recharge'
     | '/payment/subscription'
     | '/system/api'
@@ -656,6 +678,7 @@ export interface FileRouteTypes {
     | '/_dashboard/trace/issue/$id'
     | '/_dashboard/component/rich-text-editor/'
     | '/_dashboard/component/s3-upload/'
+    | '/_dashboard/export/big-data/'
     | '/_dashboard/payment/recharge/'
     | '/_dashboard/payment/subscription/'
     | '/_dashboard/system/api/'
@@ -722,6 +745,7 @@ export const routeTree = rootRoute
         "/_dashboard/trace/issue/$id",
         "/_dashboard/component/rich-text-editor/",
         "/_dashboard/component/s3-upload/",
+        "/_dashboard/export/big-data/",
         "/_dashboard/payment/recharge/",
         "/_dashboard/payment/subscription/",
         "/_dashboard/system/api/",
@@ -787,6 +811,10 @@ export const routeTree = rootRoute
     },
     "/_dashboard/component/s3-upload/": {
       "filePath": "_dashboard/component/s3-upload/index.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/export/big-data/": {
+      "filePath": "_dashboard/export/big-data/index.tsx",
       "parent": "/_dashboard"
     },
     "/_dashboard/payment/recharge/": {
