@@ -1,5 +1,9 @@
 export type {BillingCycle} from './BillingCycle';
 export {BillingCycle_CONSTANTS} from './BillingCycle';
+export type {ExportTaskScene} from './ExportTaskScene';
+export {ExportTaskScene_CONSTANTS} from './ExportTaskScene';
+export type {ExportTaskStatus} from './ExportTaskStatus';
+export {ExportTaskStatus_CONSTANTS} from './ExportTaskStatus';
 export type {HistoryReason} from './HistoryReason';
 export {HistoryReason_CONSTANTS} from './HistoryReason';
 export type {IssueState} from './IssueState';

@@ -1,6 +1,7 @@
 export type {ApiDto} from './ApiDto';
 export type {ConfigDto} from './ConfigDto';
 export type {ConfigHistoryDto} from './ConfigHistoryDto';
+export type {ExportTaskDto} from './ExportTaskDto';
 export type {IssueDto} from './IssueDto';
 export type {PermissionDto} from './PermissionDto';
 export type {ProductCategoryDto} from './ProductCategoryDto';

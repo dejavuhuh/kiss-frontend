@@ -1,6 +1,7 @@
 export {AuthenticationService} from './AuthenticationService';
 export {BigDataService} from './BigDataService';
 export {ConfigService} from './ConfigService';
+export {ExportTaskService} from './ExportTaskService';
 export {FaultService} from './FaultService';
 export {FeishuService} from './FeishuService';
 export {IssueService} from './IssueService';

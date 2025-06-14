@@ -1,5 +1,6 @@
 import type {Executor} from '../';
 import type {Method} from '../model/enums/';
+import type {MediaType} from '../model/static/';
 
 /**
  * S3服务
@@ -32,6 +33,13 @@ export class S3Service {
         _uri += 'objectName='
         _uri += encodeURIComponent(_value);
         _separator = '&';
+        _value = options.fileName;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'fileName='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
         return (await this.executor({uri: _uri, method: 'GET'})) as Promise<string>;
     }
 }
@@ -40,6 +48,8 @@ export type S3ServiceOptions = {
     'preSignedUrl': {
         bucket: string, 
         method: Method, 
-        objectName: string
+        objectName: string, 
+        fileName?: string | undefined, 
+        contentType?: MediaType | undefined
     }
 }

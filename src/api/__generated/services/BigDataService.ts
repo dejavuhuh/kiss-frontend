@@ -4,6 +4,13 @@ export class BigDataService {
     
     constructor(private executor: Executor) {}
     
+    readonly createExportTask: () => Promise<
+        number
+    > = async() => {
+        let _uri = '/export/demo/big-data/export-task';
+        return (await this.executor({uri: _uri, method: 'POST'})) as Promise<number>;
+    }
+    
     readonly generate: (options: BigDataServiceOptions['generate']) => Promise<
         void
     > = async(options) => {
@@ -22,5 +29,6 @@ export class BigDataService {
 export type BigDataServiceOptions = {
     'generate': {
         count: number
-    }
+    }, 
+    'createExportTask': {}
 }

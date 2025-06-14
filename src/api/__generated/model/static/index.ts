@@ -1,4 +1,6 @@
 export type {AuthenticationService_SignInRequest} from './AuthenticationService_SignInRequest';
+export type {Charset} from './Charset';
+export type {Comparator} from './Comparator';
 export type {ConfigInput} from './ConfigInput';
 export type {FaultService_ServerErrorBody} from './FaultService_ServerErrorBody';
 export type {HttpRequest} from './HttpRequest';
@@ -6,6 +8,7 @@ export type {IssueInput} from './IssueInput';
 export type {IssueSpecification} from './IssueSpecification';
 export type {JobService_JobView} from './JobService_JobView';
 export type {LoggingService_ConfigureLevelEvent} from './LoggingService_ConfigureLevelEvent';
+export type {MediaType} from './MediaType';
 export type {OperationDetails} from './OperationDetails';
 export type {Page} from './Page';
 export type {PermissionApplicationInput} from './PermissionApplicationInput';

@@ -3,6 +3,7 @@ import {
     AuthenticationService, 
     BigDataService, 
     ConfigService, 
+    ExportTaskService, 
     FaultService, 
     FeishuService, 
     IssueService, 
@@ -31,6 +32,8 @@ export class Api {
     readonly sessionService: SessionService
     
     readonly productCategoryService: ProductCategoryService
+    
+    readonly exportTaskService: ExportTaskService
     
     readonly bigDataService: BigDataService
     
@@ -64,6 +67,7 @@ export class Api {
         this.sessionHistoryService = new SessionHistoryService(executor);
         this.sessionService = new SessionService(executor);
         this.productCategoryService = new ProductCategoryService(executor);
+        this.exportTaskService = new ExportTaskService(executor);
         this.bigDataService = new BigDataService(executor);
         this.faultService = new FaultService(executor);
         this.feishuService = new FeishuService(executor);
