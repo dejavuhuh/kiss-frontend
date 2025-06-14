@@ -114,7 +114,7 @@ function ExportBigData() {
           <Typography.Paragraph className="mb-0">
             <ul className="mb-0 flex flex-col gap-1">
               <li>
-                先点击
+                点击
                 <Typography.Text keyboard className="mx-0.5">一键生成</Typography.Text>
                 按钮，生成指定数量的模拟数据
               </li>
@@ -122,9 +122,26 @@ function ExportBigData() {
                 等待模拟数据生成完成（100万数据大约需要等待8秒）
               </li>
               <li>
-                再点击
+                点击
                 <Typography.Text keyboard className="mx-0.5">异步导出</Typography.Text>
-                按钮
+                按钮，等待导出任务完成
+              </li>
+              <li>
+                <ul className="mb-0 flex flex-col gap-1">
+                  模拟极端情况：
+                  <li>
+                    调整 JVM 堆内存大小
+                    <Typography.Text code className="mx-0.5">
+                      -Xms128m -Xmx128m
+                    </Typography.Text>
+                  </li>
+                  <li>
+                    生成 500 万模拟数据
+                  </li>
+                  <li>
+                    观察导出任务的执行情况
+                  </li>
+                </ul>
               </li>
             </ul>
           </Typography.Paragraph>
