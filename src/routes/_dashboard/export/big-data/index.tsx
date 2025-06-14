@@ -1,13 +1,13 @@
 import type { ResponseOf } from '@/api'
-import type { ExportScene } from '@/api/__generated/model/enums'
+import type { ExportTaskScene } from '@/api/__generated/model/enums'
 import type { TableProps } from 'antd'
 import { api } from '@/api'
 import { useTable } from '@/hooks/useTable'
 import { formatDateTime } from '@/utils'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { ReloadOutlined } from '@ant-design/icons'
+import { useMutation } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { useInterval } from 'ahooks'
-import { App, Badge, Button, InputNumber, Table, Tag, Typography } from 'antd'
+import { App, Badge, Button, InputNumber, Table, Typography } from 'antd'
 import { useState } from 'react'
 import { match } from 'ts-pattern'
 
@@ -32,15 +32,13 @@ function ExportBigData() {
     },
   })
 
-  const scene: ExportScene = 'BIG_DATA'
+  const scene: ExportTaskScene = 'BIG_DATA'
 
   const { tableProps, reload } = useTable({
     queryKey: ['export-tasks', scene],
     queryFn: () => api.exportTaskService.list({ scene }),
     showCheckbox: false,
   })
-
-  useInterval(reload, 5000)
 
   const asyncExport = useMutation({
     mutationFn: api.bigDataService.createExportTask,
@@ -133,10 +131,15 @@ function ExportBigData() {
         </div>
       </div>
       <div className="card">
-        <Typography.Title level={5} className="mb-2 flex items-center">
-          <div className="w-1.5 h-4 bg-primary rounded-xs mr-1.5" />
-          导出任务列表
-        </Typography.Title>
+        <div className="flex items-center justify-between mb-2.5">
+          <Typography.Title level={5} className="mb-0 flex items-center">
+            <div className="w-1.5 h-4 bg-primary rounded-xs mr-1.5" />
+            导出任务列表
+          </Typography.Title>
+          <Button onClick={reload} icon={<ReloadOutlined />}>
+            刷新列表
+          </Button>
+        </div>
         <Table columns={columns} {...tableProps} />
       </div>
     </div>
@@ -144,6 +147,10 @@ function ExportBigData() {
 }
 
 export function ExportTaskDownloadLink({ id, status, scene }: ExportTaskView) {
+  if (status !== 'DONE') {
+    return null
+  }
+
   async function download() {
     const url = await api.s3service.preSignedUrl({
       method: 'GET',
