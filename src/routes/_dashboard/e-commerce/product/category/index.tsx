@@ -1,13 +1,15 @@
 import type { RequestOf, ResponseOf } from '@/api'
 import type { TableProps } from 'antd'
 import { api } from '@/api'
+import { SingleS3Upload } from '@/components/form'
+import { S3Image } from '@/components/image/S3Image'
 import { useTable } from '@/hooks/useTable'
 import { formatDateTime } from '@/utils'
-import { PlusOutlined, QuestionCircleOutlined, SearchOutlined } from '@ant-design/icons'
-import { ModalForm, ProFormCheckbox, ProFormSelect, ProFormSwitch, ProFormText, ProFormTreeSelect, Search } from '@ant-design/pro-components'
+import { QuestionCircleOutlined, SearchOutlined } from '@ant-design/icons'
+import { ModalForm, ProFormDependency, ProFormItem, ProFormSwitch, ProFormText, ProFormTreeSelect } from '@ant-design/pro-components'
 import { useMutation } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { App, Button, Checkbox, Input, Space, Table, Tag, Tooltip, Typography } from 'antd'
+import { App, Button, Checkbox, Input, Space, Table, Tooltip, Typography } from 'antd'
 
 type ProductCategoryInput = RequestOf<typeof api.productCategoryService.create>['body']
 type ProductCategoryView = ResponseOf<typeof api.productCategoryService.list>[number]
@@ -42,34 +44,28 @@ function ProductCategoryManagement() {
       title: '分类名称',
       dataIndex: 'name',
       width: 250,
-      render: (text, { isLeaf }) => (
-        <div className="flex items-center">
-          <Tag
-            bordered={false}
-            color={isLeaf ? 'purple' : 'blue'}
-          >
-            {isLeaf ? '叶子' : '目录'}
-          </Tag>
-          <span>{text}</span>
-        </div>
-      ),
     },
     {
-      title: '商品数量',
-      dataIndex: 'productCount',
-      render: () => '1000',
+      title: '宣传图',
+      dataIndex: 'banner',
+      render: value => value && (
+        <S3Image
+          width={100}
+          bucket="static-resource"
+          objectName={value}
+        />
+      ),
     },
     {
       title: (
         <>
           是否启用
-          <Tooltip title='被禁用的分类不会显示在前台'>
+          <Tooltip title="被禁用的分类不会显示在前台">
             <QuestionCircleOutlined className="text-secondary ml-1 cursor-pointer" />
           </Tooltip>
         </>
       ),
       dataIndex: 'enabled',
-      align: 'center',
       render: () => <Checkbox defaultChecked />,
     },
     {
@@ -123,10 +119,17 @@ function ProductCategoryManagement() {
           <ProFormSwitch
             initialValue={false}
             name="isLeaf"
-            label="是否为叶子节点"
+            label="是否为末级分类"
             rules={[{ required: true }]}
-            tooltip="只有叶子节点才能添加商品"
+            tooltip="只有末级分类才能添加商品"
           />
+          <ProFormDependency name={['isLeaf']}>
+            {({ isLeaf }) => isLeaf && (
+              <ProFormItem name="banner" label="宣传图" tooltip="末级分类的宣传图，建议尺寸为 1920x1080" rules={[{ required: true }]}>
+                <SingleS3Upload bucket="static-resource" listType="picture-card" crop />
+              </ProFormItem>
+            )}
+          </ProFormDependency>
         </ModalForm>
 
       </div>
