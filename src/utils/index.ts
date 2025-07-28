@@ -10,7 +10,11 @@ export function copyToClipboard(text: string) {
   return navigator.clipboard.writeText(text)
 }
 
-export function formatDateTime(date: string) {
+export function formatDateTime(date?: string): string {
+  if (date === undefined) {
+    return 'N/A'
+  }
+
   return new Date(date).toLocaleString('zh-CN', {
     year: 'numeric',
     month: 'long',

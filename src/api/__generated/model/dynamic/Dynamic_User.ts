@@ -12,4 +12,5 @@ export interface Dynamic_User {
     displayName?: string;
     roles?: Array<Dynamic_Role>;
     roleIds?: Array<number>;
+    lastActiveTime?: string | undefined;
 }

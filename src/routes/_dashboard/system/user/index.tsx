@@ -72,6 +72,11 @@ function UserManagement() {
       render: formatDateTime,
     },
     {
+      title: '最后一次活跃时间',
+      dataIndex: 'lastActiveTime',
+      render: formatDateTime,
+    },
+    {
       title: '操作',
       render(_, { id, roles }) {
         const assignableRoles = currentUser.roles

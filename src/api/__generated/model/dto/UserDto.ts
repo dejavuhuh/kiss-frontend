@@ -32,6 +32,7 @@ export type UserDto = {
          */
         createdTime: string;
         displayName: string;
+        lastActiveTime?: string | undefined;
         roles: Array<{
             /**
              * ID
